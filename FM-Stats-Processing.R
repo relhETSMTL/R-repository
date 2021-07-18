@@ -98,3 +98,204 @@ fmDataBox %>%
   xlab("")
 
 
+#########
+# Scatterplots of NoF against all other metrics
+
+#1 
+plotNoFVP <- fmData %>%
+  ggplot(aes(x=NoF, y=VP)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="VP = Variability Points")
+
+plotNoFVP
+
+#2 - almost linear correlation, not useful for the selection of FM
+plotNoFNLeaf <- fmData %>%
+  ggplot(aes(x=NoF, y=NLeaf)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NLeaf = Number of Leafs")
+
+plotNoFNLeaf
+
+#3 -
+plotNoFNM <- fmData %>%
+  ggplot(aes(x=NoF, y=NM)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NM = Number of Mandatory features")
+
+plotNoFNM
+
+#4 - more spread out
+plotNoFNO <- fmData %>%
+  ggplot(aes(x=NoF, y=NO)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NO = Number of Optional features")
+
+plotNoFNO
+
+#5 - TO DO verify column name
+plotNoFNA <- fmData %>%
+  ggplot(aes(x=NoF, y=NA.)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NA = Number of Alternative features")
+
+plotNoFNA
+
+#6 
+plotNoFNVF <- fmData %>%
+  ggplot(aes(x=NoF, y=NVF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NVF = Number of Variable Features")
+
+plotNoFNVF
+
+#7
+plotNoFNGF <- fmData %>%
+  ggplot(aes(x=NoF, y=NGF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NGF = Number of Grouping Features")
+
+plotNoFNGF
+
+#8
+plotNoFSHoF <- fmData %>%
+  ggplot(aes(x=NoF, y=SHoF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="SHoF = Single Hotspot Features")
+
+plotNoFSHoF
+
+#9
+plotNoFMHoF <- fmData %>%
+  ggplot(aes(x=NoF, y=MHoF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="MHoF = Multiple Hotspot Features")
+
+plotNoFMHoF
+
+# Grid with metrics NoF 1-10
+gridExtra::grid.arrange(plotNoFVP, plotNoFNLeaf, plotNoFNM,
+                        plotNoFNO, plotNoFNA, plotNoFNVF,
+                        plotNoFNGF, plotNoFSHoF, plotNoFMHoF, 
+                        nrow=3, ncol=3)
+
+#10
+plotNoFSCDF <- fmData %>%
+  ggplot(aes(x=NoF, y=SCDF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="SCDF = Single Cyclic Dependent Feature")
+
+plotNoFSCDF
+
+#11 
+plotNoFMCDF <- fmData %>%
+  ggplot(aes(x=NoF, y=MCDF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="SCDF = Multiple Cyclic Dependent Feature")
+
+plotNoFMCDF
+
+#12
+plotNoFNoFC <- fmData %>%
+  ggplot(aes(x=NoF, y=NoFC)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NoFC = Number of Features in Constraints")
+
+plotNoFNoFC
+
+
+#13
+plotNoFNoC <- fmData %>%
+  ggplot(aes(x=NoF, y=NoC)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="NoC = Number of Constraints")
+
+plotNoFNoC
+
+#14
+plotNoFDoT <- fmData %>%
+  ggplot(aes(x=NoF, y=DoT)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="DoT = Depth of Tree")
+
+plotNoFDoT
+
+#15
+plotNoFADoT <- fmData %>%
+  ggplot(aes(x=NoF, y=ADoT)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="ADoT = Avg Depth of Tree")
+
+plotNoFADoT
+
+#16
+plotNoFRoV <- fmData %>%
+  ggplot(aes(x=NoF, y=RoV)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="RoV = Ratio of Variability")
+
+plotNoFRoV
+
+#17
+plotNoFBF <- fmData %>%
+  ggplot(aes(x=NoF, y=BF)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="BF = Branching Factor")
+
+plotNoFBF
+
+#18
+plotNoFCoC <- fmData %>%
+  ggplot(aes(x=NoF, y=CoC)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="CoC = Coefficient of connectivity")
+
+plotNoFCoC
+
+#19
+plotNoFFoC <- fmData %>%
+  ggplot(aes(x=NoF, y=FoC)) +
+  geom_point() +
+  theme_minimal() +
+  labs (x="NoF = Number of Features",y="FoC = Flexibility of Configuration")
+
+plotNoFFoC
+
+
+# Grid with metrics NoF 11-20
+gridExtra::grid.arrange(plotNoFSCDF, plotNoFMCDF, plotNoFNoFC,
+                        plotNoFNoC, plotNoFDoT, plotNoFADoT,
+                        plotNoFRoV, plotNoFBF, plotNoFCoC, plotNoFFoC,
+                        nrow=5, ncol=2)
+
+# Broken up
+gridExtra::grid.arrange(plotNoFSCDF, plotNoFMCDF, plotNoFNoFC,
+                        plotNoFNoC,
+                        nrow=2, ncol=2)
+
+gridExtra::grid.arrange(plotNoFDoT, plotNoFADoT, plotNoFRoV, plotNoFBF,
+                        nrow=2, ncol=2)
+
+gridExtra::grid.arrange(plotNoFCoC, plotNoFFoC,
+                        nrow=1, ncol=2)
+
+
+
