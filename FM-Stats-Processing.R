@@ -39,7 +39,7 @@ summary(fmData$NoF)
 var(fmData$NoF)
 sd(fmData$NoF)
 
-boxplot(fmData$NoF)
+boxplot(fmData$NoF,horizontal = TRUE)
 
 
 # creating a box plot
