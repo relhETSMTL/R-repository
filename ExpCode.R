@@ -17,6 +17,9 @@ var(ExpData$NoF)
 sd(ExpData$NoF)
 boxplot(ExpData$NoF, horizontal = TRUE)
 
+NOF-Min <- 10
+NOF-Q1 <- 4
+ 
 
 quantile(ExpData$NoC, c(.25, .50, .75))
 summary(ExpData$NoC)
@@ -24,8 +27,14 @@ var(ExpData$NoC)
 sd(ExpData$NoC)
 boxplot(ExpData$NoC, horizontal = TRUE)
 
+# Seeds the random generator number
+set.seed(10)
+
+# Combination : NOF min-Q1 and NOC min-Q1
 ExpData10to14.1 <- ExpData %>% filter(NoF>=10 & NoF<14, NoC>=0 & NoC<1)
 ExpData10to14.1
+
+
 
 sample.data10to14.1 <- ExpData10to14.1[sample
                                      (1:nrow(ExpData10to14.1), 2),]
