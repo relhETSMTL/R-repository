@@ -87,7 +87,7 @@ fmDataBox <- data.frame(
 fmDataBox %>%
   ggplot( aes(x=name, y=value, fill=name)) +
   geom_boxplot() +
-  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+  # scale_fill_viridis(discrete = TRUE, alpha=0.6) +
   geom_jitter(color="black", size=0.4, alpha=0.9) +
   theme_ipsum() +
   theme(
@@ -95,7 +95,8 @@ fmDataBox %>%
     plot.title = element_text(size=11)
   ) +
   ggtitle("boxplot with jitter for NoF") +
-  xlab("")
+  xlab("") +
+  coord_flip()
 
 
 #########
