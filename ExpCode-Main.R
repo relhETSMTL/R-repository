@@ -50,9 +50,8 @@ array
 
 #extracting FMs that meet following restriction from initial dataFrame (ExpData). 
 #first intervals for Nof & NoC
-NoF_Q1_NoC_1 <- ExpData %>% filter(NoF>=array[1, 1] & NoF<array[2, 1], NoC>=array[1, 2] & NoC<array[2, 2])
-NoF_Q1_NoC_1
-count(NoF_Q1_NoC_1)
+FMs_min_Q1_1 <- ExpData %>% filter(NoF>=array[1, 1] & NoF<array[2, 1], NoC>=array[1, 2] & NoC<array[2, 2])
+FMs_min_Q1_1
 #selecting 2 samples randomly
 set.seed(2)
 sample.min_Q1_1 <- FMs_min_Q1_1[sample
@@ -83,7 +82,7 @@ set.seed(2)
 sample.min_Q1_3 <- FMs_min_Q1_3[sample
                                      (1:nrow(FMs_min_Q1_3), 2),]
 sample.min_Q1_3
-write.csv(sample.min_Q1_3,"your directory path\\file-Name.csv", row.names = TRUE)
+#write.csv(sample.min_Q1.3,"your directory path\\file-Name.csv", row.names = TRUE)
 
               #..............................................................#
 
@@ -186,7 +185,7 @@ Collection_view<-combine(count(NoF_Q1_NoC_1), count(FMs_min_Q1_2),
                           count(FMs_Med_Q3_1), count(FMs_Med_Q3_2),count(FMs_Med_Q3_3),
                           count(FMs_Q3_Bigger_1),count(FMs_Q3_Bigger_2),
                           count(FMs_Q3_Bigger_3))
-Collection_view$Regions <- c("NoF_Q1_NoC_l1","FMs_min_Q1_2","FMs_min_Q1_3","FMs_Q1_Med_1",
+Collection_view$Regions <- c("NoF_Q1_NoC_1","FMs_min_Q1_2","FMs_min_Q1_3","FMs_Q1_Med_1",
                             "FMs_Q1_Med_2", "FMs_Q1_Med_3", "FMs_Med_Q3_1", "FMs_Med_Q3_2", "FMs_Med_Q3_3", "FMs_Q3_Bigger_1" ,"FMs_Q3_Bigger_2", "FMs_Q3_Bigger_3")
 Collection_view
 
