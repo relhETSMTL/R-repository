@@ -14,7 +14,7 @@ fmData <- read.csv(file = "fmstats.csv", header=TRUE)
 attach (fmData)
 
 
-# For this study, we focus on two metrics:L
+# For this study, we focus on two metrics: 
 # NoF: Number of Features, NoC: number of cross-tree constraints
 # We select the two metrics and the file name and the feature model name
 ExpData <- fmData %>% select(FileName, FeatureModel, NoF, NoC)
@@ -43,6 +43,19 @@ histogramNoC <- fmData %>% filter(NoC < 50) %>%
   labs(x="Number of Constraints (NoC)")  
 histogramNoC
 
+# Builds the columns for the experiment table
+ci1 <- c(min(ExpData$NoF), min(ExpData$NoC))  # minimum value
+ci2 <- c(quantile(ExpData$NoF,0.25), quantile(ExpData$NoC, 0.5))  # first quantile, median
+ci3 <- c(quantile(ExpData$NoF,0.5), quantile(ExpData$NoC, 0.75))   # second quantile, third quantile
+max.NoC <- 15     # we set 15 as the maximum NoC for our experiments
+ci4 <- c(quantile(ExpData$NoF,0.75), max.NoC)
+
+exp.column.names <- c("I1","I2","I3","I4")
+exp.row.names <- c("NoF","NoC")
+exp.combinations <- array(c(ci1,ci2,ci3,ci4), dim=c(2,4), dimnames = list(exp.row.names,exp.column.names))
+exp.combinations
+
+
 
 # EDITED UP TO HERE
 
@@ -51,6 +64,7 @@ histogramNoC
 
 summary(ExpData$NoF)
 
+# Use [[1]] for the numeric values of the elements in summary
 
 
 #Using boxplot for two metrics and see data distribution
