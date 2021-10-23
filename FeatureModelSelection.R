@@ -55,6 +55,60 @@ exp.row.names <- c("NoF","NoC")
 exp.combinations <- array(c(ci1,ci2,ci3,ci4), dim=c(2,4), dimnames = list(exp.row.names,exp.column.names))
 exp.combinations
 
+## Filtering the datasets for the 12 combinations of NoF and NoC
+combination.i1.i1 <- ExpData %>% 
+                     filter(exp.combinations["NoF","I1"] <= NoF & NoF < exp.combinations["NoF","I2"] &
+                            exp.combinations["NoC","I1"] <= NoC & NoC < exp.combinations["NoC","I2"])
+
+combination.i1.i2 <- ExpData %>% 
+                     filter(exp.combinations["NoF","I1"] <= NoF & NoF < exp.combinations["NoF","I2"] &
+                            exp.combinations["NoC","I2"] <= NoC & NoC < exp.combinations["NoC","I3"])
+
+combination.i1.i3 <- ExpData %>% 
+                     filter(exp.combinations["NoF","I1"] <= NoF & NoF < exp.combinations["NoF","I2"] &
+                            exp.combinations["NoC","I3"] <= NoC & NoC < exp.combinations["NoC","I4"])
+
+
+combination.i2.i1 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I2"] <= NoF & NoF < exp.combinations["NoF","I3"] &
+                           exp.combinations["NoC","I1"] <= NoC & NoC < exp.combinations["NoC","I2"])
+
+combination.i2.i2 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I2"] <= NoF & NoF < exp.combinations["NoF","I3"] &
+                           exp.combinations["NoC","I2"] <= NoC & NoC < exp.combinations["NoC","I3"])
+
+combination.i2.i3 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I2"] <= NoF & NoF < exp.combinations["NoF","I3"] &
+                           exp.combinations["NoC","I3"] <= NoC & NoC < exp.combinations["NoC","I4"])
+
+
+combination.i3.i1 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I3"] <= NoF & NoF < exp.combinations["NoF","I4"] &
+                           exp.combinations["NoC","I1"] <= NoC & NoC < exp.combinations["NoC","I2"])
+
+combination.i3.i2 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I3"] <= NoF & NoF < exp.combinations["NoF","I4"] &
+                           exp.combinations["NoC","I2"] <= NoC & NoC < exp.combinations["NoC","I3"])
+
+combination.i3.i3 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I3"] <= NoF & NoF < exp.combinations["NoF","I4"] &
+                           exp.combinations["NoC","I3"] <= NoC & NoC < exp.combinations["NoC","I4"])
+
+
+combination.i4.i1 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I4"] <= NoF &
+                           exp.combinations["NoC","I1"] <= NoC & NoC < exp.combinations["NoC","I2"])
+
+combination.i4.i2 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I4"] <= NoF &
+                           exp.combinations["NoC","I2"] <= NoC & NoC < exp.combinations["NoC","I3"])
+
+combination.i4.i3 <- ExpData %>% 
+                    filter(exp.combinations["NoF","I4"] <= NoF & 
+                           exp.combinations["NoC","I3"] <= NoC & NoC < exp.combinations["NoC","I4"])
+
+
+
 
 
 # EDITED UP TO HERE
