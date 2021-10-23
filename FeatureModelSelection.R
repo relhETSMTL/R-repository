@@ -108,8 +108,45 @@ combination.i4.i3 <- ExpData %>%
                            exp.combinations["NoC","I3"] <= NoC & NoC < exp.combinations["NoC","I4"])
 
 
+# Bubble plot of the 12 combinations
+
+# creates the data frame with the number of features models in each combination
+values.nof <- c("10<=NoF<14", "10<=NoF<14", "10<=NoF<14", 
+                "14<=NoF<20", "14<=NoF<20", "14<=NoF<20", 
+                "20<=NoF<35", "20<=NoF<35", "20<=NoF<35",
+                "NoF<=35", "NoF<=35", "NoF<=35")
+values.noc <- c("0<=NoC<1", "1<=NoC<3", "3<=NoC<15",
+                "0<=NoC<1", "1<=NoC<3", "3<=NoC<15",
+                "0<=NoC<1", "1<=NoC<3", "3<=NoC<15",
+                "0<=NoC<1", "1<=NoC<3", "3<=NoC<15")
+values.num.fm <- c(nrow(combination.i1.i1), nrow(combination.i1.i2), nrow(combination.i1.i3),
+                   nrow(combination.i2.i1), nrow(combination.i2.i2), nrow(combination.i2.i3),
+                   nrow(combination.i3.i1), nrow(combination.i3.i2), nrow(combination.i3.i3),
+                   nrow(combination.i4.i1), nrow(combination.i4.i2), nrow(combination.i4.i3))
+
+values.df <- data.frame(values.nof, values.noc, values.num.fm)
+
+# Note: Feature models considered in experiment 847 out of 882. The remaining 35, 15<=NoC
+# Sanity check OK
+excluded.fm <- ExpData %>% filter(15<= NoC)
+nrow(excluded.fm)
+
+# Drawing the plot
+bubble.fm.combination <-
+  ggplot(values.df, aes(x = values.nof, y = values.noc, size = values.num.fm))+
+  theme_minimal() +
+  geom_point(alpha = 0.7, color="blue") +
+  geom_text(label=values.num.fm, nudge_x = 0.25, nudge_y = 0.25, size = 5 ) +
+  labs(title= "NoF and NoC Intervals Combinations", y="Intervals NoC", x = "Intervals NoF")
+bubble.fm.combination
 
 
+#geom_text(
+#  label=rownames(data), 
+#  nudge_x = 0.25, nudge_y = 0.25, 
+#  check_overlap = T
+#)
+################
 
 # EDITED UP TO HERE
 
@@ -133,8 +170,11 @@ rr <- c(10,20,40)
 rcolor <-c("color1", "color2", "color3")
 data <- data.frame(rx, ry, rr, rcolor)
 
-ggplot(data, aes(x = rx, y = ry,size = rr, color=rcolor))+
+ggplot(data, aes(x = rx, y = ry,size = rr))+
   geom_point(alpha = 0.7)
+
+# ggplot(data, aes(x = rx, y = ry,size = rr, color=rcolor))+
+#  geom_point(alpha = 0.7)
 
 
 
