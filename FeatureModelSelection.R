@@ -135,7 +135,7 @@ nrow(excluded.fm)
 bubble.fm.combination <-
   ggplot(values.df, aes(x = values.nof, y = values.noc, size = values.num.fm))+
   theme_minimal() +
-  geom_point(alpha = 0.7, color="blue") +
+  geom_point(alpha = 0.7, color="blue", show_guide = FALSE) +
   geom_text(label=values.num.fm, nudge_x = 0.25, nudge_y = 0.25, size = 5 ) +
   labs(title= "NoF and NoC Intervals Combinations", y="Intervals NoC", x = "Intervals NoF")
 bubble.fm.combination
