@@ -113,6 +113,31 @@ combination.i4.i3 <- ExpData %>%
 
 # EDITED UP TO HERE
 
+x <- c(12,23,43,61,78,54,34,76,58,103,39,46,52,33,11)
+y <- c(12,54,34,76,54,23,43,61,78,23,12,34,56,98,67)
+r <- c(1,5,13,8,12,3,2,16,7,40,23,45,76,8,7)
+
+color <- c(rep("color1", 1), rep("color2", 2),
+           rep("Color3", 3), rep("color4", 4),
+           rep("color5", 5))
+# creating the dataframe from the above columns
+data <- data.frame(x, y, r, color)
+
+ggplot(data, aes(x = x, y = y,size = r, color=color))+
+  geom_point(alpha = 0.7)
+
+
+rx <- c("NoF1", "NoF2", "NoF3")
+ry <- c("NoC1", "NoC2", "NoC3")
+rr <- c(10,20,40)
+rcolor <-c("color1", "color2", "color3")
+data <- data.frame(rx, ry, rr, rcolor)
+
+ggplot(data, aes(x = rx, y = ry,size = rr, color=rcolor))+
+  geom_point(alpha = 0.7)
+
+
+
 # TO DO:
 # 1) Obtain the quantile information from the summary
 
