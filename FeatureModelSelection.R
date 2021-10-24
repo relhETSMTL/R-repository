@@ -177,6 +177,10 @@ experiment.sample <-
         sample.combination.i3.i1, sample.combination.i3.i2,sample.combination.i3.i3,
         sample.combination.i4.i1, sample.combination.i4.i2,sample.combination.i4.i3)
 
+# Writes the sample in a experiment-sample.csv file. Adjust path accordingly.
+write.csv(experiment.sample,"experiment-sample.csv", row.names = TRUE)
+
+
 
 ################
 
