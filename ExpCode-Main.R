@@ -179,7 +179,7 @@ sample.Q3_bigger_3
 
 #visualization of how many FMs we have for each region of Nof & NoC 
 
-Collection_view<-combine(count(NoF_Q1_NoC_1), count(FMs_min_Q1_2),
+Collection_view<-combine(count(FMs_min_Q1_1), count(FMs_min_Q1_2),
                           count(FMs_min_Q1_3), count(FMs_Q1_Med_1), 
                           count(FMs_Q1_Med_2), count(FMs_Q1_Med_3),
                           count(FMs_Med_Q3_1), count(FMs_Med_Q3_2),count(FMs_Med_Q3_3),

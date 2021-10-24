@@ -141,37 +141,47 @@ bubble.fm.combination <-
 bubble.fm.combination
 
 
-#geom_text(
-#  label=rownames(data), 
-#  nudge_x = 0.25, nudge_y = 0.25, 
-#  check_overlap = T
-#)
+# Selecting the sample feature models
+# Seeding the random number generator once. Selecting n=2 feature models of each combinations
+set.seed(2)
+num.fm <- 2
+
+# Simple random sampling function
+simpleRS = function(population, n, comb.name){
+  srsIndexes = sample(1:nrow(population), n)
+  df_population <- population[srsIndexes,]
+  df_population %>% add_column(combination = comb.name)
+}
+
+# Obtains the samples of each combination of NoF and NoC
+sample.combination.i1.i1 <- simpleRS(combination.i1.i1, num.fm, "i1.i1")
+sample.combination.i1.i2 <- simpleRS(combination.i1.i2, num.fm, "i1.i2")
+sample.combination.i1.i3 <- simpleRS(combination.i1.i3, num.fm, "i1.i3")
+
+sample.combination.i2.i1 <- simpleRS(combination.i2.i1, num.fm, "i2.i1")
+sample.combination.i2.i2 <- simpleRS(combination.i2.i2, num.fm, "i2.i2")
+sample.combination.i2.i3 <- simpleRS(combination.i2.i3, num.fm, "i2.i3")
+
+sample.combination.i3.i1 <- simpleRS(combination.i3.i1, num.fm, "i3.i1")
+sample.combination.i3.i2 <- simpleRS(combination.i3.i2, num.fm, "i3.i2")
+sample.combination.i3.i3 <- simpleRS(combination.i3.i3, num.fm, "i3.i3")
+
+sample.combination.i4.i1 <- simpleRS(combination.i4.i1, num.fm, "i4.i1")
+sample.combination.i4.i2 <- simpleRS(combination.i4.i2, num.fm, "i4.i2")
+sample.combination.i4.i3 <- simpleRS(combination.i4.i3, num.fm, "i4.i3")
+
+# Obtains the sample of all the 12 combinations of randomly selected feature models
+experiment.sample <- 
+  rbind(sample.combination.i1.i1, sample.combination.i1.i2,sample.combination.i1.i3,
+        sample.combination.i2.i1, sample.combination.i2.i2,sample.combination.i3.i3,
+        sample.combination.i3.i1, sample.combination.i3.i2,sample.combination.i3.i3,
+        sample.combination.i4.i1, sample.combination.i4.i2,sample.combination.i4.i3)
+
+
 ################
 
 # EDITED UP TO HERE
 
-x <- c(12,23,43,61,78,54,34,76,58,103,39,46,52,33,11)
-y <- c(12,54,34,76,54,23,43,61,78,23,12,34,56,98,67)
-r <- c(1,5,13,8,12,3,2,16,7,40,23,45,76,8,7)
-
-color <- c(rep("color1", 1), rep("color2", 2),
-           rep("Color3", 3), rep("color4", 4),
-           rep("color5", 5))
-# creating the dataframe from the above columns
-data <- data.frame(x, y, r, color)
-
-ggplot(data, aes(x = x, y = y,size = r, color=color))+
-  geom_point(alpha = 0.7)
-
-
-rx <- c("NoF1", "NoF2", "NoF3")
-ry <- c("NoC1", "NoC2", "NoC3")
-rr <- c(10,20,40)
-rcolor <-c("color1", "color2", "color3")
-data <- data.frame(rx, ry, rr, rcolor)
-
-ggplot(data, aes(x = rx, y = ry,size = rr))+
-  geom_point(alpha = 0.7)
 
 # ggplot(data, aes(x = rx, y = ry,size = rr, color=rcolor))+
 #  geom_point(alpha = 0.7)
@@ -239,3 +249,31 @@ histogramNoC <- fmData %>%
   theme_ipsum() +
   theme(plot.title = element_text(size=15))
 histogramNoC
+
+
+
+
+# Example of bubble plots
+x <- c(12,23,43,61,78,54,34,76,58,103,39,46,52,33,11)
+y <- c(12,54,34,76,54,23,43,61,78,23,12,34,56,98,67)
+r <- c(1,5,13,8,12,3,2,16,7,40,23,45,76,8,7)
+
+color <- c(rep("color1", 1), rep("color2", 2),
+           rep("Color3", 3), rep("color4", 4),
+           rep("color5", 5))
+# creating the dataframe from the above columns
+data <- data.frame(x, y, r, color)
+
+ggplot(data, aes(x = x, y = y,size = r, color=color))+
+  geom_point(alpha = 0.7)
+
+
+rx <- c("NoF1", "NoF2", "NoF3")
+ry <- c("NoC1", "NoC2", "NoC3")
+rr <- c(10,20,40)
+rcolor <-c("color1", "color2", "color3")
+data <- data.frame(rx, ry, rr, rcolor)
+
+ggplot(data, aes(x = rx, y = ry,size = rr))+
+  geom_point(alpha = 0.7)
+
