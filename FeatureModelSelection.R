@@ -173,7 +173,7 @@ sample.combination.i4.i3 <- simpleRS(combination.i4.i3, num.fm, "i4.i3")
 # Obtains the sample of all the 12 combinations of randomly selected feature models
 experiment.sample <- 
   rbind(sample.combination.i1.i1, sample.combination.i1.i2,sample.combination.i1.i3,
-        sample.combination.i2.i1, sample.combination.i2.i2,sample.combination.i3.i3,
+        sample.combination.i2.i1, sample.combination.i2.i2,sample.combination.i2.i3,
         sample.combination.i3.i1, sample.combination.i3.i2,sample.combination.i3.i3,
         sample.combination.i4.i1, sample.combination.i4.i2,sample.combination.i4.i3)
 
