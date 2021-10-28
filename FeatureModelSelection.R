@@ -180,5 +180,38 @@ experiment.sample <-
 # Writes the sample in a experiment-sample.csv file. Adjust path accordingly.
 write.csv(experiment.sample,"experiment-sample.csv", row.names = TRUE)
 
+###################################################################################################
+###################################################################################################
+
+# Additional auxiliary functions to find supplementary feature models without consistency issues
+
+# Obtains a new sample of n elements from the interval comb.name "ix.jy"
+sampleN = function(n, comb.name){
+  y <- comb.name
+  sample.combination <- switch(y,
+    "i1.i1"=combination.i1.i1, "i1.i2"=combination.i1.i2, "i1.i3"=combination.i1.i3,
+    "i2.i1"=combination.i2.i1, "i2.i2"=combination.i2.i2, "i2.i3"=combination.i2.i3,
+    "i3.i1"=combination.i3.i1, "i3.i2"=combination.i3.i2, "i3.i3"=combination.i3.i3,
+    "i4.i1"=combination.i4.i1, "i4.i2"=combination.i4.i2, "i4.i3"=combination.i4.i3)
+  srsIndexes = sample(1:nrow(sample.combination), n)
+  df_population <- sample.combination[srsIndexes,]
+  df_population %>% add_column(combination = comb.name)
+}
+
+# New samples for three combinations
+extra.sample.i1.i3 <- sampleN(10,"i1.i3")
+extra.sample.i2.i3 <- sampleN(10,"i2.i3")
+extra.sample.i4.i3 <- sampleN(10,"i4.i3")
+
+# Creating the file with the extra 
+extra.experiment.sample <- rbind(extra.sample.i1.i3, extra.sample.i2.i3, extra.sample.i4.i3)
+
+# Writes the sample in a experiment-sample.csv file. Adjust path accordingly.
+write.csv(extra.experiment.sample,"extra-experiment-sample.csv", row.names = TRUE)
+
+
+###################################################################################################
+
+
 
 
