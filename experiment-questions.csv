@@ -1,0 +1,25 @@
+QN,QFigureFile,QHeader,QText,QRecordStart,QRecordEnd,QRecordElapsed,QRecordAnswer,QType,QAnswers
+1,Figure1,Header1,Text1,true,true,false,false,radio,answer1 ; answer 2; answer 3
+2,Figure2,Header2,Text2,true,true,false,false,check,answer1 ; answer 2; answer 4
+3,Figure3,Header3,Text3,true,true,false,false,text,answer1 ; answer 2; answer 5
+4,Figure4,Header4,Text4,true,true,false,false,bool,answer1 ; answer 2; answer 6
+5,Figure5,Header5,Text5,true,true,false,false,radio,answer1 ; answer 2; answer 7
+6,Figure6,Header6,Text6,true,true,false,false,check,answer1 ; answer 2; answer 8
+7,Figure7,Header7,Text7,true,true,false,false,text,answer1 ; answer 2; answer 9
+8,Figure8,Header8,Text8,true,true,false,false,bool,answer1 ; answer 2; answer 10
+9,Figure9,Header9,Text9,true,true,false,false,radio,answer1 ; answer 2; answer 11
+10,Figure10,Header10,Text10,true,true,false,false,check,answer1 ; answer 2; answer 12
+11,Figure11,Header11,Text11,true,true,false,false,text,answer1 ; answer 2; answer 13
+12,Figure12,Header12,Text12,true,true,false,false,bool,answer1 ; answer 2; answer 14
+13,Figure13,Header13,Text13,true,true,false,false,radio,answer1 ; answer 2; answer 15
+14,Figure14,Header14,Text14,true,true,false,false,check,answer1 ; answer 2; answer 16
+15,Figure15,Header15,Text15,true,true,false,false,text,answer1 ; answer 2; answer 17
+16,Figure16,Header16,Text16,true,true,false,false,bool,answer1 ; answer 2; answer 18
+17,Figure17,Header17,Text17,true,true,false,false,radio,answer1 ; answer 2; answer 19
+18,Figure18,Header18,Text18,true,true,false,false,check,answer1 ; answer 2; answer 20
+19,Figure19,Header19,Text19,true,true,false,false,text,answer1 ; answer 2; answer 21
+20,Figure20,Header20,Text20,true,true,false,false,bool,answer1 ; answer 2; answer 22
+21,Figure21,Header21,Text21,true,true,false,false,radio,answer1 ; answer 2; answer 23
+22,Figure22,Header22,Text22,true,true,false,false,check,answer1 ; answer 2; answer 24
+23,Figure23,Header23,Text23,true,true,false,false,text,answer1 ; answer 2; answer 25
+24,Figure24,Header24,Text24,true,true,false,false,bool,answer1 ; answer 2; answer 26
