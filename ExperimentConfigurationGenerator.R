@@ -25,14 +25,42 @@ library(tidyverse)
 questionsData <- read.csv(file = "experiment-questions.csv", header=TRUE)
 attach (questionsData)
 
-# TODO
-# Write a function that generates M combinations of N questions each,Generate a 
+
 
 number.configurations <- 30
 number.questions <- 24 # computed after reading the configurations file
 
 # For loop for the generation of the configurations
+set.seed(10) # seeds the random number generator,
 for(i in 1:number.configurations) {
-  print(i)
-}
+  
+  # Obtains a random sample of all the questions
+  samplei <- sample(1:number.questions, number.questions)
+  
+  # Creates a new dataframe with the same structure but with a different order of the questions
+  newConfigurationFrame <- questionsData[0,]
+  # newFrame %>% add_row()
+  # newFrame <- newFrame %>% add_row(questionsData[5,])
+  
+  # Adding each question in the sample to the generated configuration file
+  for (j in samplei) {
+    newConfigurationFrame <- newConfigurationFrame %>% add_row(questionsData[j,])
+  }
+  
+  print(samplei) # prints the order of the questions
+  print(newConfigurationFrame) # prints the new configuration frame to be created
+  
+  
+  # Creates a new file with the desired configuration
+  write.csv(newConfigurationFrame,paste("configuration-",i,".csv", sep=""), row.names = FALSE, col.names = TRUE)
+  
+  
+} # for all the configurations
+
+
+# TODO
+# Adding " " to the strings in the configuraton file. Is it a problem when reading it in the FigureManagement tool?
+# Concatenating the string values. - with paste
+
+
 
