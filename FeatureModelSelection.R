@@ -199,15 +199,15 @@ sampleN = function(n, comb.name){
   df_population %>% add_column(combination = comb.name)
 }
 
-# New samples for three combinations
+# New samples for three combinations where we encountered issues
 extra.sample.i1.i3 <- sampleN(10,"i1.i3")
 extra.sample.i2.i3 <- sampleN(10,"i2.i3")
 extra.sample.i4.i3 <- sampleN(10,"i4.i3")
 
-# Creating the file with the extra 
+# Creating the file with the extra feature models
 extra.experiment.sample <- rbind(extra.sample.i1.i3, extra.sample.i2.i3, extra.sample.i4.i3)
 
-# Writes the sample in a experiment-sample.csv file. Adjust path accordingly.
+# Writes the sample in a extra-experiment-sample.csv file. Adjust path accordingly.
 write.csv(extra.experiment.sample,"extra-experiment-sample.csv", row.names = TRUE)
 
  
