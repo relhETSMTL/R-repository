@@ -80,7 +80,7 @@ for(i in 1:number.configurations) {
   print(newConfigurationFrame) # prints the new configuration frame to be created
   
   # Saves the header of the configuration file
-  configuration.filename <- paste("configuration-",i,".csv", sep="")
+  configuration.filename <- paste("configuration-",i,".config", sep="")
   cat(configuration.file.descriptor, file=configuration.filename)
   cat(configuration.welcome.message, file=configuration.filename, append=TRUE)
   cat(configuration.width.height, file=configuration.filename, append=TRUE)
@@ -90,21 +90,11 @@ for(i in 1:number.configurations) {
   cat(configuration.randomized, file=configuration.filename, append=TRUE)
   
   # Creates a new file with the desired configuration
-  #write.csv(newConfigurationFrame,paste("configuration-",i,".csv", sep=""),  col.names = FALSE, row.names = FALSE)
-  #write.table(newConfigurationFrame, paste("configuration-",i,".csv", sep=""), row.names=F, col.names=F, sep=",")
-
-  write.table(newConfigurationFrame, paste("configuration-",i,".csv", sep=""), row.names=F, col.names=F, 
+  write.table(newConfigurationFrame, paste("configuration-",i,".config", sep=""), row.names=F, col.names=F, 
               sep=",", append = TRUE, quote=FALSE)
   
 } # for all the configurations
 
-#   cat("First line \n", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
-#   cat("Second line", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
-   
-   
-# TODO
-# Adding " " to the strings in the configuraton file. Is it a problem when reading it in the FigureManagement tool?
-# Concatenating the string values. - with paste
 
 
 

@@ -97,3 +97,14 @@ data <- data.frame(rx, ry, rr, rcolor)
 ggplot(data, aes(x = rx, y = ry,size = rr))+
   geom_point(alpha = 0.7)
 
+
+# Test code for writing files
+# Write.csv ignored not writting the column names, it ignore the command
+write.csv(newConfigurationFrame,paste("configuration-",i,".csv", sep=""),  col.names = FALSE, row.names = FALSE)
+write.table(newConfigurationFrame, paste("configuration-",i,".csv", sep=""), row.names=F, col.names=F, sep=",")
+
+# Example of appending text to a file.
+cat("First line \n", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
+cat("Second line", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
+
+
