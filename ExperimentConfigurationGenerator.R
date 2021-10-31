@@ -4,12 +4,26 @@
 # Ecole de technologie superieure
 # VERITAS team
 # Authors: Elmira Sepasi, Kambiz Belouchi, Roberto E. Lopez-Herrejon
-# Last update: 2021-10-30
+# Last update: 2021-10-31
 
 
-library(tidyverse)
+# Format generated for the configuraton file. The first six rows indicate:
+# 1) File descriptor, 2) Legend for the welcome message, 3) With and height of the question windown
+# 4) X,  Y position of the question windown, 5) Number of questions, 
+# 6) "randomized" or the sequence of questions.
+# 
+# Example
+# Experiment: First eye-tracker experiment   // File descriptor
+# Eye Tracker Experiment - Comprehension of Feature Models // Legend for welcome message
+# 1100, 800 // width, height question window
+# 0,0   // x,y position of the question window. Zeroes if relative to main framework
+# 4 // number questions
+# randomized // either randomized or the sequence of questions like 1,4,5,2,3
+# 
+# Note: After the header, the details of the questions are added as from the questions file, except omitting the
+# QN column.
 
-# Loads the questions file. This file has the following information:
+# This is the format of the question. Loaded from the questions file.
 # QN (Question number),
 # QFigureFile (Full path of the feature model figure) [0]
 # QHeader (Question Header) [1]
@@ -21,21 +35,32 @@ library(tidyverse)
 # QType (Type of question=radio,check,text,bool), [7]
 # QAnswers [8]
 
+
+library(tidyverse)
+
 # File with experiment question descriptions 
 questionsData <- read.csv(file = "experiment-questions.csv", header=TRUE)
 attach (questionsData)
 
 
-
+# Number of random configuration files to generate.
 number.configurations <- 30
-number.questions <- 24 # computed after reading the configurations file
+#number.questions <- 24 # 
+
+# Header construction. Note: Adapt for each new experiment.
+configuration.file.descriptor <- "Experiment: First eye-tracker experiment   // File descriptor\n"
+configuration.welcome.message <- "Eye Tracker Experiment - Comprehension of Feature Models // Legend for welcome message\n"
+configuration.width.height <- "1100, 800 // width, height question window\n"
+configuration.x.y <- "0,0   // x,y position of the question window. Zeroes if relative to main framework\n"
+configuration.number.questions <- nrow(questionsData) # computed from the questions file
+configuration.randomized <- "randomized // either randomized or the sequence of questions like 1,4,5,2,3\n"
 
 # For loop for the generation of the configurations
 set.seed(10) # seeds the random number generator,
 for(i in 1:number.configurations) {
   
   # Obtains a random sample of all the questions
-  samplei <- sample(1:number.questions, number.questions)
+  samplei <- sample(1:configuration.number.questions, configuration.number.questions)
   
   # Creates a new dataframe with the same structure but with a different order of the questions
   newConfigurationFrame <- questionsData[0,]
@@ -47,17 +72,36 @@ for(i in 1:number.configurations) {
     newConfigurationFrame <- newConfigurationFrame %>% add_row(questionsData[j,])
   }
   
+  # Removes the column QN question number
+  newConfigurationFrame <- newConfigurationFrame %>% select(-QN)
+  
+  # Prints the order of the questions and the configuration frame
   print(samplei) # prints the order of the questions
   print(newConfigurationFrame) # prints the new configuration frame to be created
   
+  # Saves the header of the configuration file
+  configuration.filename <- paste("configuration-",i,".csv", sep="")
+  cat(configuration.file.descriptor, file=configuration.filename)
+  cat(configuration.welcome.message, file=configuration.filename, append=TRUE)
+  cat(configuration.width.height, file=configuration.filename, append=TRUE)
+  cat(configuration.x.y, file=configuration.filename, append=TRUE)
+  cat(paste(configuration.number.questions, "   // number of questions\n", sep=""), 
+      file=configuration.filename, append=TRUE)
+  cat(configuration.randomized, file=configuration.filename, append=TRUE)
   
   # Creates a new file with the desired configuration
-  write.csv(newConfigurationFrame,paste("configuration-",i,".csv", sep=""), row.names = FALSE, col.names = TRUE)
-  
+  #write.csv(newConfigurationFrame,paste("configuration-",i,".csv", sep=""),  col.names = FALSE, row.names = FALSE)
+  #write.table(newConfigurationFrame, paste("configuration-",i,".csv", sep=""), row.names=F, col.names=F, sep=",")
+
+  write.table(newConfigurationFrame, paste("configuration-",i,".csv", sep=""), row.names=F, col.names=F, 
+              sep=",", append = TRUE, quote=FALSE)
   
 } # for all the configurations
 
-
+#   cat("First line \n", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
+#   cat("Second line", file=paste("configuration-",2,".csv", sep=""), append=TRUE)
+   
+   
 # TODO
 # Adding " " to the strings in the configuraton file. Is it a problem when reading it in the FigureManagement tool?
 # Concatenating the string values. - with paste
