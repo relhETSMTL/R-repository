@@ -213,6 +213,36 @@ write.csv(extra.experiment.sample,"extra-experiment-sample.csv", row.names = TRU
  
 ###################################################################################################
 
+# Adding 4 new feature models to substitute 4 that were inconsistent in their corresponding combination
+
+# New sample for the combination i1.i3
+new.sample.combination.i1.i3 <- 
+  rbind(extra.sample.i1.i3[2,],       # second from new sample interval i1.i3
+        sample.combination.i1.i3[2,]) # original second                                    
+
+# New sample for the combination i2.i3
+new.sample.combination.i2.i3 <- 
+  rbind(extra.sample.i2.i3[1,], # first from new sample interval i2.i3
+        extra.sample.i2.i3[2,]) # second from new sample interval i2.i3          
+
+# New sample for the combination i4.i3
+new.sample.combination.i4.i3 <- 
+  rbind(sample.combination.i4.i3[1,], # original first
+        extra.sample.i4.i3[1,])       # first from new sample interval i4.i3          
 
 
+# Final experiment sample.
+final.experiment.sample <- 
+  rbind(sample.combination.i1.i1, sample.combination.i1.i2,
+        new.sample.combination.i1.i3,  # 1) replaced by second from new sample interval i1.i3
+                                       # 2) correct kept      
+        sample.combination.i2.i1, sample.combination.i2.i2,
+        new.sample.combination.i2.i3,  # 1 and 2 replaced by 1 and 2 from new sample interval i2.i3
+        sample.combination.i3.i1, sample.combination.i3.i2, sample.combination.i3.i3,
+        sample.combination.i4.i1, sample.combination.i4.i2,
+        new.sample.combination.i4.i3  # 1) correct kept
+                                      # 2) replaced by 1 from new sample interval i4.i3 
+        )
 
+# Writes the sample in a final-experiment-sample.csv file. Adjust path accordingly.
+write.csv(final.experiment.sample,"final-experiment-sample.csv", row.names = TRUE)
