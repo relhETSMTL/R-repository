@@ -216,9 +216,19 @@ write.csv(extra.experiment.sample,"extra-experiment-sample.csv", row.names = TRU
 # Adding 4 new feature models to substitute 4 that were inconsistent in their corresponding combination
 
 # New sample for the combination i1.i3
+extra.sample.i1.i3[2,]$NoC <- 6 # removing two redundant CTCs for the substitute feature model
+extra.sample.i1.i3[2,]$NoF <- 13 # the transformation added two more features from 11 to 13 
+
+extra.sample.i1.i3[4,]$NoF <- 13 # removing 1 redundant CTCs from the original fourth feature model
+extra.sample.i1.i3[4,]$NoC <- 6 # removing 1 redundant CTCs from the original fourth feature model
+
 new.sample.combination.i1.i3 <- 
-  rbind(extra.sample.i1.i3[2,],       # second from new sample interval i1.i3
-        sample.combination.i1.i3[2,]) # original second                                    
+  rbind(extra.sample.i1.i3[2,], # second from new sample interval i1.i3
+        extra.sample.i1.i3[4,]) # fourth from the new sample interval i1.i3                                    
+
+
+# Fixing NoC for i2-i1-2, from NoF=15 to NoF=18, NoC=0
+sample.combination.i2.i1[2,]$NoF <- 18
 
 # New sample for the combination i2.i3
 new.sample.combination.i2.i3 <- 
