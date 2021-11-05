@@ -263,6 +263,6 @@ final.experiment.sample <-
         new.sample.combination.i4.i3  # 1) correct kept
                                       # 2) replaced by 1 from new sample interval i4.i3 
         )
-
+ 
 # Writes the sample in a final-experiment-sample.csv file. Adjust path accordingly.
 write.csv(final.experiment.sample,"final-experiment-sample.csv", row.names = TRUE)
