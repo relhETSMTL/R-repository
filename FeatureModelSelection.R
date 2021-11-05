@@ -227,13 +227,23 @@ new.sample.combination.i1.i3 <-
         extra.sample.i1.i3[4,]) # fourth from the new sample interval i1.i3                                    
 
 
-# Fixing NoC for i2-i1-2, from NoF=15 to NoF=18, NoC=0
+# Fixing NoF for i2-i1-2, from NoF=15 to NoF=18, NoC=0
 sample.combination.i2.i1[2,]$NoF <- 18
 
 # New sample for the combination i2.i3
 new.sample.combination.i2.i3 <- 
   rbind(extra.sample.i2.i3[1,], # first from new sample interval i2.i3
         extra.sample.i2.i3[2,]) # second from new sample interval i2.i3          
+
+
+# Fixing NoF for i3-i2-1, from NoF=20 to NoF=22
+sample.combination.i3.i2[1,]$NoF <- 22
+
+# Fixing NoF for i4-i2-2, from NoF=54 to NoF=58
+sample.combination.i4.i2[2,]$NoF <- 58
+
+# Fixing NoF for i4-i3-2 (the first from the new sample) NoF=37 to NoF=38
+extra.sample.i4.i3[1,]$NoF <- 38
 
 # New sample for the combination i4.i3
 new.sample.combination.i4.i3 <- 
