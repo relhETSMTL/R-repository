@@ -1,0 +1,3 @@
+QN,QFigureFile,QHeader,QText,QRecordStart,QRecordEnd,QRecordElapsed,QRecordAnswer,QType,QAnswers,QRightAnswer
+1,./src/fms-figs/model-i1-i1-1.jpg,Warm up Question 1,Is X-Y-Z a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+2,./src/fms-figs/model-i1-i1-2.jpg,Warm up Question 2,Is B-G-H a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No

@@ -1,25 +1,25 @@
-QN,QFigureFile,QHeader,QText,QRecordStart,QRecordEnd,QRecordElapsed,QRecordAnswer,QType,QAnswers
-1,Figure1,Header1,Text1,true,true,false,false,radio,answer1 ; answer 2; answer 3
-2,Figure2,Header2,Text2,true,true,false,false,check,answer1 ; answer 2; answer 4
-3,Figure3,Header3,Text3,true,true,false,false,text,answer1 ; answer 2; answer 5
-4,Figure4,Header4,Text4,true,true,false,false,bool,answer1 ; answer 2; answer 6
-5,Figure5,Header5,Text5,true,true,false,false,radio,answer1 ; answer 2; answer 7
-6,Figure6,Header6,Text6,true,true,false,false,check,answer1 ; answer 2; answer 8
-7,Figure7,Header7,Text7,true,true,false,false,text,answer1 ; answer 2; answer 9
-8,Figure8,Header8,Text8,true,true,false,false,bool,answer1 ; answer 2; answer 10
-9,Figure9,Header9,Text9,true,true,false,false,radio,answer1 ; answer 2; answer 11
-10,Figure10,Header10,Text10,true,true,false,false,check,answer1 ; answer 2; answer 12
-11,Figure11,Header11,Text11,true,true,false,false,text,answer1 ; answer 2; answer 13
-12,Figure12,Header12,Text12,true,true,false,false,bool,answer1 ; answer 2; answer 14
-13,Figure13,Header13,Text13,true,true,false,false,radio,answer1 ; answer 2; answer 15
-14,Figure14,Header14,Text14,true,true,false,false,check,answer1 ; answer 2; answer 16
-15,Figure15,Header15,Text15,true,true,false,false,text,answer1 ; answer 2; answer 17
-16,Figure16,Header16,Text16,true,true,false,false,bool,answer1 ; answer 2; answer 18
-17,Figure17,Header17,Text17,true,true,false,false,radio,answer1 ; answer 2; answer 19
-18,Figure18,Header18,Text18,true,true,false,false,check,answer1 ; answer 2; answer 20
-19,Figure19,Header19,Text19,true,true,false,false,text,answer1 ; answer 2; answer 21
-20,Figure20,Header20,Text20,true,true,false,false,bool,answer1 ; answer 2; answer 22
-21,Figure21,Header21,Text21,true,true,false,false,radio,answer1 ; answer 2; answer 23
-22,Figure22,Header22,Text22,true,true,false,false,check,answer1 ; answer 2; answer 24
-23,Figure23,Header23,Text23,true,true,false,false,text,answer1 ; answer 2; answer 25
-24,Figure24,Header24,Text24,true,true,false,false,bool,answer1 ; answer 2; answer 26
+QN,QFigureFile,QHeader,QText,QRecordStart,QRecordEnd,QRecordElapsed,QRecordAnswer,QType,QAnswers,QRightAnswer
+1,./src/fms-figs/model-i1-i1-1.jpg,Question1,Is K-J-G a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+2,./src/fms-figs/model-i1-i1-2.jpg,Question2,Is B-G-H a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+3,./src/fms-figs/model-i1-i2-1.jpg,Question3,Is A-B-C-G-I-F a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+4,./src/fms-figs/model-i1-i2-2.jpg,Question4,Is A-B-C-D-G-E a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+5,./src/fms-figs/model-i1-i3-1.jpg,Question5,Is A-B-J-C-L-M a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+6,./src/fms-figs/model-i1-i3-2.jpg,Question6,Is B-C-G-J-M-F a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+7,./src/fms-figs/model-i2-i1-1.jpg,Question7,Is A-B-G-C-J-E a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+8,./src/fms-figs/model-i2-i1-2.jpg,Question8,Is B-F-L-C-J-R a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+9,./src/fms-figs/model-i2-i2-1.jpg,Question9,Is A-B-F-C-J-D-M a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+10,./src/fms-figs/model-i2-i2-2.jpg,Question10,To complete the valid PARTIAL configuration A-B-E-C-H-M-N-J-D-K which feature you MUST select?,true,true,false,false,radio,G ; I; O; P,No
+11,./src/fms-figs/model-i2-i3-1.jpg,Question11,Is O-P-H-E-N-S a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+12,./src/fms-figs/model-i2-i3-2.jpg,Question12,Is H-L-J-P-G a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+13,./src/fms-figs/model-i3-i1-1.jpg,Question13,Is B-G-H-P-Q-T a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+14,./src/fms-figs/model-i3-i1-2.jpg,Question14,Is F-I-P-S-V-Z a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+15,./src/fms-figs/model-i3-i2-1.jpg,Question15,Is D-J-O-Q-S-G a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+16,./src/fms-figs/model-i3-i2-2.jpg,Question16,Is A-B-C-I-G-R a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+17,./src/fms-figs/model-i3-i3-1.jpg,Question17,Is A-F-M-G-N-H-Q a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+18,./src/fms-figs/model-i3-i3-2.jpg,Question18,Is Q-Y-Bb-S-Z-Ff a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+19,./src/fms-figs/model-i4-i1-1.jpg,Question19,Is A-F-R-Dd-Ll-H-Cc a valid FULL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,Yes
+20,./src/fms-figs/model-i4-i1-2.jpg,Question20,Is I-P-T-Y-Ii-Mm a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+21,./src/fms-figs/model-i4-i2-1.jpg,Question21,Is G-Y-H-K-Jj-V a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+22,./src/fms-figs/model-i4-i2-2.jpg,Question22,Is Qq-F-Ff-G-AaA-BbB a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+23,./src/fms-figs/model-i4-i3-1.jpg,Question23,Is E-Bb-Cc-L-M-O-Q a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No
+24,./src/fms-figs/model-i4-i3-2.jpg,Question24,Is E-W-Ii-Aa-O-S a valid PARTIAL configuration?,true,true,false,false,radio,Yes ; No; I cannot answer,No

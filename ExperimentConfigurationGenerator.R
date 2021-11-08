@@ -4,7 +4,7 @@
 # Ecole de technologie superieure
 # VERITAS team
 # Authors: Elmira Sepasi, Kambiz Belouchi, Roberto E. Lopez-Herrejon
-# Last update: 2021-10-31
+# Last update: 2021-11-08
 
 
 # Format generated for the configuraton file. The first six rows indicate:
@@ -43,11 +43,12 @@ questionsData <- read.csv(file = "experiment-questions.csv", header=TRUE)
 attach (questionsData)
 
 # File with the warmp up questions
-# TODO read cvs file warm up questions, attach the data
+warmupQuestionsData <- read.csv(file = "warmup-questions.csv", header=TRUE)
+attach (warmupQuestionsData)
+
 
 # Number of random configuration files to generate.
 number.configurations <- 30
-#number.questions <- 24 # 
 
 # Header construction. Note: Adapt for each new experiment.
 configuration.file.descriptor <- "Experiment: First eye-tracker experiment   // File descriptor\n"
@@ -69,6 +70,9 @@ for(i in 1:number.configurations) {
   
   # Add to newConfigurationFrame the warm up questions
   # TODO for ..... add_row
+  for (k in (1:nrow(warmupQuestionsData))) {
+    newConfigurationFrame <- newConfigurationFrame %>% add_row(warmupQuestionsData[k,])
+  }
   
   # Adding each question in the sample to the generated configuration file
   for (j in samplei) {
@@ -92,13 +96,9 @@ for(i in 1:number.configurations) {
       file=configuration.filename, append=TRUE)
   cat(configuration.randomized, file=configuration.filename, append=TRUE)
   
-  
   # Creates a new file with the desired configuration
   write.table(newConfigurationFrame, paste("configuration-",i,".config", sep=""), row.names=F, col.names=F, 
               sep=",", append = TRUE, quote=FALSE)
   
 } # for all the configurations
-
-
-
 
