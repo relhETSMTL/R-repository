@@ -55,7 +55,7 @@ configuration.file.descriptor <- "Experiment: First eye-tracker experiment   // 
 configuration.welcome.message <- "Eye Tracker Experiment - Comprehension of Feature Models // Legend for welcome message\n"
 configuration.width.height <- "1100, 800 // width, height question window\n"
 configuration.x.y <- "0,0   // x,y position of the question window. Zeroes if relative to main framework\n"
-configuration.number.questions <- nrow(questionsData) # computed from the questions file
+configuration.number.questions <- nrow(questionsData) + nrow(warmupQuestionsData) # computed from the questions file + warmp up questions
 configuration.randomized <- "randomized // either randomized or the sequence of questions like 1,4,5,2,3\n"
 
 # For loop for the generation of the configurations
