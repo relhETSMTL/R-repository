@@ -42,6 +42,8 @@ library(tidyverse)
 questionsData <- read.csv(file = "experiment-questions.csv", header=TRUE)
 attach (questionsData)
 
+# File with the warmp up questions
+# TODO read cvs file warm up questions, attach the data
 
 # Number of random configuration files to generate.
 number.configurations <- 30
@@ -64,8 +66,9 @@ for(i in 1:number.configurations) {
   
   # Creates a new dataframe with the same structure but with a different order of the questions
   newConfigurationFrame <- questionsData[0,]
-  # newFrame %>% add_row()
-  # newFrame <- newFrame %>% add_row(questionsData[5,])
+  
+  # Add to newConfigurationFrame the warm up questions
+  # TODO for ..... add_row
   
   # Adding each question in the sample to the generated configuration file
   for (j in samplei) {
@@ -88,6 +91,7 @@ for(i in 1:number.configurations) {
   cat(paste(configuration.number.questions, "   // number of questions\n", sep=""), 
       file=configuration.filename, append=TRUE)
   cat(configuration.randomized, file=configuration.filename, append=TRUE)
+  
   
   # Creates a new file with the desired configuration
   write.table(newConfigurationFrame, paste("configuration-",i,".config", sep=""), row.names=F, col.names=F, 
