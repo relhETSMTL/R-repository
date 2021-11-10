@@ -106,5 +106,3 @@ for(i in 1:number.configurations) {
               sep=",", append = TRUE, quote=FALSE)
   
 } # for all the configurations
-
-
