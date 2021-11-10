@@ -46,6 +46,10 @@ attach (questionsData)
 warmupQuestionsData <- read.csv(file = "warmup-questions.csv", header=TRUE)
 attach (warmupQuestionsData)
 
+# Makes the QN negative to identify them from regular questions
+for (k in (1:nrow(warmupQuestionsData))) {
+  warmupQuestionsData[k,1] <- (warmupQuestionsData[k,1]*-1)
+}
 
 # Number of random configuration files to generate.
 number.configurations <- 30
@@ -70,8 +74,8 @@ for(i in 1:number.configurations) {
   newConfigurationFrame <- questionsData[0,]
   
   # Add to newConfigurationFrame the warm up questions
-  # TODO for ..... add_row
   for (k in (1:nrow(warmupQuestionsData))) {
+    # Adds the row to the frame
     newConfigurationFrame <- newConfigurationFrame %>% add_row(warmupQuestionsData[k,])
   }
   
@@ -80,8 +84,8 @@ for(i in 1:number.configurations) {
     newConfigurationFrame <- newConfigurationFrame %>% add_row(questionsData[j,])
   }
   
-  # Removes the column QN question number
-  newConfigurationFrame <- newConfigurationFrame %>% select(-QN)
+  # Note: We kept the question number to facilitate tracking the answers
+  # newConfigurationFrame <- newConfigurationFrame %>% select(-QN) # @Deprecated
   
   # Prints the order of the questions and the configuration frame
   print(samplei) # prints the order of the questions
