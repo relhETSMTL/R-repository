@@ -63,7 +63,7 @@ set.seed(10) # seeds the random number generator,
 for(i in 1:number.configurations) {
   
   # Obtains a random sample of all the questions
-  samplei <- sample(1:configuration.number.questions, configuration.number.questions)
+  samplei <- sample(1:nrow(questionsData), nrow(questionsData))
   
   # Creates a new dataframe with the same structure but with a different order of the questions
   newConfigurationFrame <- questionsData[0,]
