@@ -214,3 +214,18 @@ for (question in 1:24) {
   
 } # end of 24 loop for questions
 
+# TODO
+# Change the column name to QNumber
+participantData <- participantData %>% rename(QNumber=QuestionNumer)
+
+
+# Save to a diffent output file  Participant-1-Curated-Data
+# Writes the sample in a experiment-sample.csv file. Adjust path accordingly.
+write.csv(participantData,"../../Experiment-Data/Participant-2-Curated-Data.csv", row.names = FALSE)
+
+
+# Make it into a function to call with arguments: NumberParticipant, InputFile, OutputFile
+
+# Merge all the participant files
+# Sort according to QNumber and ParticipantID
+# Save to output file Experiment-All-Participants-Curated-Data
