@@ -229,3 +229,5 @@ write.csv(participantData,"../../Experiment-Data/Participant-2-Curated-Data.csv"
 # Merge all the participant files
 # Sort according to QNumber and ParticipantID
 # Save to output file Experiment-All-Participants-Curated-Data
+# Transform "False" and "True" by 0,1
+# Verify the errors in responses: "I dont know" --> should be recorded as false
