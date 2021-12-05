@@ -515,8 +515,35 @@ allParticipants <- allParticipants[
   order( allParticipants[,1], allParticipants[,5] ),
   ]
 
+# Sanity checks, number of Trues and Number of False
+incorrectAnswersB <- nrow(allParticipants %>% filter(Correct=="False")) #118
+correctAnswersB <- nrow(allParticipants %>% filter(Correct=="True"))  #290
+
 # Save to output file Experiment-All-Participants-Curated-Data
 write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
 
-# Transform "False" and "True" by 0,1
+
+# Transform "False" and "True" by 0,1 --> First option
+# allParticipants$Correct <- as.integer(allParticipants$Correct == "True") 
+
+# Transforms "False" and "True" by 0,1 --> Second option with recoding the factor levels
+# Works but leaves the column as string
+# allParticipants$Correct <- recode_factor(allParticipants$Correct, True = as.numeric(1), False = as.numeric(0))
+
+# Fourth attempt, True = 2, False = 1
+# df$col<-as.factor(as.integer(df$col))
+allParticipants$Correct <- as.factor(as.integer(allParticipants$Correct))
+
+# Third attempt, did not work
+# recode(allParticipants$Correct, "'True'=1; 'False'=2;", as.numeric.result=TRUE, as.factor.result = FALSE)
+
+
+# Sanity checks, number of Trues and Number of False
+incorrectAnswers <- nrow(allParticipants %>% filter(Correct==1)) #118 --> False
+correctAnswers <- nrow(allParticipants %>% filter(Correct==2))  #290   --> True
+ 
+# Save to output file Experiment-All-Participants-Curated-Data
+write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
+
+
 # Verify the errors in responses: "I dont know" --> should be recorded as false
