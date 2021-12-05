@@ -10,7 +10,7 @@ library(tidyverse)
 library(hrbrthemes)
 
 # File reads the experiment data 
-participantData <- read.csv(file = "../../Experiment-Data/Participant-2.csv", header=TRUE)
+participantData <- read.csv(file = "../../Experiment-Data/Participant-10.csv", header=TRUE)
 attach (participantData)
 
 # Filters the Question number, Correct, and Elapsed Time
@@ -451,6 +451,7 @@ transformParticipantData = function(participantNumber, inputFile, outputFile){
 #############################################################################################
 
 # Transforms participant data of all participants
+transformParticipantData(2,"../../Experiment-Data/Participant-3.csv", "../../Experiment-Data/Participant-2-Curated-Data.csv")
 transformParticipantData(3,"../../Experiment-Data/Participant-3.csv", "../../Experiment-Data/Participant-3-Curated-Data.csv")
 transformParticipantData(4,"../../Experiment-Data/Participant-4.csv", "../../Experiment-Data/Participant-4-Curated-Data.csv")
 transformParticipantData(5,"../../Experiment-Data/Participant-5.csv", "../../Experiment-Data/Participant-5-Curated-Data.csv")
@@ -469,8 +470,53 @@ transformParticipantData(17,"../../Experiment-Data/Participant-17.csv", "../../E
 transformParticipantData(18,"../../Experiment-Data/Participant-18.csv", "../../Experiment-Data/Participant-18-Curated-Data.csv")
 
 
+#############################################################################################
 # Merge all the participant files
+p2 <- read.csv(file = "../../Experiment-Data/Participant-2-Curated-Data.csv", header=TRUE)
+attach (p2)
+p3 <- read.csv(file = "../../Experiment-Data/Participant-3-Curated-Data.csv", header=TRUE)
+attach (p3)
+p4 <- read.csv(file = "../../Experiment-Data/Participant-4-Curated-Data.csv", header=TRUE)
+attach (p4)
+p5 <- read.csv(file = "../../Experiment-Data/Participant-5-Curated-Data.csv", header=TRUE)
+attach (p5)
+p6 <- read.csv(file = "../../Experiment-Data/Participant-6-Curated-Data.csv", header=TRUE)
+attach (p6)
+p7 <- read.csv(file = "../../Experiment-Data/Participant-7-Curated-Data.csv", header=TRUE)
+attach (p7)
+p8 <- read.csv(file = "../../Experiment-Data/Participant-8-Curated-Data.csv", header=TRUE)
+attach (p8)
+p9 <- read.csv(file = "../../Experiment-Data/Participant-9-Curated-Data.csv", header=TRUE)
+attach (p9)
+p10 <- read.csv(file = "../../Experiment-Data/Participant-10-Curated-Data.csv", header=TRUE)
+attach (p10)
+p11 <- read.csv(file = "../../Experiment-Data/Participant-11-Curated-Data.csv", header=TRUE)
+attach (p11)
+p12 <- read.csv(file = "../../Experiment-Data/Participant-12-Curated-Data.csv", header=TRUE)
+attach (p12)
+p13 <- read.csv(file = "../../Experiment-Data/Participant-13-Curated-Data.csv", header=TRUE)
+attach (p13)
+p14 <- read.csv(file = "../../Experiment-Data/Participant-14-Curated-Data.csv", header=TRUE)
+attach (p14)
+p15 <- read.csv(file = "../../Experiment-Data/Participant-15-Curated-Data.csv", header=TRUE)
+attach (p15)
+p16 <- read.csv(file = "../../Experiment-Data/Participant-16-Curated-Data.csv", header=TRUE)
+attach (p16)
+p17 <- read.csv(file = "../../Experiment-Data/Participant-17-Curated-Data.csv", header=TRUE)
+attach (p17)
+p18 <- read.csv(file = "../../Experiment-Data/Participant-18-Curated-Data.csv", header=TRUE)
+attach (p18)
+
+# All data samples merged
+allParticipants <- rbind(p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18)
+
 # Sort according to QNumber and ParticipantID
+allParticipants <- allParticipants[
+  order( allParticipants[,1], allParticipants[,5] ),
+  ]
+
 # Save to output file Experiment-All-Participants-Curated-Data
+write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
+
 # Transform "False" and "True" by 0,1
 # Verify the errors in responses: "I dont know" --> should be recorded as false
