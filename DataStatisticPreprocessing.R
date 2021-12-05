@@ -451,7 +451,7 @@ transformParticipantData = function(participantNumber, inputFile, outputFile){
 #############################################################################################
 
 # Transforms participant data of all participants
-transformParticipantData(2,"../../Experiment-Data/Participant-3.csv", "../../Experiment-Data/Participant-2-Curated-Data.csv")
+transformParticipantData(2,"../../Experiment-Data/Participant-2.csv", "../../Experiment-Data/Participant-2-Curated-Data.csv")
 transformParticipantData(3,"../../Experiment-Data/Participant-3.csv", "../../Experiment-Data/Participant-3-Curated-Data.csv")
 transformParticipantData(4,"../../Experiment-Data/Participant-4.csv", "../../Experiment-Data/Participant-4-Curated-Data.csv")
 transformParticipantData(5,"../../Experiment-Data/Participant-5.csv", "../../Experiment-Data/Participant-5-Curated-Data.csv")
@@ -519,24 +519,19 @@ allParticipants <- allParticipants[
 incorrectAnswersB <- nrow(allParticipants %>% filter(Correct=="False")) #118
 correctAnswersB <- nrow(allParticipants %>% filter(Correct=="True"))  #290
 
-# Save to output file Experiment-All-Participants-Curated-Data
-write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
-
+# Save to output file Experiment-All-Participants-Curated-Data=Boolean
+write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", row.names = FALSE)
 
 # Transform "False" and "True" by 0,1 --> First option
 # allParticipants$Correct <- as.integer(allParticipants$Correct == "True") 
-
 # Transforms "False" and "True" by 0,1 --> Second option with recoding the factor levels
 # Works but leaves the column as string
 # allParticipants$Correct <- recode_factor(allParticipants$Correct, True = as.numeric(1), False = as.numeric(0))
-
-# Fourth attempt, True = 2, False = 1
-# df$col<-as.factor(as.integer(df$col))
-allParticipants$Correct <- as.factor(as.integer(allParticipants$Correct))
-
 # Third attempt, did not work
-# recode(allParticipants$Correct, "'True'=1; 'False'=2;", as.numeric.result=TRUE, as.factor.result = FALSE)
+#recode(allParticipants$Correct, "`True`=1; `False`=2;", as.numeric.result=TRUE, as.factor.result = FALSE)
 
+# Fourth attempt, False = 1, True = 2
+allParticipants$Correct <- as.integer(allParticipants$Correct)
 
 # Sanity checks, number of Trues and Number of False
 incorrectAnswers <- nrow(allParticipants %>% filter(Correct==1)) #118 --> False
