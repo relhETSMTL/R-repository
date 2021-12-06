@@ -516,8 +516,8 @@ allParticipants <- allParticipants[
   ]
 
 # Sanity checks, number of Trues and Number of False
-incorrectAnswersB <- nrow(allParticipants %>% filter(Correct=="False")) #118
-correctAnswersB <- nrow(allParticipants %>% filter(Correct=="True"))  #290
+incorrectAnswersB <- nrow(allParticipants %>% filter(Correct=="False")) #124
+correctAnswersB <- nrow(allParticipants %>% filter(Correct=="True"))  #284
 
 # Save to output file Experiment-All-Participants-Curated-Data=Boolean
 write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", row.names = FALSE)
@@ -534,8 +534,8 @@ write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data-
 allParticipants$Correct <- as.integer(allParticipants$Correct)
 
 # Sanity checks, number of Trues and Number of False
-incorrectAnswers <- nrow(allParticipants %>% filter(Correct==1)) #118 --> False
-correctAnswers <- nrow(allParticipants %>% filter(Correct==2))  #290   --> True
+incorrectAnswers <- nrow(allParticipants %>% filter(Correct==1)) #124 --> False
+correctAnswers <- nrow(allParticipants %>% filter(Correct==2))  #284   --> True
  
 # Save to output file Experiment-All-Participants-Curated-Data
 write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
