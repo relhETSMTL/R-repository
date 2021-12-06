@@ -1,9 +1,9 @@
 # Objective: Reformatting the Feature Model data captured with the experiment interface 
-# Project: Eye-Tracking Analysis of Feature Models Comprehension
+# Project: Eye-Tracking Analysis for Feature Models Comprehension
 # Ecole de technologie superieure
 # VERITAS team
 # Authors: Elmira Sepasi, Kambiz Belouchi, Roberto E. Lopez-Herrejon
-# Last update: 2021-12-03
+# Last update: 2021-12-05
 
 library(ggplot2)
 library(tidyverse)
@@ -540,5 +540,6 @@ correctAnswers <- nrow(allParticipants %>% filter(Correct==2))  #290   --> True
 # Save to output file Experiment-All-Participants-Curated-Data
 write.csv(allParticipants, "../../Experiment-Data/All-Participants-Curated-Data.csv", row.names = FALSE)
 
+# Verify the errors in responses: "I dont know" --> should be recorded as false. 
+# Only one instance. Participant 15, question 24.
 
-# Verify the errors in responses: "I dont know" --> should be recorded as false
