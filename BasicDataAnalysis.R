@@ -3,7 +3,7 @@
 # Ecole de technologie superieure
 # VERITAS team
 # Authors: Elmira Sepasi, Kambiz Belouchi, Roberto E. Lopez-Herrejon
-# Last update: 2021-12-05
+# Last update: 2021-12-10
 
 library(ggplot2)
 library(tidyverse)
@@ -29,12 +29,13 @@ participation.correctness <- curatedParticipantsData %>%
   ggplot(aes(x=ParticipantID, fill=Correct)) +
   # geom_bar(position ="dodge") +
   geom_bar() +
-  #theme_minimal () +
-  theme_minimal (axis.text.y=element_blank(),
-         axis.ticks.y=element_blank()) +
+  theme(axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
+#  theme_minimal () +
+#  theme_minimal (axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
   labs(x="Participants's Responses", y="Correct and Incorrect Questions") +
   coord_flip() +
-  scale_y_continuous(breaks=seq(1, 24, 1)) 
+  scale_y_continuous(breaks=seq(1, 24, 1))
+
 participation.correctness
 
 
@@ -64,3 +65,9 @@ summary(curatedParticipantsData %>% filter(Correct=="True") %>% count(Participan
 # 3rd Qu.:14    3rd Qu.:20.00  
 # Max.   :18    Max.   :21.00 
 
+## Analysis of length of configurations in the question
+configurationLength <- c(6, 7, 10, 6, 5, 6, 6, 6, 7, 6, 6, 6, 3, 7, 6, 6, 6, 7, 6, 6, 3, 6, 6, 6)
+
+summary (as.factor (configurationLength))
+# 3  5  6  7 10 
+# 2  1 16  4  1
