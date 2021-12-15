@@ -74,3 +74,28 @@ configurationLength <- c(6, 7, 10, 6, 5, 6, 6, 6, 7, 6, 6, 6, 3, 7, 6, 6, 6, 7, 
 summary (as.factor (configurationLength))
 # 3  5  6  7 10 
 # 2  1 16  4  1
+
+
+###################################################
+# Testing example of plotting response time distribution per question
+g <- ggplot(mpg, aes(class, cty))
+
+g + geom_boxplot(varwidth=T, fill="plum") + 
+  labs(title="Box plot", 
+       subtitle="City Mileage grouped by Class of vehicle",
+       caption="Source: mpg",
+       x="Class of Vehicle",
+       y="City Mileage")
+
+
+# Now the distribution of response time over each question
+
+participantResponseTime <- curatedParticipantsData %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
+#  coord_flip() +
+  labs(x="Question Number", y="Respose Time in Seconds") +
+#  theme_minimal() +
+#  scale_x_continuous(breaks=seq(1, 24, 1))
+scale_x_discrete(limits=seq(1, 24, 1))  
+
+participantResponseTime
