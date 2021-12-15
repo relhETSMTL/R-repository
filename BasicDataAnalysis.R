@@ -18,7 +18,7 @@ question.correctness <- curatedParticipantsData %>%
   ggplot(aes(x=QNumber, fill=Correct)) +
   # geom_bar(position ="dodge") +
   geom_bar() +
-  theme_minimal() +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) + # theme_minimal
   scale_x_continuous(breaks=seq(1, 24, 1))  +
   scale_y_continuous(breaks=seq(1, 17, 1))  +
   labs(x="Question Number", y="Frequency")  +
@@ -92,7 +92,7 @@ g + geom_boxplot(varwidth=T, fill="plum") +
 participantResponseTime <- curatedParticipantsData %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
 #  coord_flip() +
-  labs(x="Question Number", y="Response Time in Seconds") +
+  labs(x="Question Number", y="All Answers - Time in Seconds") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
 #  theme_minimal() +
 #  scale_x_continuous(breaks=seq(1, 24, 1))
