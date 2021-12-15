@@ -88,14 +88,29 @@ g + geom_boxplot(varwidth=T, fill="plum") +
        y="City Mileage")
 
 
-# Now the distribution of response time over each question
-
+# Now the distribution of response time over each question, considering correct and incorrect answers
 participantResponseTime <- curatedParticipantsData %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
 #  coord_flip() +
-  labs(x="Question Number", y="Respose Time in Seconds") +
+  labs(x="Question Number", y="Response Time in Seconds") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
 #  theme_minimal() +
 #  scale_x_continuous(breaks=seq(1, 24, 1))
-scale_x_discrete(limits=seq(1, 24, 1))  
-
+  scale_x_discrete(limits=seq(1, 24, 1))  +
+  ylim(0, 300) +
+  scale_y_continuous(breaks=seq(0, 300, 60))
 participantResponseTime
+
+
+# Response time of correct answers
+participantCorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="True") %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Correct answers - Time secs") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  scale_x_discrete(limits=seq(1, 24, 1))  +
+  ylim(0, 300) +
+  scale_y_continuous(breaks=seq(0, 300, 60))
+participantCorrectResponseTime
