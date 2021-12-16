@@ -127,3 +127,4 @@ participantIncorrectResponseTime <- curatedParticipantsData %>% filter(Correct==
   ylim(0, 300) +
   scale_y_continuous(breaks=seq(0, 300, 60))
 participantIncorrectResponseTime
+
