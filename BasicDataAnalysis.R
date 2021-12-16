@@ -35,7 +35,7 @@ participation.correctness <- curatedParticipantsData %>%
   theme(axis.text.y=element_blank(), axis.ticks.y=element_blank(), panel.background = element_blank()) +
 #  theme_minimal () +
 #  theme_minimal (axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
-  labs(x="Participants' Responses", y="Number of Correct and Incorrect Responses per Participant") +
+  labs(x="Participants' responses", y="Number of correct and incorrect responses") +
   coord_flip() +
   scale_y_continuous(breaks=seq(1, 24, 1)) +
   scale_fill_brewer(palette = "Set1")
