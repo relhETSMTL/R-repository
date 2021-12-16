@@ -114,3 +114,16 @@ participantCorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="T
   ylim(0, 300) +
   scale_y_continuous(breaks=seq(0, 300, 60))
 participantCorrectResponseTime
+
+# Response time for incorrect answers
+participantIncorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="False") %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Correct answers - Time secs") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  scale_x_discrete(limits=seq(1, 24, 1))  +
+  ylim(0, 300) +
+  scale_y_continuous(breaks=seq(0, 300, 60))
+participantIncorrectResponseTime
