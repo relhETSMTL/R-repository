@@ -114,7 +114,7 @@ participantCorrectResponseTime
 participantIncorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="False") %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
   #  coord_flip() +
-  labs(x="Question Number", y="Correct answers - Time secs") +
+  labs(x="Question Number", y="Incorrect answers - Time secs") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
   #  theme_minimal() +
   #  scale_x_continuous(breaks=seq(1, 24, 1))
@@ -122,6 +122,45 @@ participantIncorrectResponseTime <- curatedParticipantsData %>% filter(Correct==
   ylim(0, 300) +
   scale_y_continuous(breaks=seq(0, 300, 60))
 participantIncorrectResponseTime
+
+
+###############################
+# Distribution of correct answers
+correctAnswers <- curatedParticipantsData %>% filter(Correct=="True")
+summary(correctAnswers$ElapsedTime)
+sd(correctAnswers$ElapsedTime)
+
+incorrectAnswers <- curatedParticipantsData %>% filter(Correct=="False")
+summary(incorrectAnswers$ElapsedTime)
+sd(correctAnswers$ElapsedTime)
+
+
+# Distribution of correct answers per participant
+correctAnswersParticipant <- curatedParticipantsData %>% filter(Correct=="True") %>% count(ParticipantID)
+summary(correctAnswersParticipant$n)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 9.00   15.00   17.00   16.71   20.00   21.00 
+
+# Distribution of incorrect answers per participant
+incorrectAnswersParticipant <- curatedParticipantsData %>% filter(Correct=="False") %>% count(ParticipantID)
+summary(incorrectAnswersParticipant$n)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 3.000   4.000   7.000   7.294   9.000  15.000 
+
+# Distribution of correct answers per question
+correctAnswersQN <- curatedParticipantsData %>% filter(Correct=="True") %>% count(QNumber)
+summary(correctAnswersQN$n)
+## Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 6.00   10.00   12.50   11.83   14.00   17.00 
+sd(correctAnswersQN$n)
+
+
+# Distribution of incorrect answers per question
+incorrectAnswersQN <- curatedParticipantsData %>% filter(Correct=="False") %>% count(QNumber)
+summary(incorrectAnswersQN$n)
+## Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 6.00   10.00   12.50   11.83   14.00   17.00 
+sd(incorrectAnswersQN$n)
 
 ###########################################
 
