@@ -68,12 +68,7 @@ summary(curatedParticipantsData %>% filter(Correct=="True") %>% count(Participan
 # 3rd Qu.:14    3rd Qu.:20.00  
 # Max.   :18    Max.   :21.00 
 
-## Analysis of length of configurations in the question
-configurationLength <- c(6, 7, 10, 6, 5, 6, 6, 6, 7, 6, 6, 6, 3, 7, 6, 6, 6, 7, 6, 6, 3, 6, 6, 6)
 
-summary (as.factor (configurationLength))
-# 3  5  6  7 10 
-# 2  1 16  4  1
 
 
 ###################################################
@@ -127,4 +122,22 @@ participantIncorrectResponseTime <- curatedParticipantsData %>% filter(Correct==
   ylim(0, 300) +
   scale_y_continuous(breaks=seq(0, 300, 60))
 participantIncorrectResponseTime
+
+###########################################
+
+# File reads the experiment data 
+experimentQuestionsData <- read.csv(file = "experiment-questions-analysis.csv", header=TRUE)
+attach (experimentQuestionsData)
+
+## Analysis of length of configurations in the question
+#configurationLength <- c(6, 7, 10, 6, 5, 6, 6, 6, 7, 6, 6, 6, 3, 7, 6, 6, 6, 7, 6, 6, 3, 6, 6, 6)
+
+configurationLength <- experimentQuestionsData$NumFeatures
+
+summary (as.factor (configurationLength))
+# 3  5  6  7  8 10 
+# 2  1 14  4  2  1 
+
+
+summary(experimentQuestionsData$Type)
 
