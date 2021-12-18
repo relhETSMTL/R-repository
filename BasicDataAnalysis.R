@@ -238,13 +238,11 @@ p11 <- participant12$Correct
 p12 <- participant13$Correct
 p13 <- participant14$Correct
 p14 <- participant15$Correct
-p15 <- participant16$Correct
-p16 <- participant17$Correct
-p17 <- participant18$Correct
+p15 <- participant16$Correct  # as.integer(participant16$Correct) not sure if it follows the same transformation for True and False
+p16 <- participant17$Correct # as.integer(participant17$Correct)
+p17 <- participant18$Correct # as.integer(participant18$Correct)
 
-
-
-responses.df <- data.frame(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17)
+#responses.df <- data.frame(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17)
 
 responses.df <- data.frame(matrix(ncol = 24, nrow = 17))
 responses.df[1,] <- p1
@@ -274,4 +272,24 @@ colnames(responses.df) <- columnNames
 # Adds the participant column
 participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
                       "P16", "P17")
-cbind(responses.df, participantNames)
+responses.df$participantName <- participantNames
+
+responses.df <- responses.df %>% relocate(participantName, .before = Q1)
+
+
+## Function that converts booleans to integers
+bool2Integer <- function(val) {
+  retValue <- 0
+  if (val == TRUE) {
+    retValue <- 50
+  } else {
+    retValue <-100
+  }
+  retValue
+}
+
+test <- responses.df %>% 
+  select_if(is.logical) %>% 
+  mutate_all( ~ bool2Integer (.))
+
+responses.df %>% mutate(Q1_new = bool2Integer(Q1))
