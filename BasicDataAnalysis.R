@@ -359,6 +359,8 @@ for (i in seq(1,17,1)) {
 tile.grid <- expand.grid(X=columnNames, Y=participantNames)
 tile.grid$values <- tile.values
 tile.responses <- ggplot(tile.grid, aes(X, Y, fill= values)) + 
-     geom_tile()
+     geom_tile(show.legend = "none") +
+     # theme_minimal() +
+     labs(x="Question Number", y="Participants") 
 tile.responses
 
