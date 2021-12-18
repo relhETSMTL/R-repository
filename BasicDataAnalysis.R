@@ -297,19 +297,28 @@ bool2Integer <- function(val) {
 #responses.df %>% mutate_each(funs=(bool2Integer))
 
 
-# Transforms the 
-frameBool2Values <- function (df, seq.rows, seq.columns) {
-  newdf <- df
-  for (i in seq.rows) {
-    for (j in seq.columns) {
-      newdf[i,j] <- bool2Integer(df[i,j])
+# Transforms boolean values into numeric values 
+frameBool2Values <- function (df, num.rows, num.columns) {
+  newdf <- data.frame(matrix(nrow = num.rows, ncol = num.columns))
+  for (i in seq(1,num.rows,1)) {
+    for (j in seq(1,num.columns,1)) {
+      newdf[i,j] <- bool2Integer(df[i,j+1])
     } # j loop
   } # i loop
   newdf
 } # function
 
 # Calls the transformation function
-responses.df.numeric <- frameBool2Values(responses.df, seq(1,17,1), seq(2,25,1))
+responses.df.numeric <- frameBool2Values(responses.df, 17, 24)
+columnNames <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14", "Q15",
+                 "Q16", "Q17", "Q18", "Q19", "Q20", "Q21", "Q22", "Q23", "Q24")
+colnames(responses.df.numeric) <- columnNames
+participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
+                      "P16", "P17")
+responses.df.numeric$participantName <- participantNames
+
+responses.df.numeric <- responses.df.numeric %>% relocate(participantName, .before = Q1)
+
 
 # TODO transform to numeric the values of the matrix as they are in character form now
 heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, scale="column")
