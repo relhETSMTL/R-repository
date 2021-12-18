@@ -280,7 +280,7 @@ responses.df <- responses.df %>% relocate(participantName, .before = Q1)
 ## Function that converts booleans to integers
 bool2Integer <- function(val) {
   retValue <- 0
-  if (val == TRUE) {
+  if (val == "True") {
     retValue <- 50
   } else {
     retValue <-100
@@ -288,8 +288,26 @@ bool2Integer <- function(val) {
   retValue
 }
 
-test <- responses.df %>% 
-  select_if(is.logical) %>% 
-  mutate_all( ~ bool2Integer (.))
+# Did not work for transforming character "True" and "False" to numeric values for the heatmap
+#test <- responses.df %>% 
+#  select_if(is.logical) %>% 
+#  mutate_all( ~ bool2Integer (.))
+#
+#responses.df %>% mutate(Q1_new = bool2Integer(Q1))
+#responses.df %>% mutate_each(funs=(bool2Integer))
 
-responses.df %>% mutate(Q1_new = bool2Integer(Q1))
+
+# Transforms the 
+frameBool2Values <- function (df, seq.rows, seq.columns) {
+  newdf <- df
+  for (i in seq.rows) {
+    for (j in seq.columns) {
+      newdf[i,j] <- bool2Integer(df[i,j])
+    } # j loop
+  } # i loop
+  newdf
+} # function
+
+# Calls the transformation function
+responses.df.numeric <- frameBool2Values(responses.df, seq(1,17,1), seq(2,25,1))
+
