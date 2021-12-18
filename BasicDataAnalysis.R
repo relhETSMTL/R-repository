@@ -329,20 +329,21 @@ heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, sca
                       #responses.df.numeric <- responses.df.numeric %>% relocate(participantName, .before = Q1)
 
 # Example of tiling, fills by default the values row first x then y coordinates
-x <- LETTERS[1:20]
-y <- paste0("var", seq(1,20))
-data <- expand.grid(X=x, Y=y)
-data$Z <- seq(1,400,1)
+# x <- LETTERS[1:20]
+# y <- paste0("var", seq(1,20))
+# data <- expand.grid(X=x, Y=y)
+# data$Z <- seq(1,400,1)
   
 #runif(400, 0, 5)
 # Heatmap 
-ggplot(data, aes(X, Y, fill= Z)) + 
-  geom_tile()
+# ggplot(data, aes(X, Y, fill= Z)) + 
+#  geom_tile()
 
 
-values.vec <- c()
-append(values.vec, )
-append(x, values, after = length(x))
+# Example
+# values.vec <- c()
+# append(values.vec, )
+# append(x, values, after = length(x))
 
 # Example heatmap
 # heatmap(as.matrix(mtcars, scale="none"), Colv = NA, Rowv = NA, scale="column")
@@ -356,11 +357,14 @@ for (i in seq(1,17,1)) {
   } # j loop
 } # i loop
 
+## Creates the tile of answers
+# Default colors= light blue is False value 100, dark blue True value 50
 tile.grid <- expand.grid(X=columnNames, Y=participantNames)
 tile.grid$values <- tile.values
 tile.responses <- ggplot(tile.grid, aes(X, Y, fill= values)) + 
-     geom_tile(show.legend = "none") +
-     # theme_minimal() +
-     labs(x="Question Number", y="Participants") 
+     geom_tile(show.legend = FALSE) + #  show.legend = "none"
+     theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
+     scale_fill_gradient(low="blue", high="red") +  
+     labs(x="Question Number   Red:incorrect   Blue:correct", y="Participants") 
 tile.responses
 
