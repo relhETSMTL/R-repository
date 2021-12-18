@@ -311,3 +311,7 @@ frameBool2Values <- function (df, seq.rows, seq.columns) {
 # Calls the transformation function
 responses.df.numeric <- frameBool2Values(responses.df, seq(1,17,1), seq(2,25,1))
 
+# TODO transform to numeric the values of the matrix as they are in character form now
+heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, scale="column")
+
+# heatmap(as.matrix(mtcars, scale="none"), Colv = NA, Rowv = NA, scale="column")
