@@ -313,14 +313,52 @@ responses.df.numeric <- frameBool2Values(responses.df, 17, 24)
 columnNames <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14", "Q15",
                  "Q16", "Q17", "Q18", "Q19", "Q20", "Q21", "Q22", "Q23", "Q24")
 colnames(responses.df.numeric) <- columnNames
-participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
-                      "P16", "P17")
-responses.df.numeric$participantName <- participantNames
-
-responses.df.numeric <- responses.df.numeric %>% relocate(participantName, .before = Q1)
+#participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
+#                      "P16", "P17")
+#responses.df.numeric$participantName <- participantNames
+#responses.df.numeric <- responses.df.numeric %>% relocate(participantName, .before = Q1)
 
 
 # TODO transform to numeric the values of the matrix as they are in character form now
-heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, scale="column")
+# heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, scale="column")
+heatmap(as.matrix(responses.df.numeric, scale="none"), Colv = NA, Rowv = NA, scale="none")
 
+#participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
+                      #                      "P16", "P17")
+                      #responses.df.numeric$participantName <- participantNames
+                      #responses.df.numeric <- responses.df.numeric %>% relocate(participantName, .before = Q1)
+
+# Example of tiling, fills by default the values row first x then y coordinates
+x <- LETTERS[1:20]
+y <- paste0("var", seq(1,20))
+data <- expand.grid(X=x, Y=y)
+data$Z <- seq(1,400,1)
+  
+#runif(400, 0, 5)
+# Heatmap 
+ggplot(data, aes(X, Y, fill= Z)) + 
+  geom_tile()
+
+
+values.vec <- c()
+append(values.vec, )
+append(x, values, after = length(x))
+
+# Example heatmap
 # heatmap(as.matrix(mtcars, scale="none"), Colv = NA, Rowv = NA, scale="column")
+
+
+# Creating the values vector of the matrix
+tile.values <- c()
+for (i in seq(1,17,1)) {
+  for (j in seq(1,24,1)) {
+    tile.values <- append (tile.values, responses.df.numeric[i,j])
+  } # j loop
+} # i loop
+
+tile.grid <- expand.grid(X=columnNames, Y=participantNames)
+tile.grid$values <- tile.values
+tile.responses <- ggplot(tile.grid, aes(X, Y, fill= values)) + 
+     geom_tile()
+tile.responses
+
