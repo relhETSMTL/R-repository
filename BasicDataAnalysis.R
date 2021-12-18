@@ -177,6 +177,101 @@ summary (as.factor (configurationLength))
 # 3  5  6  7  8 10 
 # 2  1 14  4  2  1 
 
-
 summary(experimentQuestionsData$Type)
 
+
+#############################################################
+# Computing the heatmap for the responses
+
+# heatmap(as.matrix(mtcars), Colv = NA, Rowv = NA, scale="column")
+participant2 <- read.csv(file = "../../Experiment-Data/Participant-2-Curated-Data.csv", header=TRUE)
+attach (participant2)
+participant3 <- read.csv(file = "../../Experiment-Data/Participant-3-Curated-Data.csv", header=TRUE)
+attach (participant3)
+participant4 <- read.csv(file = "../../Experiment-Data/Participant-4-Curated-Data.csv", header=TRUE)
+attach (participant4)
+participant5 <- read.csv(file = "../../Experiment-Data/Participant-5-Curated-Data.csv", header=TRUE)
+attach (participant5)
+participant6 <- read.csv(file = "../../Experiment-Data/Participant-6-Curated-Data.csv", header=TRUE)
+attach (participant6)
+participant7 <- read.csv(file = "../../Experiment-Data/Participant-7-Curated-Data.csv", header=TRUE)
+attach (participant7)
+participant8 <- read.csv(file = "../../Experiment-Data/Participant-8-Curated-Data.csv", header=TRUE)
+attach (participant8)
+participant9 <- read.csv(file = "../../Experiment-Data/Participant-9-Curated-Data.csv", header=TRUE)
+attach (participant9)
+participant10 <- read.csv(file = "../../Experiment-Data/Participant-10-Curated-Data.csv", header=TRUE)
+attach (participant10)
+participant11 <- read.csv(file = "../../Experiment-Data/Participant-11-Curated-Data.csv", header=TRUE)
+attach (participant11)
+participant12 <- read.csv(file = "../../Experiment-Data/Participant-12-Curated-Data.csv", header=TRUE)
+attach (participant12)
+participant13 <- read.csv(file = "../../Experiment-Data/Participant-13-Curated-Data.csv", header=TRUE)
+attach (participant13)
+participant14 <- read.csv(file = "../../Experiment-Data/Participant-14-Curated-Data.csv", header=TRUE)
+attach (participant14)
+participant15 <- read.csv(file = "../../Experiment-Data/Participant-15-Curated-Data.csv", header=TRUE)
+attach (participant15)
+participant16 <- read.csv(file = "../../Experiment-Data/Participant-16-Curated-Data.csv", header=TRUE)
+attach (participant16)
+participant17 <- read.csv(file = "../../Experiment-Data/Participant-17-Curated-Data.csv", header=TRUE)
+attach (participant17)
+participant18 <- read.csv(file = "../../Experiment-Data/Participant-18-Curated-Data.csv", header=TRUE)
+attach (participant18)
+
+
+###############################################################
+# Creating the data frame with the list of responses
+values.numquestion <- c(seq(1, 24, 1))
+
+p1 <- participant2$Correct 
+p2 <- participant3$Correct
+p3 <- participant4$Correct
+p4 <- participant5$Correct
+p5 <- participant6$Correct
+p6 <- participant7$Correct 
+p7 <- participant8$Correct
+p8 <- participant9$Correct
+p9 <- participant10$Correct
+p10 <- participant11$Correct
+p11 <- participant12$Correct
+p12 <- participant13$Correct
+p13 <- participant14$Correct
+p14 <- participant15$Correct
+p15 <- participant16$Correct
+p16 <- participant17$Correct
+p17 <- participant18$Correct
+
+
+
+responses.df <- data.frame(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17)
+
+responses.df <- data.frame(matrix(ncol = 24, nrow = 17))
+responses.df[1,] <- p1
+responses.df[2,] <- p2
+responses.df[3,] <- p3
+responses.df[4,] <- p4
+responses.df[5,] <- p5
+responses.df[6,] <- p6
+responses.df[7,] <- p7
+responses.df[8,] <- p8
+responses.df[9,] <- p9
+responses.df[10,] <- p10
+responses.df[11,] <- p11
+responses.df[12,] <- p12
+responses.df[13,] <- p13
+responses.df[14,] <- p14
+responses.df[15,] <- p15
+responses.df[16,] <- p16
+responses.df[17,] <- p17
+
+# Changes the names of the columns of the data frame
+columnNames <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14", "Q15",
+                 "Q16", "Q17", "Q18", "Q19", "Q20", "Q21", "Q22", "Q23", "Q24")
+
+colnames(responses.df) <- columnNames
+
+# Adds the participant column
+participantNames <- c("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15",
+                      "P16", "P17")
+cbind(responses.df, participantNames)
