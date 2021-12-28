@@ -77,9 +77,13 @@ totalFixations <- nrow(question20)
 totalFixationTime <- sum(question20$Gaze.event.duration..ms.)
 
 # AOI Window
-fixations.Window <- sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.)
-perc.fixations.Window <- fixations.Window / numFixations
+question20.Window <- question20 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window. =="1")
+fixations.Window <-  sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.)
+perc.fixations.Window <- fixations.Window / totalFixations
+perc.time.Window <- sum(question20.Window$Gaze.event.duration..ms.)/totalFixationTime
 
+
+  
 # AOI Question
 question20.Question <- question20 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Question.=="1")
 fixations.Question <- sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Question.)
@@ -138,3 +142,19 @@ perc.time.Navigating <- time.Navigating / totalFixationTime
 
 # AOI Intersection Containing and Navigating when FM < (Containing + Navigating)
 
+# Creating the table now
+
+ParticipantID <- 3
+QNumber <- 20
+
+df <- data.frame(ParticipantID, QNumber, totalFixations, totalFixationTime, 
+                 fixations.Question, perc.fixations.Question, time.Question, perc.time.Question,
+                 fixations.Answer, perc.fixations.Answer, time.Answer, perc.time.Answer,
+                 fixations.Legend, perc.fixations.Legend, time.Legend, perc.time.Legend,
+                 fixations.Buttons, perc.fixations.Buttons, time.Buttons, perc.time.Buttons,
+                 fixations.FM, perc.fixations.FM, time.FM, perc.time.FM,
+                 fixations.Containing, perc.fixations.Containing, time.Containing, perc.time.Containing,
+                 fixations.Navigating, perc.fixations.Navigating, time.Navigating, perc.time.Navigating)
+print(df)
+
+write.csv(df,file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-Q20.csv", row.names = TRUE)
