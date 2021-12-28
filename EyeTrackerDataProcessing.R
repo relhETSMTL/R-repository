@@ -101,6 +101,40 @@ perc.fixations.Legend <- fixations.Legend / totalFixations
 time.Legend <- sum(question20.Legend$Gaze.event.duration..ms.)
 perc.time.Legend <- time.Legend / totalFixationTime
 
+# AOI Buttons
+question20.Buttons <- question20 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Buttons.=="1")
+fixations.Buttons <- sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Buttons.)
+perc.fixations.Buttons <- fixations.Buttons / totalFixations
+time.Buttons <- sum(question20.Buttons$Gaze.event.duration..ms.)
+perc.time.Buttons <- time.Buttons / totalFixationTime
+
+# AOI FeatureModel
+question20.FM <- question20 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.FMAOI.=="1")
+fixations.FM <- sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.FMAOI)
+perc.fixations.FM <- fixations.FM / totalFixations
+time.FM <- sum(question20.FM$Gaze.event.duration..ms.)
+perc.time.FM <- time.FM / totalFixationTime
+
+# AOI Containing
+question20.Containing <- question20 %>% 
+  filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.2.=="1" |
+         AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.3.=="1" |
+           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.4.=="1" |
+           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.5.=="1" |
+           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.6.=="1")
+fixations.Containing <- sum(question20.Containing %>% select(contains("CAOI")))
+perc.fixations.Containing <- fixations.Containing / totalFixations
+time.Containing <- sum(question20.Containing$Gaze.event.duration..ms.)
+perc.time.Containing <- time.Containing / totalFixationTime
 
 
+# AOI Navigating
+question20.Navigating <- question20 %>% 
+  filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.NAOI.1.=="1")
+fixations.Navigating <- sum(question20.Navigating %>% select(contains("NAOI")))
+perc.fixations.Navigating <- fixations.Navigating / totalFixations
+time.Navigating <- sum(question20.Navigating$Gaze.event.duration..ms.)
+perc.time.Navigating <- time.Navigating / totalFixationTime
+
+# AOI Intersection Containing and Navigating when FM < (Containing + Navigating)
 
