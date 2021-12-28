@@ -158,3 +158,13 @@ df <- data.frame(ParticipantID, QNumber, totalFixations, totalFixationTime,
 print(df)
 
 write.csv(df,file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-Q20.csv", row.names = TRUE)
+
+
+# Loads the Java interface data
+
+allParticipantsData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data.csv", header=TRUE)
+attach (allParticipantsData)
+
+joinedData <- full_join(allParticipantsData,df)
+
+
