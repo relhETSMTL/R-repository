@@ -35,3 +35,28 @@ attach (participant03)
 # [1] 61
 #> sum(participant03$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.) --> all window
 #[1] 3888
+
+# Notes: 
+# 1. Eliminating the NA rows dont help as 
+# %>% select(-Column1,-Column2, -Column3, -Column4) %>% drop_na()  
+
+
+curated03 <- participant03 %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type, Eye.movement.type.index, Gaze.event.duration..ms., Sensor, starts_with("AOI.hit"))
+#         AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Answer.,AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.)
+#         AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.:AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Answer.)
+
+# What info is repeated?, 
+repeated <- participant03 %>% 
+  filter(Eye.movement.type.index=="570") %>% 
+#  filter(Eye.movement.type=="Fixation" & Eye.movement.type.index=="566") %>% 
+  select(Eye.movement.type, Eye.movement.type.index, Gaze.event.duration..ms., Sensor, starts_with("AOI.hit"))
+
+
+
+### Question 20 processing
+question20 <- curated03
+
+numFixations <- nrow(question20)
+totalTime <- sum(question20$Gaze.event.duration..ms.)
