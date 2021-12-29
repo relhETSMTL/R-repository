@@ -168,3 +168,25 @@ attach (allParticipantsData)
 joinedData <- full_join(allParticipantsData,df)
 
 
+####################################################################################################
+### Testing the parametrization of process for the questions
+
+### Question 20 processing
+question20 <- curated03
+
+# Totals
+totalFixations <- nrow(question20)
+totalFixationTime <- sum(question20$Gaze.event.duration..ms.)
+
+
+# AOI Window
+question20.Window <- question20 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window. =="1")
+fixations.Window <-  sum(question20$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.)
+perc.fixations.Window <- fixations.Window / totalFixations
+perc.time.Window <- sum(question20.Window$Gaze.event.duration..ms.)/totalFixationTime
+
+# returns the column with all the values from the original loaded data file
+# aoi.name <- AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.
+aoi.name <- "AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window."
+question20 %>% filter(aoi.name =="1")
+
