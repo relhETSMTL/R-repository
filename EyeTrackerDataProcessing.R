@@ -266,7 +266,6 @@ time.FM.Q23 <- sum(question23.FM$Gaze.event.duration..ms.)
 perc.time.FM.Q23 <- time.FM.Q23 / totalFixationTime.Q23
 
 
-
 # AOI Containing
 question23.Containing <- question23 %>% 
   filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CAOI.2.=="1" |
@@ -277,8 +276,6 @@ perc.fixations.Containing.Q23 <- fixations.Containing.Q23 / totalFixations.Q23
 time.Containing.Q23 <- sum(question23.Containing$Gaze.event.duration..ms.)
 perc.time.Containing.Q23 <- time.Containing.Q23 / totalFixationTime.Q23
 
-############ CHECKED UP TO HERE
-
 # AOI Navigating
 question23.Navigating <- question23 %>% 
   filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.NAOI.1.=="1" |
@@ -288,9 +285,20 @@ perc.fixations.Navigating.Q23 <- fixations.Navigating.Q23 / totalFixations.Q23
 time.Navigating.Q23 <- sum(question23.Navigating$Gaze.event.duration..ms.)
 perc.time.Navigating.Q23 <- time.Navigating.Q23 / totalFixationTime.Q23
 
+# AOI CTC
+question23.CTC <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CTC.=="1")
+fixations.CTC.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CTC.)
+perc.fixations.CTC.Q23 <- fixations.CTC.Q23 / totalFixations.Q23
+time.CTC.Q23 <- sum(question23.CTC$Gaze.event.duration..ms.)
+perc.time.CTC.Q23 <- time.CTC.Q23 / totalFixationTime.Q23
+
+
+
+
 # AOI Intersection Containing and Navigating when FM < (Containing + Navigating)
 print(c(fixations.FM.Q23, fixations.Containing.Q23, fixations.Navigating.Q23))
-print(c(fixations.Window.Q23, fixations.Question.Q23, fixations.Answer.Q23, fixations.Legend.Q23, fixations.Buttons.Q23))
+print(c(fixations.Window.Q23, fixations.Question.Q23, fixations.Answer.Q23, fixations.Legend.Q23, fixations.Buttons.Q23,
+        fixations.CTC.Q23))
 
 # TODO process the CTC fixations
 
@@ -299,12 +307,15 @@ print(c(fixations.Window.Q23, fixations.Question.Q23, fixations.Answer.Q23, fixa
 ParticipantID <- 3
 QNumber <- 23
 
-df <- data.frame(ParticipantID, QNumber, totalFixations, totalFixationTime, 
-                 fixations.Question, perc.fixations.Question, time.Question, perc.time.Question,
-                 fixations.Answer, perc.fixations.Answer, time.Answer, perc.time.Answer,
-                 fixations.Legend, perc.fixations.Legend, time.Legend, perc.time.Legend,
-                 fixations.Buttons, perc.fixations.Buttons, time.Buttons, perc.time.Buttons,
-                 fixations.FM, perc.fixations.FM, time.FM, perc.time.FM,
-                 fixations.Containing, perc.fixations.Containing, time.Containing, perc.time.Containing,
-                 fixations.Navigating, perc.fixations.Navigating, time.Navigating, perc.time.Navigating)
-print(df)
+df.Q23 <- data.frame(ParticipantID, QNumber, totalFixations.Q23, totalFixationTime.Q23, 
+                 fixations.Question.Q23, perc.fixations.Question.Q23, time.Question.Q23, perc.time.Question.Q23,
+                 fixations.Answer.Q23, perc.fixations.Answer.Q23, time.Answer.Q23, perc.time.Answer.Q23,
+                 fixations.Legend.Q23, perc.fixations.Legend.Q23, time.Legend.Q23, perc.time.Legend.Q23,
+                 fixations.Buttons.Q23, perc.fixations.Buttons.Q23, time.Buttons.Q23, perc.time.Buttons.Q23,
+                 fixations.FM.Q23, perc.fixations.FM.Q23, time.FM.Q23, perc.time.FM.Q23,
+                 fixations.Containing.Q23, perc.fixations.Containing.Q23, time.Containing.Q23, perc.time.Containing.Q23,
+                 fixations.Navigating.Q23, perc.fixations.Navigating.Q23, time.Navigating.Q23, perc.time.Navigating.Q23,
+                 fixations.CTC.Q23, perc.fixations.CTC.Q23, time.CTC.Q23, perc.time.CTC.Q23)
+print(df.Q23)
+
+############ CHECKED UP TO HERE
