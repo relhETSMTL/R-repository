@@ -220,15 +220,14 @@ question23 <- curated03.Q23
 totalFixations.Q23 <- nrow(question23)
 totalFixationTime.Q23 <- sum(question23$Gaze.event.duration..ms.)
 
-############ CHECK UP TO HERE
 
-# AOI Window
-question23.Window <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window. =="1")
-fixations.Window <-  sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Window.)
-perc.fixations.Window <- fixations.Window / totalFixations
-perc.time.Window <- sum(question23.Window$Gaze.event.duration..ms.)/totalFixationTime
+# AOI Window - QNN for participant question
+question23.Window <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Window. =="1")
+fixations.Window.Q23 <-  sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Window.)
+perc.fixations.Window.Q23 <- fixations.Window.Q23 / totalFixations.Q23
+perc.time.Window.Q23 <- sum(question23.Window$Gaze.event.duration..ms.)/totalFixationTime.Q23
 
-
+############ CHECKED UP TO HERE
 
 # AOI Question
 question23.Question <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Question.=="1")
