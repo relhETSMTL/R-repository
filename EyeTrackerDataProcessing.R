@@ -227,65 +227,72 @@ fixations.Window.Q23 <-  sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Wi
 perc.fixations.Window.Q23 <- fixations.Window.Q23 / totalFixations.Q23
 perc.time.Window.Q23 <- sum(question23.Window$Gaze.event.duration..ms.)/totalFixationTime.Q23
 
-############ CHECKED UP TO HERE
 
 # AOI Question
-question23.Question <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Question.=="1")
-fixations.Question <- sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Question.)
-perc.fixations.Question <- fixations.Question / totalFixations
-time.Question <- sum(question23.Question$Gaze.event.duration..ms.)
-perc.time.Question <- time.Question / totalFixationTime
+question23.Question <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Question.=="1")
+fixations.Question.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Question.)
+perc.fixations.Question.Q23 <- fixations.Question.Q23 / totalFixations.Q23
+time.Question.Q23 <- sum(question23.Question$Gaze.event.duration..ms.)
+perc.time.Question.Q23 <- time.Question.Q23 / totalFixationTime.Q23
+
 
 # AOI Answer
-question23.Answer <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Answer.=="1")
-fixations.Answer <- sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Answer.)
-perc.fixations.Answer <- fixations.Answer / totalFixations
-time.Answer <- sum(question23.Answer$Gaze.event.duration..ms.)
-perc.time.Answer <- time.Answer / totalFixationTime
+question23.Answer <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Answer.=="1")
+fixations.Answer.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Answer.)
+perc.fixations.Answer.Q23 <- fixations.Answer.Q23 / totalFixations.Q23
+time.Answer.Q23 <- sum(question23.Answer$Gaze.event.duration..ms.)
+perc.time.Answer.Q23 <- time.Answer.Q23 / totalFixationTime.Q23
 
 # AOI Legend
-question23.Legend <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Legend.=="1")
-fixations.Legend <- sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Legend.)
-perc.fixations.Legend <- fixations.Legend / totalFixations
-time.Legend <- sum(question23.Legend$Gaze.event.duration..ms.)
-perc.time.Legend <- time.Legend / totalFixationTime
+question23.Legend <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Legend.=="1")
+fixations.Legend.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Legend.)
+perc.fixations.Legend.Q23 <- fixations.Legend.Q23 / totalFixations.Q23
+time.Legend.Q23 <- sum(question23.Legend$Gaze.event.duration..ms.)
+perc.time.Legend.Q23 <- time.Legend.Q23 / totalFixationTime.Q23
 
 # AOI Buttons
-question23.Buttons <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Buttons.=="1")
-fixations.Buttons <- sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.Buttons.)
-perc.fixations.Buttons <- fixations.Buttons / totalFixations
-time.Buttons <- sum(question23.Buttons$Gaze.event.duration..ms.)
-perc.time.Buttons <- time.Buttons / totalFixationTime
+question23.Buttons <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Buttons.=="1")
+fixations.Buttons.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.Buttons.)
+perc.fixations.Buttons.Q23 <- fixations.Buttons.Q23 / totalFixations.Q23
+time.Buttons.Q23 <- sum(question23.Buttons$Gaze.event.duration..ms.)
+perc.time.Buttons.Q23 <- time.Buttons.Q23 / totalFixationTime.Q23
+
 
 # AOI FeatureModel
-question23.FM <- question23 %>% filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.FMAOI.=="1")
-fixations.FM <- sum(question23$AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.FMAOI)
-perc.fixations.FM <- fixations.FM / totalFixations
-time.FM <- sum(question23.FM$Gaze.event.duration..ms.)
-perc.time.FM <- time.FM / totalFixationTime
+question23.FM <- question23 %>% filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.FMAOI.=="1")
+fixations.FM.Q23 <- sum(question23$AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.FMAOI.)
+perc.fixations.FM.Q23 <- fixations.FM.Q23 / totalFixations.Q23
+time.FM.Q23 <- sum(question23.FM$Gaze.event.duration..ms.)
+perc.time.FM.Q23 <- time.FM.Q23 / totalFixationTime.Q23
+
+
 
 # AOI Containing
 question23.Containing <- question23 %>% 
-  filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.2.=="1" |
-           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.3.=="1" |
-           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.4.=="1" |
-           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.5.=="1" |
-           AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.CAOI.6.=="1")
-fixations.Containing <- sum(question23.Containing %>% select(contains("CAOI")))
-perc.fixations.Containing <- fixations.Containing / totalFixations
-time.Containing <- sum(question23.Containing$Gaze.event.duration..ms.)
-perc.time.Containing <- time.Containing / totalFixationTime
+  filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CAOI.2.=="1" |
+           AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CAOI.3.=="1" |
+           AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.CAOI.5.=="1")
+fixations.Containing.Q23 <- sum(question23.Containing %>% select(contains("CAOI")))
+perc.fixations.Containing.Q23 <- fixations.Containing.Q23 / totalFixations.Q23
+time.Containing.Q23 <- sum(question23.Containing$Gaze.event.duration..ms.)
+perc.time.Containing.Q23 <- time.Containing.Q23 / totalFixationTime.Q23
 
+############ CHECKED UP TO HERE
 
 # AOI Navigating
 question23.Navigating <- question23 %>% 
-  filter(AOI.hit..P03.TOI.Q01.Act20.Snap...Q20.NAOI.1.=="1")
-fixations.Navigating <- sum(question23.Navigating %>% select(contains("NAOI")))
-perc.fixations.Navigating <- fixations.Navigating / totalFixations
-time.Navigating <- sum(question23.Navigating$Gaze.event.duration..ms.)
-perc.time.Navigating <- time.Navigating / totalFixationTime
+  filter(AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.NAOI.1.=="1" |
+           AOI.hit..P03.TOI.Q04.Act23.Snap...Q23.NAOI.4.=="1")
+fixations.Navigating.Q23 <- sum(question23.Navigating %>% select(contains("NAOI")))
+perc.fixations.Navigating.Q23 <- fixations.Navigating.Q23 / totalFixations.Q23
+time.Navigating.Q23 <- sum(question23.Navigating$Gaze.event.duration..ms.)
+perc.time.Navigating.Q23 <- time.Navigating.Q23 / totalFixationTime.Q23
 
 # AOI Intersection Containing and Navigating when FM < (Containing + Navigating)
+print(c(fixations.FM.Q23, fixations.Containing.Q23, fixations.Navigating.Q23))
+print(c(fixations.Window.Q23, fixations.Question.Q23, fixations.Answer.Q23, fixations.Legend.Q23, fixations.Buttons.Q23))
+
+# TODO process the CTC fixations
 
 # Creating the table now
 
