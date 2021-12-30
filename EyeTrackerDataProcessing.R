@@ -179,18 +179,17 @@ df.Q20 <- data.frame(ParticipantID, QNumber, totalFixations.Q20, totalFixationTi
                  fixations.CTC.Q20, perc.fixations.CTC.Q20, time.CTC.Q20, perc.time.CTC.Q20)
 print(df.Q20)
 
-write.csv(df.Q20,file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-Q20.csv", row.names = TRUE)
+Q20.data <- c(ParticipantID, QNumber, totalFixations.Q20, totalFixationTime.Q20, 
+              fixations.Question.Q20, perc.fixations.Question.Q20, time.Question.Q20, perc.time.Question.Q20,
+              fixations.Answer.Q20, perc.fixations.Answer.Q20, time.Answer.Q20, perc.time.Answer.Q20,
+              fixations.Legend.Q20, perc.fixations.Legend.Q20, time.Legend.Q20, perc.time.Legend.Q20,
+              fixations.Buttons.Q20, perc.fixations.Buttons.Q20, time.Buttons.Q20, perc.time.Buttons.Q20,
+              fixations.FM.Q20, perc.fixations.FM.Q20, time.FM.Q20, perc.time.FM.Q20,
+              fixations.Containing.Q20, perc.fixations.Containing.Q20, time.Containing.Q20, perc.time.Containing.Q20,
+              fixations.Navigating.Q20, perc.fixations.Navigating.Q20, time.Navigating.Q20, perc.time.Navigating.Q20,
+              fixations.CTC.Q20, perc.fixations.CTC.Q20, time.CTC.Q20, perc.time.CTC.Q20)
 
-# df <- setNames(data.frame(matrix(ncol = 3, nrow = 0)), c("name", "address", "date"))
-# df
 
-# Loads the Java interface data
-
-allParticipantsData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data.csv", header=TRUE)
-attach (allParticipantsData)
-
-## Performs the join of the table based on the 
-joinedData <- full_join(allParticipantsData,df)
 
 
 ####################################################################################################
@@ -353,7 +352,7 @@ Q23.data <- c(ParticipantID, QNumber, totalFixations.Q23, totalFixationTime.Q23,
               fixations.CTC.Q23, perc.fixations.CTC.Q23, time.CTC.Q23, perc.time.CTC.Q23)
 
 
-############ CHECKED UP TO HERE
+
 
 ####################################################################################################
 ####################################################################################################
@@ -378,4 +377,34 @@ column.names <- c("ParticipantID", "QNumber", "totalFixations", "totalFixationTi
 
 allQuestions.data.frame <- 
   setNames(data.frame(matrix(ncol = 36, nrow = 0)), column.names)
+
+
+# Changes the name of the columns
+allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q20.data
+allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q23.data
+
+write.csv(allQuestions.data.frame,file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03.csv", row.names = FALSE)
+
+
+############ CHECKED UP TO HERE
+
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+### TODO: joined once all the participants data is ready
+
+# df <- setNames(data.frame(matrix(ncol = 3, nrow = 0)), c("name", "address", "date"))
+# df
+
+# Loads the Java interface data
+
+allParticipantsData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data.csv", header=TRUE)
+attach (allParticipantsData)
+
+## Performs the join of the table based on the ParticipantID and QNumber
+joinedData <- full_join(allParticipantsData,df)
 
