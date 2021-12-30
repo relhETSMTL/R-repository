@@ -181,6 +181,8 @@ print(df.Q20)
 
 write.csv(df.Q20,file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-Q20.csv", row.names = TRUE)
 
+# df <- setNames(data.frame(matrix(ncol = 3, nrow = 0)), c("name", "address", "date"))
+# df
 
 # Loads the Java interface data
 
@@ -340,4 +342,40 @@ df.Q23 <- data.frame(ParticipantID, QNumber, totalFixations.Q23, totalFixationTi
                  fixations.CTC.Q23, perc.fixations.CTC.Q23, time.CTC.Q23, perc.time.CTC.Q23)
 print(df.Q23)
 
+Q23.data <- c(ParticipantID, QNumber, totalFixations.Q23, totalFixationTime.Q23, 
+              fixations.Question.Q23, perc.fixations.Question.Q23, time.Question.Q23, perc.time.Question.Q23,
+              fixations.Answer.Q23, perc.fixations.Answer.Q23, time.Answer.Q23, perc.time.Answer.Q23,
+              fixations.Legend.Q23, perc.fixations.Legend.Q23, time.Legend.Q23, perc.time.Legend.Q23,
+              fixations.Buttons.Q23, perc.fixations.Buttons.Q23, time.Buttons.Q23, perc.time.Buttons.Q23,
+              fixations.FM.Q23, perc.fixations.FM.Q23, time.FM.Q23, perc.time.FM.Q23,
+              fixations.Containing.Q23, perc.fixations.Containing.Q23, time.Containing.Q23, perc.time.Containing.Q23,
+              fixations.Navigating.Q23, perc.fixations.Navigating.Q23, time.Navigating.Q23, perc.time.Navigating.Q23,
+              fixations.CTC.Q23, perc.fixations.CTC.Q23, time.CTC.Q23, perc.time.CTC.Q23)
+
+
 ############ CHECKED UP TO HERE
+
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+# Creating the file with the data for the participant
+
+
+column.names <- c("ParticipantID", "QNumber", "totalFixations", "totalFixationTime", 
+"fixations.Question", "perc.fixations.Question", "time.Question", "perc.time.Question",
+"fixations.Answer", "perc.fixations.Answer", "time.Answer", "perc.time.Answer",
+"fixations.Legend", "perc.fixations.Legend", "time.Legend", "perc.time.Legend",
+"fixations.Buttons", "perc.fixations.Buttons", "time.Buttons", "perc.time.Buttons",
+"fixations.FM", "perc.fixations.FM", "time.FM", "perc.time.FM",
+"fixations.Containing", "perc.fixations.Containing", "time.Containing", "perc.time.Containing",
+"fixations.Navigating", "perc.fixations.Navigating", "time.Navigating", "perc.time.Navigating",
+"fixations.CTC", "perc.fixations.CTC", "time.CTC", "perc.time.CTC")
+
+
+allQuestions.data.frame <- 
+  setNames(data.frame(matrix(ncol = 36, nrow = 0)), column.names)
+
