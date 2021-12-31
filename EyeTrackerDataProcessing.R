@@ -216,6 +216,146 @@ Q20.data <- c(ParticipantID, QNumber, totalFixations.Q20, totalFixationTime.Q20,
 # question20 %>% filter(aoi.name =="1")
 
 
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+# Participant -> 03               --> Parameter to template
+# Question Number -> 22
+# Participant Question -> 19      --> Paramter to template
+
+participant03.Q22 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-TOI-Q19-Act22-Data.csv", header=TRUE)
+attach (participant03.Q22)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated03.Q22 <- participant03.Q22 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type, Eye.movement.type.index, Gaze.event.duration..ms., Sensor, starts_with("AOI.hit")) %>%
+  distinct()
+
+
+question22 <- curated03.Q22
+
+#############################
+
+participant03.Q22 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-TOI-Q19-Act22-Data.csv", header=TRUE)
+attach (participant03.Q22)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated03.Q22 <- participant03.Q22 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type, Eye.movement.type.index, Gaze.event.duration..ms., Sensor, starts_with("AOI.hit")) %>%
+  distinct()
+
+
+question22 <- curated03.Q22
+
+# Totals
+totalFixations.Q22 <- nrow(question22)
+totalFixationTime.Q22 <- sum(question22$Gaze.event.duration..ms.)
+
+
+# AOI Window - QNN for participant question
+question22.Window <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Window. =="1")
+fixations.Window.Q22 <-  sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Window.)
+perc.fixations.Window.Q22 <- fixations.Window.Q22 / totalFixations.Q22
+perc.time.Window.Q22 <- sum(question22.Window$Gaze.event.duration..ms.)/totalFixationTime.Q22
+
+
+# AOI Question
+question22.Question <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Question.=="1")
+fixations.Question.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Question.)
+perc.fixations.Question.Q22 <- fixations.Question.Q22 / totalFixations.Q22
+time.Question.Q22 <- sum(question22.Question$Gaze.event.duration..ms.)
+perc.time.Question.Q22 <- time.Question.Q22 / totalFixationTime.Q22
+
+
+# AOI Answer
+question22.Answer <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Answer.=="1")
+fixations.Answer.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Answer.)
+perc.fixations.Answer.Q22 <- fixations.Answer.Q22 / totalFixations.Q22
+time.Answer.Q22 <- sum(question22.Answer$Gaze.event.duration..ms.)
+perc.time.Answer.Q22 <- time.Answer.Q22 / totalFixationTime.Q22
+
+# AOI Legend
+question22.Legend <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Legend.=="1")
+fixations.Legend.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Legend.)
+perc.fixations.Legend.Q22 <- fixations.Legend.Q22 / totalFixations.Q22
+time.Legend.Q22 <- sum(question22.Legend$Gaze.event.duration..ms.)
+perc.time.Legend.Q22 <- time.Legend.Q22 / totalFixationTime.Q22
+
+# AOI Buttons
+question22.Buttons <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Buttons.=="1")
+fixations.Buttons.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.Buttons.)
+perc.fixations.Buttons.Q22 <- fixations.Buttons.Q22 / totalFixations.Q22
+time.Buttons.Q22 <- sum(question22.Buttons$Gaze.event.duration..ms.)
+perc.time.Buttons.Q22 <- time.Buttons.Q22 / totalFixationTime.Q22
+
+
+# AOI FeatureModel
+question22.FM <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.FMAOI.=="1")
+fixations.FM.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.FMAOI.)
+perc.fixations.FM.Q22 <- fixations.FM.Q22 / totalFixations.Q22
+time.FM.Q22 <- sum(question22.FM$Gaze.event.duration..ms.)
+perc.time.FM.Q22 <- time.FM.Q22 / totalFixationTime.Q22
+
+
+# AOI Containing
+question22.Containing <- question22 %>% 
+  filter(  AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CAOI.6.=="1" |	      
+             AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CAOI.3.=="1" |	      
+             AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CAOI.4.=="1" |	      
+             AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CAOI.7.=="1") 
+
+fixations.Containing.Q22 <- sum(question22.Containing %>% select(contains("CAOI")))
+perc.fixations.Containing.Q22 <- fixations.Containing.Q22 / totalFixations.Q22
+time.Containing.Q22 <- sum(question22.Containing$Gaze.event.duration..ms.)
+perc.time.Containing.Q22 <- time.Containing.Q22 / totalFixationTime.Q22
+
+
+# AOI Navigating
+question22.Navigating <- question22 %>% 
+  filter(  AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.NAOI.2.=="1" | 	      
+             AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.NAOI.5.=="1" | 	      
+             AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.NAOI.1.=="1")
+
+fixations.Navigating.Q22 <- sum(question22.Navigating %>% select(contains("NAOI")))
+perc.fixations.Navigating.Q22 <- fixations.Navigating.Q22 / totalFixations.Q22
+time.Navigating.Q22 <- sum(question22.Navigating$Gaze.event.duration..ms.)
+perc.time.Navigating.Q22 <- time.Navigating.Q22 / totalFixationTime.Q22
+
+# AOI CTC
+question22.CTC <- question22 %>% filter(AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CTC.=="1")
+fixations.CTC.Q22 <- sum(question22$AOI.hit..P03.TOI.Q19.Act22.Snap...Q22.CTC.)
+perc.fixations.CTC.Q22 <- fixations.CTC.Q22 / totalFixations.Q22
+time.CTC.Q22 <- sum(question22.CTC$Gaze.event.duration..ms.)
+perc.time.CTC.Q22 <- time.CTC.Q22 / totalFixationTime.Q22
+
+# AOI Intersection Containing and Navigating when FM < (Containing + Navigating)
+print(c(fixations.FM.Q22, fixations.Containing.Q22, fixations.Navigating.Q22))
+print(c(fixations.Window.Q22, fixations.Question.Q22, fixations.Answer.Q22, fixations.Legend.Q22, fixations.Buttons.Q22,
+        fixations.CTC.Q22))
+
+# TODO process the CTC fixations
+
+# Creating the table now
+
+ParticipantID <- 3
+QNumber <- 22
+
+Q22.data <- c(ParticipantID, QNumber, totalFixations.Q22, totalFixationTime.Q22, 
+              fixations.Question.Q22, perc.fixations.Question.Q22, time.Question.Q22, perc.time.Question.Q22,
+              fixations.Answer.Q22, perc.fixations.Answer.Q22, time.Answer.Q22, perc.time.Answer.Q22,
+              fixations.Legend.Q22, perc.fixations.Legend.Q22, time.Legend.Q22, perc.time.Legend.Q22,
+              fixations.Buttons.Q22, perc.fixations.Buttons.Q22, time.Buttons.Q22, perc.time.Buttons.Q22,
+              fixations.FM.Q22, perc.fixations.FM.Q22, time.FM.Q22, perc.time.FM.Q22,
+              fixations.Containing.Q22, perc.fixations.Containing.Q22, time.Containing.Q22, perc.time.Containing.Q22,
+              fixations.Navigating.Q22, perc.fixations.Navigating.Q22, time.Navigating.Q22, perc.time.Navigating.Q22,
+              fixations.CTC.Q22, perc.fixations.CTC.Q22, time.CTC.Q22, perc.time.CTC.Q22)
+
 
 ####################################################################################################
 ####################################################################################################
@@ -514,6 +654,7 @@ allQuestions.data.frame <-
 
 # Changes the name of the columns
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q20.data
+allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q22.data
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q23.data
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q24.data
 
