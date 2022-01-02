@@ -1024,6 +1024,7 @@ allQuestions.data.frame <-
 
 
 # Changes the name of the columns
+allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q18.data
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q19.data
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q20.data
 allQuestions.data.frame[nrow(allQuestions.data.frame) + 1,] = Q21.data
