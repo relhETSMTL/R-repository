@@ -18,8 +18,6 @@ library(ggplot2)
 library(tidyverse)
 library(hrbrthemes)
 
-participantNN participant03 --- curatedNN curated03 --- pNN P03  --- participantID 3  
-
 
 
 
