@@ -58,7 +58,6 @@ attach (allInterfaceData)
 ## Performs the join of the table based on the ParticipantID and QNumber
 joinedData <- full_join(allInterfaceData,allEyeTrackerData)
 
-# TODO add the number of CTCs for the questions in a different column
 
 # Number of CTC for each of the 24 questions
 numCTCQuestion <- c(0,0,2,2,6,6,0,0,1,1,7,4,0,0,1,2,6,4,0,0,2,1,5,6)
@@ -72,3 +71,5 @@ joinedData$numCTC <- numCTC
 # Puts the column of CTCs before all the columns of the eye-tracker data
 joinedData <- joinedData %>% relocate(numCTC, .before = totalFixations)
 
+# Writes the data farme
+write.csv(joinedData,file = "../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv", row.names = FALSE)
