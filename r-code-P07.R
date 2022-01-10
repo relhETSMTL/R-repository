@@ -805,6 +805,7 @@ curated07.Q07 <- participant07.Q07 %>% filter(!across(everything(), is.na)) %>%
   select(Eye.movement.type, Eye.movement.type.index, Gaze.event.duration..ms., Sensor, starts_with("AOI.hit")) %>%
   distinct()
 
+#, Recording.timestamp..ms.
 
 question07 <- curated07.Q07
 

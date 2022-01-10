@@ -98,12 +98,22 @@ joinedData <- full_join(allInterfaceData,partialEyeTrackerData)
 # checkpercFixations must be close to 1
 testingData <- joinedData %>%
   mutate(checkFMFixations = fixations.FM - fixations.Containing - fixations.Navigating,
-        checkFixations = totalFixations - (fixations.Answer + fixations.Question + fixations.Legend + fixations.Buttons + checkFMFixations + fixations.CTC),
-        checkpercFixations = perc.fixations.Answer + perc.fixations.Question + perc.fixations.Legend + perc.fixations.Buttons + perc.fixations.FM + perc.fixations.Containing + perc.fixations.Navigating + perc.fixations.CTC,
-        timeCheck = ElapsedTime - totalFixationTime) %>% filter (timeCheck < 0) %>% 
-  select(ParticipantID, QNumber, ElapsedTime, totalFixationTime, totalFixations, timeCheck, checkFixations, checkFMFixations, fixations.FM, fixations.Containing, fixations.Navigating, checkpercFixations)
+        partsFixations = fixations.Answer + fixations.Question + fixations.Legend + fixations.Buttons + fixations.FM + fixations.CTC,
+        fixationsCheck = totalFixations - partsFixations,
+        fixationsTimeCheck = totalFixationTime - (time.Answer + time.Question + time.Legend + time.Buttons + time.FM + time.CTC),
+        timeJavaTobiiCheck = ElapsedTime - totalFixationTime,
+        checkpercFixations = perc.fixations.Answer + perc.fixations.Question + perc.fixations.Legend + perc.fixations.Buttons + perc.fixations.FM + perc.fixations.CTC,
+        checkpercFixationTime = perc.time.Answer + perc.time.Question + perc.time.Legend + perc.time.Buttons + perc.time.FM + perc.time.CTC
+        ) %>% 
+  # filter (timeCheck < 0) %>% 
+  select(ParticipantID, QNumber, ElapsedTime, totalFixationTime, timeJavaTobiiCheck, fixationsTimeCheck, totalFixations,partsFixations, fixationsCheck, fixations.FM, fixations.Containing, fixations.Navigating, checkFMFixations, checkpercFixations, checkpercFixationTime)
+#in total percent
+
 
 #curatedData <- joinedData %>% na.omit()
+
+write.csv(testingData,file = "../../Experiment-Data/Eye-tracking-data-samples/FixationTimesProblems.csv", row.names = FALSE)
+
 
 ###########################################################################################
 ###########################################################################################
