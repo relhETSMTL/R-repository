@@ -1,15 +1,20 @@
 # Eye tracker data processing
 
 # install.packages("xlsx")
-#library("xlsx")
+library("xlsx")
 
 #read.xlsx(file, sheetIndex, header=TRUE)
 #read.xlsx2(file, sheetIndex, header=TRUE)
 
 # Too big to be read as excel file
 # File reads the experiment data 
-# participant03 <- read.xlsx2(file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-TOI-Q01-Act20-Data.xlsx", sheetName="Data", header=TRUE)
+#participant03 <- read.xlsx(file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-TOI-Q01-Act20-Data.xlsx", sheetName="Data", header=TRUE)
 # attach (participant03)
+
+# Not working faster, convert to CSV manually faster
+# sheetName="Data", 
+#participant03-new <- read.xlsx(file = "../../Experiment-Data/Eye-tracking-data-samples/Part03/P03-TOI-Q19-Act22-Data.xlsx", sheetIndex=1, header=TRUE)
+# attach (participant03-new)
 
 # Important data to be exported
 #> levels(participant03$Eye.movement.type)
