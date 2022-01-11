@@ -1,6 +1,4 @@
-# Reads the computed data for the 17 participants, put them together in a single data frame, and joins the data
-# with the Java interface data
-# Corrects some of the mapping from data in eye-tracker to data in the Java interface
+# Performs several consistency checks on the joined data of Java inteface and eye-tracker
 
 library(ggplot2)
 library(tidyverse)
@@ -37,59 +35,63 @@ p13 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP13/
 attach(p13)
 p14 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP14/P14.csv", header=TRUE)
 attach(p14)
-p15 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP15/P15.csv", header=TRUE)
-attach(p15)
 p16 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP16/P16.csv", header=TRUE)
 attach(p16)
 p17 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP17/P17.csv", header=TRUE)
 attach(p17)
 p18 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP18/P18.csv", header=TRUE)
 attach(p18)
+p19 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP19/P19.csv", header=TRUE)
+attach(p19)
+
+# faulty participant data
+# p15 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP15/P15.csv", header=TRUE)
+# attach(p15)
 
 
-
-# Checking consistency in the data, if there is any NA in the participant data. So far only P05 has NA, 
-# p02, p03, p04, p06, p07, p09, p10, p11, p12, and p13 (with mislabelled participant name) do not have NA
-# p05 %>% filter_at(any_vars(is.na()))
-
-# renaming participant 5
-newp06 <- p05
-newp06$ParticipantID <- rep (6,24)
-
-# renaming participant 6
-newp05 <- p06
-newp05$ParticipantID <- rep (5,24)
-
-# renaming participant 09
-newp10 <-p09
-newp10$ParticipantID <- rep (10,24)
-
-# renaming participant 10
-newp11 <- p10
-newp11$ParticipantID <- rep(11,24)
-
-# renaming participant 11
-newp09 <- p11
-newp09$ParticipantID <- rep(9,24)
-
-
-# renaming participant 12
-newp13 <- p12
-newp13$ParticipantID <- rep(13,24)
-
-# renaming participant 13
-newp12 <- p13
-newp12$ParticipantID <- rep(12,24)
-
+# # Checking consistency in the data, if there is any NA in the participant data. So far only P05 has NA, 
+# # p02, p03, p04, p06, p07, p09, p10, p11, p12, and p13 (with mislabelled participant name) do not have NA
+# # p05 %>% filter_at(any_vars(is.na()))
+# 
+# # renaming participant 5
+# newp06 <- p05
+# newp06$ParticipantID <- rep (6,24)
+# 
+# # renaming participant 6
+# newp05 <- p06
+# newp05$ParticipantID <- rep (5,24)
+# 
+# # renaming participant 09
+# newp10 <-p09
+# newp10$ParticipantID <- rep (10,24)
+# 
+# # renaming participant 10
+# newp11 <- p10
+# newp11$ParticipantID <- rep(11,24)
+# 
+# # renaming participant 11
+# newp09 <- p11
+# newp09$ParticipantID <- rep(9,24)
+# 
+# 
+# # renaming participant 12
+# newp13 <- p12
+# newp13$ParticipantID <- rep(13,24)
+# 
+# # renaming participant 13
+# newp12 <- p13
+# newp12$ParticipantID <- rep(12,24)
+# 
+# 
 
 # Collects only the analyzed data
-partialEyeTrackerData <- rbind(p02,p03,p04,newp05,newp06,p07,newp09,newp10,newp11,newp12,newp13)
+eyeTrackerData <- rbind(p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12,p13,p14,p16,p17,p18,p19)
 
 allInterfaceData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data.csv", header=TRUE)
 attach (allInterfaceData)
 
 ## Performs the join of the table based on the ParticipantID and QNumber
-joinedData <- full_join(allInterfaceData,partialEyeTrackerData)
+joinedData <- full_join(allInterfaceData,eyeTrackerData)
 
 
 # testing computing the total mutations
@@ -105,7 +107,7 @@ testingData <- joinedData %>%
         checkpercFixations = perc.fixations.Answer + perc.fixations.Question + perc.fixations.Legend + perc.fixations.Buttons + perc.fixations.FM + perc.fixations.CTC,
         checkpercFixationTime = perc.time.Answer + perc.time.Question + perc.time.Legend + perc.time.Buttons + perc.time.FM + perc.time.CTC
         ) %>% 
-  # filter (timeCheck < 0) %>% 
+  filter (fixationsCheck < 0 | fixationsTimeCheck < 0 | timeJavaTobiiCheck < 0) %>% 
   select(ParticipantID, QNumber, ElapsedTime, totalFixationTime, timeJavaTobiiCheck, fixationsTimeCheck, totalFixations,partsFixations, fixationsCheck, fixations.FM, fixations.Containing, fixations.Navigating, checkFMFixations, checkpercFixations, checkpercFixationTime)
 #in total percent
 
@@ -127,14 +129,14 @@ write.csv(testingData,file = "../../Experiment-Data/Eye-tracking-data-samples/Fi
 #allEyeTrackerData <- rbind(p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12,p13,p14,p15,p16,p17,p18)
 
 # Stores all the eye-tracker data into a file
-write.csv(allEyeTrackerData,file = "../../Experiment-Data/Eye-tracking-data-samples/EyeTrackerData.csv", row.names = FALSE)
+write.csv(eyeTrackerData,file = "../../Experiment-Data/Eye-tracking-data-samples/EyeTrackerData.csv", row.names = FALSE)
 
 # Reads all the data from the Java interface
 allInterfaceData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data.csv", header=TRUE)
 attach (allInterfaceData)
 
 ## Performs the join of the table based on the ParticipantID and QNumber
-joinedData <- full_join(allInterfaceData,allEyeTrackerData)
+joinedData <- full_join(allInterfaceData,eyeTrackerData)
 
 
 # Number of CTC for each of the 24 questions

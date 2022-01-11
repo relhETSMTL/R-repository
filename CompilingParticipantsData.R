@@ -24,12 +24,10 @@ p07 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP07/
 attach(p07)
 p08 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP08/P08.csv", header=TRUE)
 attach(p08)
-# pending
-# p09 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP09/P09.csv", header=TRUE)
-# attach(p09)
-# pending
-# p10 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP10/P10.csv", header=TRUE)
-# attach(p10)
+p09 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP09/P09.csv", header=TRUE)
+attach(p09)
+p10 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP10/P10.csv", header=TRUE)
+attach(p10)
 p11 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP11/P11.csv", header=TRUE)
 attach(p11)
 p12 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP12/P12.csv", header=TRUE)
@@ -41,9 +39,8 @@ attach(p14)
 # participant with faulty data
 # p15 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP15/P15.csv", header=TRUE)
 # attach(p15)
-#pending
-# p16 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP16/P16.csv", header=TRUE)
-# attach(p16)
+p16 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP16/P16.csv", header=TRUE)
+attach(p16)
 p17 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP17/P17.csv", header=TRUE)
 attach(p17)
 p18 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP18/P18.csv", header=TRUE)
@@ -53,8 +50,7 @@ attach(p19)
 
 
 # Puts alls the data of the eye tracker into a single data frame
-# pending p09,p10, p16,
-allEyeTrackerData <- rbind(p02,p03,p04,p05,p06,p07,p08,p11,p12,p13,p14,p17,p18,p19)
+allEyeTrackerData <- rbind(p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12,p13,p14,p16,p17,p18,p19)
 
 # Stores all the eye-tracker data into a file
 write.csv(allEyeTrackerData,file = "../../Experiment-Data/Eye-tracking-data-samples/EyeTrackerData.csv", row.names = FALSE)
