@@ -3,7 +3,7 @@
 # Ecole de technologie superieure
 # VERITAS team
 # Authors: Elmira Sepasi, Kambiz Belouchi, Roberto E. Lopez-Herrejon
-# Last update: 2021-12-10
+# Last update: 2022-01-11 
 
 library(ggplot2)
 library(tidyverse)
@@ -28,7 +28,14 @@ question.correctness <- curatedParticipantsData %>%
 question.correctness
 
 # Bar chart with correct and incorrect responses for each participant
-participation.correctness <- curatedParticipantsData %>% 
+simplifiedParticipantsData <- curatedParticipantsData
+
+# Number of CTC for each of the 24 questions
+participantsSeq <- seq(1:17)
+newParticipantsColumn <- rep (participantsSeq, times=24)
+simplifiedParticipantsData$ParticipantID <- newParticipantsColumn
+
+participation.correctness <- simplifiedParticipantsData %>% 
   ggplot(aes(x=ParticipantID, fill=Correct)) +
   # geom_bar(position ="dodge") +
   geom_bar() +
@@ -367,4 +374,57 @@ tile.responses <- ggplot(tile.grid, aes(X, Y, fill= values)) +
      scale_fill_gradient(low="blue", high="red") +  
      labs(x="Question Number   Red:incorrect   Blue:correct", y="Participants") 
 tile.responses
+
+
+
+
+####################################################################################################################
+####################################################################################################################
+#### Bloxplot of number of fixations
+
+# File reads the experiment data 
+participantDataSet <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv", header=TRUE)
+attach (participantDataSet)
+
+# Fixations for participants per each question
+participantFixationsQuestion <- participantDataSet %>% 
+  # filter(Correct=="True") %>% 
+  ggplot(aes(x=QNumber, group=QNumber, totalFixations)) +
+  geom_boxplot(aes(fill=totalFixations), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Number of Fixations") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_x_discrete(limits=seq(1, 24, 1))
+  # #  theme_minimal() +
+  # #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # +
+  # ylim(0, 300) +
+  # scale_y_continuous(breaks=seq(0, 300, 60))
+participantFixationsQuestion
+
+# > summary(participantDataSet$totalFixations)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 18.0    84.0   124.0   144.7   184.8   817.0 
+
+# Fixations for participants per each question
+participantFixationTimeQuestion <- participantDataSet %>% 
+  # filter(Correct=="True") %>% 
+  ggplot(aes(x=QNumber, group=QNumber, totalFixationTime/1000)) +
+  geom_boxplot(aes(fill=totalFixationTime/1000), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Fixation Time secs ") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_x_discrete(limits=seq(1, 24, 1))
+# #  theme_minimal() +
+# #  scale_x_continuous(breaks=seq(1, 24, 1))
+# +
+# ylim(0, 300) +
+# scale_y_continuous(breaks=seq(0, 300, 60))
+participantFixationTimeQuestion
+
+# > summary(participantDataSet$totalFixationTime)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 5141   21117   32502   38219   48059  242291 
+
+
 
