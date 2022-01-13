@@ -427,4 +427,159 @@ participantFixationTimeQuestion
 # 5141   21117   32502   38219   48059  242291 
 
 
+# Example of stratified histogram
+ggplot(iris,aes(x = Sepal.Width)) +
+  geom_histogram(bins = 25,aes(fill = Species)) +
+  geom_histogram(bins = 25, fill = NA, color = 'black') +
+  theme_minimal()
+
+
+# > summary(participantDataSet$perc.fixations.FM)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.0000  0.3717  0.4815  0.4527  0.5634  0.7808
+
+# > summary(participantDataSet$perc.fixations.Question)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.08065 0.24401 0.30726 0.31661 0.36674 0.74468
+
+# > summary(participantDataSet$perc.fixations.CTC)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.00000 0.03964 0.07273 0.12043 0.44118 
+
+# > summary(participantDataSet$perc.fixations.Answer)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.02265 0.03571 0.04374 0.05705 0.22642 
+
+# > summary(participantDataSet$perc.fixations.Legend)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.000000 0.008148 0.020761 0.031134 0.041799 0.223404 
+
+# > summary(participantDataSet$perc.fixations.Buttons)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.000000 0.009122 0.015544 0.020553 0.025000 0.138889 
+
+##### Example
+# https://www.r-graph-gallery.com/histogram_several_group.html
+data <- data.frame(
+  type = c( rep("variable 1", 1000), rep("variable 2", 1000) ),
+  value = c( rnorm(1000), rnorm(1000, mean=4) )
+)
+
+# Represent it
+p <- data %>%
+  ggplot( aes(x=value, fill=type)) +
+  geom_histogram( color="#e9ecef", alpha=0.6, position = 'identity') +
+  scale_fill_manual(values=c("#69b3a2", "#404080")) +
+  theme_ipsum() +
+  labs(fill="")
+p
+
+#### Creating the data frame 
+
+
+aois.df <- data.frame(
+fixation.values <- c(participantDataSet$perc.fixations.FM, participantDataSet$perc.fixations.Question, 
+                     participantDataSet$perc.fixations.CTC, participantDataSet$perc.fixations.Answer, 
+                     participantDataSet$perc.fixations.Legend, participantDataSet$perc.fixations.Buttons),
+aois <-c(rep("FM",408),rep("Question",408),rep("CTC",408),rep("Answer",408),rep("Legend",408),rep("Buttons",408))
+) %>%  rename(AOI = aois....c.rep..FM...408...rep..Question...408...rep..CTC...408... , 
+              fixations = fixation.values....c.participantDataSet.perc.fixations.FM..participantDataSet.perc.fixations.Question..) 
+
+
+
+# Example of stratified histogram
+strat.fixations <- ggplot(aois.df,aes(x = fixations)) +
+  geom_histogram(bins = 25,aes(fill = AOI)) +
+  geom_histogram(bins = 25, fill = NA, color = 'black') + 
+  labs(x="Fixations Percentage") +
+  theme_minimal()
+strat.fixations
+
+# highests median values, 
+# FM 0.4815
+# Question 0.30726
+# CTC 0.03964
+# Answer 0.03571
+# Legend 0.020761
+# Buttons 0.015544
+ 
+# > summary(participantDataSet$perc.fixations.Question)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.08065 0.24401 0.30726 0.31661 0.36674 0.74468
+
+# > summary(participantDataSet$perc.fixations.CTC)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.00000 0.03964 0.07273 0.12043 0.44118 
+
+# > summary(participantDataSet$perc.fixations.Answer)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.02265 0.03571 0.04374 0.05705 0.22642 
+
+# > summary(participantDataSet$perc.fixations.Legend)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.000000 0.008148 0.020761 0.031134 0.041799 0.223404 
+
+# > summary(participantDataSet$perc.fixations.Buttons)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.000000 0.009122 0.015544 0.020553 0.025000 0.138889 
+
+# Multiple histograms overlapped
+mult.hist.fixations <-  
+  ggplot(aois.df, aes(x=fixations, fill=AOI)) +
+  geom_histogram( color="#e9ecef", alpha=0.6, position = 'identity') +
+#  scale_fill_manual(values=c("#69b3a2", "#404080")) +
+  theme_ipsum() +
+  labs(x="Fixations Percentage")
+mult.hist.fixations
+ 
+#######
+#######
+#### fixation time percentage
+aois.time.df <- data.frame(
+  fixation.time.values <- c(participantDataSet$perc.time.FM, participantDataSet$perc.time.Question, 
+                       participantDataSet$perc.time.CTC, participantDataSet$perc.time.Answer, 
+                       participantDataSet$perc.time.Legend, participantDataSet$perc.time.Buttons),
+  aois <-c(rep("FM",408),rep("Question",408),rep("CTC",408),rep("Answer",408),rep("Legend",408),rep("Buttons",408))) %>%  
+  rename(AOI = aois....c.rep..FM...408...rep..Question...408...rep..CTC...408... , 
+            fixation.time = fixation.time.values....c.participantDataSet.perc.time.FM..participantDataSet.perc.time.Question..) 
+
+# Multiple histograms overlapped
+mult.hist.fixation.time <-  
+  ggplot(aois.time.df, aes(x=fixation.time, fill=AOI)) +
+  geom_histogram( color="#e9ecef", alpha=0.6, position = 'identity') +
+  #  scale_fill_manual(values=c("#69b3a2", "#404080")) +
+  theme_ipsum() +
+  labs(x="Fixation Time Percentage")
+mult.hist.fixation.time
+
+# Median values
+# FM 0.4922
+# Question 0.30050
+# CTC 0.02958 
+# Answer 0.04459
+# Buttons 0.01905
+# Legend 0.013761
+
+# > summary(participantDataSet$perc.time.FM)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.0000  0.3793  0.4922  0.4619  0.5823  0.8004 
+# There were 39 warnings (use warnings() to see them)
+# > summary(participantDataSet$perc.time.Question)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.05862 0.22874 0.30050 0.30665 0.37310 0.72735 
+# > summary(participantDataSet$perc.time.CTC)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.00000 0.02958 0.07252 0.11680 0.43643 
+# > summary(participantDataSet$perc.time.Answer)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.02887 0.04459 0.05693 0.07025 0.31140 
+# > summary(participantDataSet$perc.time.Legend)
+# Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.000000 0.005126 0.013761 0.026622 0.033448 0.264738 
+# > summary(participantDataSet$perc.time.Buttons)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.00000 0.01084 0.01905 0.02670 0.03430 0.18790 
+> 
+
+
 
