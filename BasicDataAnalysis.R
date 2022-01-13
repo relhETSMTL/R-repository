@@ -483,9 +483,11 @@ fixation.values <- c(participantDataSet$perc.fixations.FM, participantDataSet$pe
                      participantDataSet$perc.fixations.Legend, participantDataSet$perc.fixations.Buttons),
 aois <-c(rep("FM",408),rep("Question",408),rep("CTC",408),rep("Answer",408),rep("Legend",408),rep("Buttons",408))
 ) %>%  rename(AOI = aois....c.rep..FM...408...rep..Question...408...rep..CTC...408... , 
-              fixations = fixation.values....c.participantDataSet.perc.fixations.FM..participantDataSet.perc.fixations.Question..) 
+              fixations = fixation.values....c.participantDataSet.perc.fixations.FM..participantDataSet.perc.fixations.Question..) %>% 
+  mutate(fixations=fixations*100)
 
-
+aois.df.test <- aois.df %>%
+  mutate(fixations=fixations*100)
 
 # Example of stratified histogram
 strat.fixations <- ggplot(aois.df,aes(x = fixations)) +
@@ -541,7 +543,8 @@ aois.time.df <- data.frame(
                        participantDataSet$perc.time.Legend, participantDataSet$perc.time.Buttons),
   aois <-c(rep("FM",408),rep("Question",408),rep("CTC",408),rep("Answer",408),rep("Legend",408),rep("Buttons",408))) %>%  
   rename(AOI = aois....c.rep..FM...408...rep..Question...408...rep..CTC...408... , 
-            fixation.time = fixation.time.values....c.participantDataSet.perc.time.FM..participantDataSet.perc.time.Question..) 
+            fixation.time = fixation.time.values....c.participantDataSet.perc.time.FM..participantDataSet.perc.time.Question..) %>%
+  mutate(fixation.time=fixation.time*100)
 
 # Multiple histograms overlapped
 mult.hist.fixation.time <-  
