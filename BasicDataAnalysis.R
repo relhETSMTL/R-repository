@@ -555,13 +555,29 @@ mult.hist.fixation.time <-
   labs(x="Fixation Time Percentage")
 mult.hist.fixation.time
 
-# Median values
-# FM 0.4922
-# Question 0.30050
-# CTC 0.02958 
-# Answer 0.04459
-# Buttons 0.01905
-# Legend 0.013761
+# Fixation time 
+# Mean values
+# FM 0.4619 0.1687356
+# Question 0.30665 0.1093673
+# CTC 0.07252  0.09189724
+# Answer 0.05693 0.04370445
+# Legend 0.026622 0.03644662
+# Buttons 0.02670 0.0264852
+
+
+# > sd(participantDataSet$perc.time.FM)
+# [1] 0.1687356
+# > sd(participantDataSet$perc.time.Question)
+# [1] 0.1093673
+# > sd(participantDataSet$perc.time.CTC)
+# [1] 0.09189724
+# > sd(participantDataSet$perc.time.Answer)
+# [1] 0.04370445
+# > sd(participantDataSet$perc.time.Legend)
+# [1] 0.03644662
+# > sd(participantDataSet$perc.time.Buttons)
+# [1] 0.0264852
+
 
 # > summary(participantDataSet$perc.time.FM)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -578,11 +594,24 @@ mult.hist.fixation.time
 # 0.00000 0.02887 0.04459 0.05693 0.07025 0.31140 
 # > summary(participantDataSet$perc.time.Legend)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-# 0.000000 0.005126 0.013761 0.026622 0.033448 0.264738 
+# 0.000000 0.005126 0.013761 0.026622 0.033448 0.264738
 # > summary(participantDataSet$perc.time.Buttons)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 0.00000 0.01084 0.01905 0.02670 0.03430 0.18790 
-> 
+# > summary(participantDataSet$totalFixations)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 18.0    84.0   124.0   144.7   184.8   817.0 
+
+
+# > sd(participantDataSet$totalFixations)
+# [1] 92.31699
+# > summary(participantDataSet$totalFixationTime)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 5141   21117   32502   38219   48059  242291 
+# > sd(participantDataSet$totalFixationTime)
+# [1] 25856.86
+
+
 
 
 
