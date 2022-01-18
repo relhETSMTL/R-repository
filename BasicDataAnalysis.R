@@ -392,7 +392,7 @@ participantFixationsQuestion <- participantDataSet %>%
   ggplot(aes(x=QNumber, group=QNumber, totalFixations)) +
   geom_boxplot(aes(fill=totalFixations), varwidth=T, fill="plum") +
   #  coord_flip() +
-  labs(x="Question Number", y="Number of Fixations") +
+  labs(x="Question Number", y="Fixation Count") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
   scale_x_discrete(limits=seq(1, 24, 1))
   # #  theme_minimal() +
