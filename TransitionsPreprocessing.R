@@ -270,3 +270,452 @@ curated05.Q08 <- curated05.Q08 %>% relocate(CTC, .before = FM)
 question08 <- curated05.Q08
 
 
+# --------------------------------------------------------------------------------------------------
+# Question 9
+
+participant05.Q09 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q19-Act09-Data.csv", header=TRUE)
+attach (participant05.Q09)
+
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q09 <- participant05.Q09 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q19.Act09.Snap...Q09.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+
+question09 <- curated05.Q09
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 10
+
+participant05.Q10 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q22-Act10-Data.csv", header=TRUE)
+attach (participant05.Q10)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q10 <- participant05.Q10 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q22.Act10.Snap...Q10.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question10 <- curated05.Q10
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 11
+
+participant05.Q11 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q20-Act11-Data.csv", header=TRUE)
+attach (participant05.Q11)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q11 <- participant05.Q11 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q20.Act11.Snap...Q11.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question11 <- curated05.Q11
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 12
+
+participant05.Q12 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q06-Act12-Data.csv", header=TRUE)
+attach (participant05.Q12)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q12 <- participant05.Q12 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q06.Act12.Snap...Q12.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question12 <- curated05.Q12
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 13
+
+participant05.Q13 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q13-Act13-Data.csv", header=TRUE)
+attach (participant05.Q13)
+
+curated05.Q13 <- participant05.Q13 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.Buttons.) %>% 
+  # rename(CTC=AOI.hit..P05.TOI.Q13.Act13.Snap...Q08.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q13.Act13.Snap...Q13.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,FM,Legend,Question,Window)
+
+
+# If the question lacks CTCs, add the default empty CTC and put it after Buttons
+curated05.Q13$CTC <- rep(0,nrow(curated05.Q13))
+curated05.Q13 <- curated05.Q13 %>% relocate(CTC, .before = FM)
+
+question13 <- curated05.Q13
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 14
+
+participant05.Q14 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q21-Act14-Data.csv", header=TRUE)
+attach (participant05.Q14)
+
+curated05.Q14 <- participant05.Q14 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.Buttons.) %>% 
+  # rename(CTC=AOI.hit..P05.TOI.Q21.Act14.Snap...Q08.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q21.Act14.Snap...Q14.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,FM,Legend,Question,Window)
+
+
+# If the question lacks CTCs, add the default empty CTC and put it after Buttons
+curated05.Q14$CTC <- rep(0,nrow(curated05.Q14))
+curated05.Q14 <- curated05.Q14 %>% relocate(CTC, .before = FM)
+
+question14 <- curated05.Q14
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 15
+
+participant05.Q15 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q18-Act15-Data.csv", header=TRUE)
+attach (participant05.Q15)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q15 <- participant05.Q15 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q18.Act15.Snap...Q15.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question15 <- curated05.Q15
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 16
+
+participant05.Q16 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q15-Act16-Data.csv", header=TRUE)
+attach (participant05.Q16)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q16 <- participant05.Q16 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q15.Act16.Snap...Q16.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question16 <- curated05.Q16
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 17
+
+participant05.Q17 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q16-Act17-Data.csv", header=TRUE)
+attach (participant05.Q17)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q17 <- participant05.Q17 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q16.Act17.Snap...Q17.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question17 <- curated05.Q17
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 18
+
+participant05.Q18 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q05-Act18-Data.csv", header=TRUE)
+attach (participant05.Q18)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q18 <- participant05.Q18 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q05.Act18.Snap...Q18.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question18 <- curated05.Q18
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 19
+
+participant05.Q19 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q07-Act19-Data.csv", header=TRUE)
+attach (participant05.Q19)
+
+curated05.Q19 <- participant05.Q19 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.Buttons.) %>% 
+  # rename(CTC=AOI.hit..P05.TOI.Q07.Act19.Snap...Q08.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q07.Act19.Snap...Q19.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,FM,Legend,Question,Window)
+
+
+# If the question lacks CTCs, add the default empty CTC and put it after Buttons
+curated05.Q19$CTC <- rep(0,nrow(curated05.Q19))
+curated05.Q19 <- curated05.Q19 %>% relocate(CTC, .before = FM)
+
+question19 <- curated05.Q19
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 20
+
+participant05.Q20 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q08-Act20-Data.csv", header=TRUE)
+attach (participant05.Q20)
+
+curated05.Q20 <- participant05.Q20 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.Buttons.) %>% 
+  # rename(CTC=AOI.hit..P05.TOI.Q08.Act20.Snap...Q08.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q08.Act20.Snap...Q20.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,FM,Legend,Question,Window)
+
+
+# If the question lacks CTCs, add the default empty CTC and put it after Buttons
+curated05.Q20$CTC <- rep(0,nrow(curated05.Q20))
+curated05.Q20 <- curated05.Q20 %>% relocate(CTC, .before = FM)
+
+question20 <- curated05.Q20
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 21
+
+participant05.Q21 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q03-Act21-Data.csv", header=TRUE)
+attach (participant05.Q21)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q21 <- participant05.Q21 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q03.Act21.Snap...Q21.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question21 <- curated05.Q21
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 22
+
+participant05.Q22 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q12-Act22-Data.csv", header=TRUE)
+attach (participant05.Q22)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q22 <- participant05.Q22 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q12.Act22.Snap...Q22.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question22 <- curated05.Q22
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 23
+
+participant05.Q23 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q17-Act23-Data.csv", header=TRUE)
+attach (participant05.Q23)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q23 <- participant05.Q23 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q17.Act23.Snap...Q23.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question23 <- curated05.Q23
+
+
+# --------------------------------------------------------------------------------------------------
+# Question 24
+
+participant05.Q24 <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-TOI-Q09-Act24-Data.csv", header=TRUE)
+attach (participant05.Q24)
+
+# Filters the rows with all NAs, keeps only the fixations of Eye tracker events, and repeated elements
+curated05.Q24 <- participant05.Q24 %>% filter(!across(everything(), is.na)) %>% 
+  filter(Eye.movement.type=="Fixation" & Sensor=="Eye Tracker") %>% 
+  select(Eye.movement.type.index, Gaze.event.duration..ms., starts_with("AOI.hit")) %>%
+  distinct() %>%
+  # renames the column names to be standard across the answers
+  rename(Index=Eye.movement.type.index) %>%
+  rename(Duration=Gaze.event.duration..ms.) %>%
+  rename(Answer=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.Answer.) %>%
+  rename(Buttons=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.Buttons.) %>% 
+  rename(CTC=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.CTC.) %>%  
+  rename(FM=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.FMAOI.) %>%
+  rename(Legend=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.Legend.) %>% 
+  rename(Question=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.Question.) %>%
+  rename(Window=AOI.hit..P05.TOI.Q09.Act24.Snap...Q24.Window.) %>%
+  filter(Window=="1") %>%
+  select(Index,Duration,Answer,Buttons,CTC,FM,Legend,Question,Window)
+
+question24 <- curated05.Q24
+
