@@ -719,3 +719,144 @@ curated05.Q24 <- participant05.Q24 %>% filter(!across(everything(), is.na)) %>%
 
 question24 <- curated05.Q24
 
+
+# TODO
+# 1) To all the question frames add the participant number and the question number
+
+question01$Participant <- rep(5,nrow(question01))
+question01$QN <- rep(1,nrow(question01)) 
+question01 <- question01 %>% relocate(Participant, .before = Index)
+question01 <- question01 %>% relocate(QN, .before = Index)
+
+question02$Participant <- rep(5,nrow(question02))
+question02$QN <- rep(2,nrow(question02)) 
+question02 <- question02 %>% relocate(Participant, .before = Index)
+question02 <- question02 %>% relocate(QN, .before = Index)
+
+question03$Participant <- rep(5,nrow(question03))
+question03$QN <- rep(3,nrow(question03)) 
+question03 <- question03 %>% relocate(Participant, .before = Index)
+question03 <- question03 %>% relocate(QN, .before = Index)
+
+question04$Participant <- rep(5,nrow(question04))
+question04$QN <- rep(4,nrow(question04)) 
+question04 <- question04 %>% relocate(Participant, .before = Index)
+question04 <- question04 %>% relocate(QN, .before = Index)
+
+question05$Participant <- rep(5,nrow(question05))
+question05$QN <- rep(5,nrow(question05)) 
+question05 <- question05 %>% relocate(Participant, .before = Index)
+question05 <- question05 %>% relocate(QN, .before = Index)
+
+question06$Participant <- rep(5,nrow(question06))
+question06$QN <- rep(6,nrow(question06)) 
+question06 <- question06 %>% relocate(Participant, .before = Index)
+question06 <- question06 %>% relocate(QN, .before = Index)
+
+question07$Participant <- rep(5,nrow(question07))
+question07$QN <- rep(7,nrow(question07)) 
+question07 <- question07 %>% relocate(Participant, .before = Index)
+question07 <- question07 %>% relocate(QN, .before = Index)
+
+question08$Participant <- rep(5,nrow(question08))
+question08$QN <- rep(8,nrow(question08)) 
+question08 <- question08 %>% relocate(Participant, .before = Index)
+question08 <- question08 %>% relocate(QN, .before = Index)
+
+question09$Participant <- rep(5,nrow(question09))
+question09$QN <- rep(9,nrow(question09)) 
+question09 <- question09 %>% relocate(Participant, .before = Index)
+question09 <- question09 %>% relocate(QN, .before = Index)
+
+question10$Participant <- rep(5,nrow(question10))
+question10$QN <- rep(10,nrow(question10)) 
+question10 <- question10 %>% relocate(Participant, .before = Index)
+question10 <- question10 %>% relocate(QN, .before = Index)
+
+
+
+question11$Participant <- rep(5,nrow(question11))
+question11$QN <- rep(11,nrow(question11)) 
+question11 <- question11 %>% relocate(Participant, .before = Index)
+question11 <- question11 %>% relocate(QN, .before = Index)
+
+question12$Participant <- rep(5,nrow(question12))
+question12$QN <- rep(12,nrow(question12)) 
+question12 <- question12 %>% relocate(Participant, .before = Index)
+question12 <- question12 %>% relocate(QN, .before = Index)
+
+question13$Participant <- rep(5,nrow(question13))
+question13$QN <- rep(13,nrow(question13)) 
+question13 <- question13 %>% relocate(Participant, .before = Index)
+question13 <- question13 %>% relocate(QN, .before = Index)
+
+question14$Participant <- rep(5,nrow(question14))
+question14$QN <- rep(14,nrow(question14)) 
+question14 <- question14 %>% relocate(Participant, .before = Index)
+question14 <- question14 %>% relocate(QN, .before = Index)
+
+question15$Participant <- rep(5,nrow(question15))
+question15$QN <- rep(15,nrow(question15)) 
+question15 <- question15 %>% relocate(Participant, .before = Index)
+question15 <- question15 %>% relocate(QN, .before = Index)
+
+question16$Participant <- rep(5,nrow(question16))
+question16$QN <- rep(16,nrow(question16)) 
+question16 <- question16 %>% relocate(Participant, .before = Index)
+question16 <- question16 %>% relocate(QN, .before = Index)
+
+question17$Participant <- rep(5,nrow(question17))
+question17$QN <- rep(17,nrow(question17)) 
+question17 <- question17 %>% relocate(Participant, .before = Index)
+question17 <- question17 %>% relocate(QN, .before = Index)
+
+question18$Participant <- rep(5,nrow(question18))
+question18$QN <- rep(18,nrow(question18)) 
+question18 <- question18 %>% relocate(Participant, .before = Index)
+question18 <- question18 %>% relocate(QN, .before = Index)
+
+question19$Participant <- rep(5,nrow(question19))
+question19$QN <- rep(19,nrow(question19)) 
+question19 <- question19 %>% relocate(Participant, .before = Index)
+question19 <- question19 %>% relocate(QN, .before = Index)
+
+question20$Participant <- rep(5,nrow(question20))
+question20$QN <- rep(20,nrow(question20)) 
+question20 <- question20 %>% relocate(Participant, .before = Index)
+question20 <- question20 %>% relocate(QN, .before = Index)
+
+
+question21$Participant <- rep(5,nrow(question21))
+question21$QN <- rep(21,nrow(question21)) 
+question21 <- question21 %>% relocate(Participant, .before = Index)
+question21 <- question21 %>% relocate(QN, .before = Index)
+
+question22$Participant <- rep(5,nrow(question22))
+question22$QN <- rep(22,nrow(question22)) 
+question22 <- question22 %>% relocate(Participant, .before = Index)
+question22 <- question22 %>% relocate(QN, .before = Index)
+
+question23$Participant <- rep(5,nrow(question23))
+question23$QN <- rep(23,nrow(question23)) 
+question23 <- question23 %>% relocate(Participant, .before = Index)
+question23 <- question23 %>% relocate(QN, .before = Index)
+
+question24$Participant <- rep(5,nrow(question24))
+question24$QN <- rep(24,nrow(question24)) 
+question24 <- question24 %>% relocate(Participant, .before = Index)
+question24 <- question24 %>% relocate(QN, .before = Index)
+
+
+# 2) Merge all the questions into a single frame and save it
+
+participant05.all.questions <- rbind(question01, question02, question03, question04, question05,
+                                     question06, question07, question08, question09, question10,
+                                     question11, question12, question13, question14, question15,
+                                     question16, question17, question18, question19, question20,
+                                     question21, question22, question23, question24)
+
+write.csv(participant05.all.questions,file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-Transitions-Data.csv"
+, row.names = FALSE)
+
+
+
