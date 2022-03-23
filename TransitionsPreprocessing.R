@@ -855,8 +855,9 @@ participant05.all.questions <- rbind(question01, question02, question03, questio
                                      question16, question17, question18, question19, question20,
                                      question21, question22, question23, question24)
 
-write.csv(participant05.all.questions,file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-Transitions-Data.csv"
-, row.names = FALSE)
+write.csv(participant05.all.questions,
+          file = "../../Experiment-Data/Eye-tracking-data-samples/PartP05/P05-Transitions-Data.csv", 
+          row.names = FALSE)
 
 
 
