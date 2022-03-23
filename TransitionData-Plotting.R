@@ -13,20 +13,27 @@ participant05.data <- read.csv(file ="../../Experiment-Data/Eye-tracking-data-sa
 attach (participant05.data)
 
 # For all the participant data, create a row with the form:
-# Participant, QN, 1..6 AOI ID, Duration
+# Participant, QN, 1..6 AOI ID, FN fixation number, Duration
 
 raw.df <- data.frame()
-raw.df <- raw.df %>% add_column(Participant="Participant", QN="QN", IDAOI="IDAOI", Duration="Duration")
+raw.df <- raw.df %>% add_column(Participant="Participant", QN="QN", IDAOI="IDAOI", FN ="FN", Duration="Duration")
 
+# Assumption that all the fixations of a question and participant are sequentially put together
+# Set current question to the first in the data frame
+current.qn <- participant05.data$QN[1]
+# Keeps the counter of how many fixations per question
+fixation.counter <- 1
+
+# Loop for all the data of the participant
 for (i in 1:nrow(participant05.data)) {
   row.data <- participant05.data[i,]
   
-  new.row <- c(row.data$Participant, row.data$QN, 0, row.data$Duration)  
-
-#  raw.df <- raw.df %>% add_row(Participant=row.data$Participant,
-#                     QN = row.data$QN,
-#                     IDAOI = row.data$Index,
-#                     Duration = row.data$Duration)
+  # if a new question number is found, set current question and reset fixation counter to 1
+  if (row.data$QN != current.qn) {
+     current.qn <- row.data$QN
+     fixation.counter <- 1
+  }
+  
 
   # Answer=1, Buttons=2, CTC=3, FM=4, Legend=5, Question=6, Window=7
   aoi.fixation <- 0 
@@ -68,14 +75,49 @@ for (i in 1:nrow(participant05.data)) {
     stop("Error in data")
   } 
     
-  raw.df[i,] = c(row.data$Participant,row.data$QN,aoi.fixation,row.data$Duration)
+  # Adds the new row to the 
+  raw.df[i,] = c(row.data$Participant,row.data$QN,aoi.fixation,fixation.counter, row.data$Duration)
   
   print (i)
-  print (new.row)
-}
+  # print (new.row)
+  
+  # increments the row number
+  fixation.counter <- fixation.counter + 1
+  
+} # end of for all the data
+
+
+## Transforming the columns into numerical values
+raw.df <- raw.df %>%
+  mutate(Participant = as.numeric(Participant)) %>%
+  mutate(QN = as.numeric(QN)) %>%
+  mutate(IDAOI = as.factor(IDAOI)) %>%
+  mutate(FN = as.numeric(FN)) %>%
+  mutate(Duration = as.numeric(Duration))
+
+
+
+# Plot test 1
+# Simple scatter plot, x axis = FN, y axis = QN, color based on IDAOI values 1..7
+scatter.squence.p05 <- raw.df %>%
+  ggplot(aes (x=FN, y=QN)) +
+  geom_point(aes(color=IDAOI)) +
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence") +
+  scale_color_brewer(palette = "Set2", name="AOI")
+scatter.squence.p05
 
 
 # TODO 
-# Keep the counter per question to add a sequencial number for each fixation in a question
-# Transform the resulting columns to nuerical factors all the columns
+# Done - Keep the counter per question to add a sequencial number for each fixation in a question
+# Done - Transform the resulting columns to numerical factors all the columns
 # Explore first plotting examples
+
+
+
+################################################
+#  new.row <- c(row.data$Participant, row.data$QN, 0, row.data$Duration)  
+#  raw.df <- raw.df %>% add_row(Participant=row.data$Participant,
+#                     QN = row.data$QN,
+#                     IDAOI = row.data$Index,
+#                     Duration = row.data$Duration)
