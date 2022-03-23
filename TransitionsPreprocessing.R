@@ -7,6 +7,7 @@ library(hrbrthemes)
 library(dplyr)
 
 
+# Example of the code that needs to be generated for each participant to compute the transitions
 
 # --------------------------------------------------------------------------------------------------
 # Question 1
