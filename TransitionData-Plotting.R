@@ -95,7 +95,9 @@ raw.df <- raw.df %>%
   mutate(FN = as.numeric(FN)) %>%
   mutate(Duration = as.numeric(Duration))
 
-
+################################################################################################
+################################################################################################
+################################################################################################
 
 # Plot test 1
 # Simple scatter plot, x axis = FN, y axis = QN, color based on IDAOI values 1..7
@@ -167,21 +169,99 @@ stacked2.chart.p05 <- raw.df %>%
 stacked2.chart.p05
 
 
- # + 
-#  scale_fill_manual(values = c('red','blue'))
+# Example of geom_rect
+# http://sape.inf.usi.ch/quick-reference/ggplot2/geom_rect
+d=data.frame(x1=c(1,3,1,5,4), x2=c(2,4,3,6,6), y1=c(1,1,4,1,3), y2=c(2,2,5,3,5), 
+             t=c('a','a','a','b','b'), r=c(1,2,3,4,5))
+ggplot() + 
+  scale_x_continuous(name="x") + 
+  scale_y_continuous(name="y") +
+  geom_rect(data=d, mapping=aes(xmin=x1, xmax=x2, ymin=y1, ymax=y2, fill=t), color="black", alpha=0.5) +
+  geom_text(data=d, aes(x=x1+(x2-x1)/2, y=y1+(y2-y1)/2, label=r), size=4) 
+ # +
+#  opts(title="geom_rect", plot.title=theme_text(size=40, vjust=1.5))
 
 
 
+
+# Plot test 7
+# Plot with rectangles to show duration and sequence
+
+# Creates a copy of the raw.df for an individual, adds the columns for the rectangle coordinates
+raw.rectangle.df <- raw.df
+raw.rectangle.df$Xmin <- rep(0,nrow(raw.rectangle.df))
+raw.rectangle.df$Xmax <- rep(0,nrow(raw.rectangle.df))
+raw.rectangle.df$Ymin <- rep(0,nrow(raw.rectangle.df))
+raw.rectangle.df$Ymax <- rep(0,nrow(raw.rectangle.df))
+
+
+# Assumption that all the fixations of a question and participant are sequentially put together
+# Set current row to be the first question in the data frame
+current.qn <- raw.rectangle.df$QN[1]
+
+# Initializes the counters for the rectangle coordinates
+x.accum <- 0
+y.accum <- 1
+
+# Loop for all the data of the participant
+for (i in 1:nrow(raw.rectangle.df)) {
+  row.data <- raw.rectangle.df [i,]
+
+  # Checks if it has reached a new question
+  # If a new question number is found, set current question and reset fixation counter to 1
+  if (row.data$QN != current.qn) {
+    current.qn <- row.data$QN           # sets the new current row for comparison
+    x.accum <- 0                        # resets x coordinate to zero
+    y.accum <- y.accum + 1              # increments to the next question
+  } #
+  
+  # Assigns coordinates to the new rectangle 
+  raw.rectangle.df[i,]$Xmin <- x.accum                  # starting x accumulated
+  x.accum <- x.accum + raw.rectangle.df[i,]$Duration    # increments x coordinate by width of duration
+  raw.rectangle.df[i,]$Xmax <- x.accum                  # maximum is the new accumulated
+  raw.rectangle.df[i,]$Ymin <- y.accum                  # starts from the current question
+  raw.rectangle.df[i,]$Ymax <- y.accum + 1              # sets the maximum, one point higher
+
+  print (c(i, 
+         raw.rectangle.df[i,]$Xmin, raw.rectangle.df[i,]$Xmax, 
+         raw.rectangle.df[i,]$Ymin, raw.rectangle.df[i,]$Ymax))
+  
+} # end of for all the data
+
+# Computes the plot for the rectangles with the duration in milisecs
+rect.plot <- raw.rectangle.df %>% 
+  ggplot() + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), 
+            color="black", alpha=0.5) + 
+  scale_x_continuous(name="x") + 
+  scale_y_continuous(name="y") 
+# +
+# geom_text(data=d, aes(x=x1+(x2-x1)/2, y=y1+(y2-y1)/2, label=r), size=4) 
+rect.plot
+
+
+################################################################################################
+################################################################################################
+################################################################################################
 
 
 # TODO 
+# 2022-03-23 
 # Done - Keep the counter per question to add a sequencial number for each fixation in a question
 # Done - Transform the resulting columns to numerical factors all the columns
-# Explore first plotting examples
+# Done Explore first plotting examples
+#
+# 2022-03-24
+# Explore rectangle plots for showing sequence and duration of transtitions
 
 
 
-################################################
+
+
+################################################################################################
+################################################################################################
+################################################################################################
+
 #  new.row <- c(row.data$Participant, row.data$QN, 0, row.data$Duration)  
 #  raw.df <- raw.df %>% add_row(Participant=row.data$Participant,
 #                     QN = row.data$QN,
