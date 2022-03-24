@@ -108,6 +108,21 @@ scatter.squence.p05 <- raw.df %>%
   scale_y_discrete(limits=seq(1, 24, 1))
 scatter.squence.p05
 
+# Plot test 2
+# Plot like a tile sequence
+# https://stackoverflow.com/questions/10232525/geom-tile-heatmap-with-different-high-fill-colours-based-on-factor
+tile.sequence.p05 <- raw.df %>%
+  ggplot(aes(x = FN, y= QN, fill=IDAOI)) + # ,alpha = z  
+  geom_tile() + 
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence") +
+  scale_color_brewer(palette = "Set1", name="AOI") +   
+  scale_y_discrete(limits=seq(1, 24, 1))
+tile.sequence.p05
+
+ # + 
+#  scale_fill_manual(values = c('red','blue'))
+
 
 # TODO 
 # Done - Keep the counter per question to add a sequencial number for each fixation in a question
