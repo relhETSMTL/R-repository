@@ -233,11 +233,24 @@ rect.plot <- raw.rectangle.df %>%
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), 
             color="black", alpha=0.5) + 
-  scale_x_continuous(name="x") + 
-  scale_y_continuous(name="y") 
-# +
-# geom_text(data=d, aes(x=x1+(x2-x1)/2, y=y1+(y2-y1)/2, label=r), size=4) 
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence and duration (msec)", fill ="AOI") +
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 rect.plot
+
+
+# Plot test 7
+# Plot with rectangles without borders to show duration and sequence
+# Computes the plot for the rectangles with the duration in milisecs
+rect.plot2 <- raw.rectangle.df %>% 
+  ggplot() + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), 
+            alpha=0.5) + 
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence and duration (msec)", fill ="AOI") +
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
+rect.plot2
+
 
 
 ################################################################################################
