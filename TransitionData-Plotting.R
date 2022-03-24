@@ -135,8 +135,7 @@ tile2.sequence.p05
 
 
 # Plot test 4
-# Plot like a tile sequence
-# https://stackoverflow.com/questions/10232525/geom-tile-heatmap-with-different-high-fill-colours-based-on-factor
+# Plot like a tile sequence with spaces
 tile3.sequence.p05 <- raw.df %>%
   ggplot(aes(x = FN, y= QN)) + # ,alpha = z  
   geom_tile(aes(fill=IDAOI, width=0.7, height=0.7), size=3) + 
@@ -146,9 +145,33 @@ tile3.sequence.p05 <- raw.df %>%
   scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
 tile3.sequence.p05
 
+# Plot test 5
+# Plot stacked charts, fractions per
+stacked.chart.p05 <- raw.df %>%
+  ggplot(aes(fill=IDAOI, y=FN, x=QN)) + 
+  coord_flip() +
+  labs(x = "Question number", y = "AOI percentage", fill ="AOI") +
+  scale_x_discrete(limits=as.factor(seq(1, 24, 1))) +
+  geom_bar(position="fill", stat="identity") 
+stacked.chart.p05
+
+
+# Plot test 6
+# Plot stacked charts, fractions per
+stacked2.chart.p05 <- raw.df %>%
+  ggplot(aes(fill=IDAOI, y=FN, x=QN)) + 
+  coord_flip() +
+  labs(x = "Question number", y = "AOI percentage", fill ="AOI") +
+  scale_x_discrete(limits=as.factor(seq(1, 24, 1))) +
+  geom_bar(position="fill", stat="identity") 
+stacked2.chart.p05
+
 
  # + 
 #  scale_fill_manual(values = c('red','blue'))
+
+
+
 
 
 # TODO 
