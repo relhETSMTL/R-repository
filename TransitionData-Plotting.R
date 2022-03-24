@@ -105,7 +105,7 @@ scatter.squence.p05 <- raw.df %>%
   theme_minimal() +
   labs(y = "Question number", x = "Fixation sequence") +
   scale_color_brewer(palette = "Set1", name="AOI") +   
-  scale_y_discrete(limits=seq(1, 24, 1))
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
 scatter.squence.p05
 
 # Plot test 2
@@ -115,10 +115,37 @@ tile.sequence.p05 <- raw.df %>%
   ggplot(aes(x = FN, y= QN, fill=IDAOI)) + # ,alpha = z  
   geom_tile() + 
   theme_minimal() +
-  labs(y = "Question number", x = "Fixation sequence") +
+  labs(y = "Question number", x = "Fixation sequence", fill="AOI") +
   scale_color_brewer(palette = "Set1", name="AOI") +   
-  scale_y_discrete(limits=seq(1, 24, 1))
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
 tile.sequence.p05
+
+
+# Plot test 3
+# Plot like a tile sequence
+# https://stackoverflow.com/questions/10232525/geom-tile-heatmap-with-different-high-fill-colours-based-on-factor
+tile2.sequence.p05 <- raw.df %>%
+  ggplot(aes(x = FN, y= QN, fill=IDAOI)) + # ,alpha = z  
+  geom_tile(aes(width=0.7, height=0.7), size=3) + 
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence", fill ="AOI") +
+#  scale_color_brewer(palette = "Set1", name="AOI") +   
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
+tile2.sequence.p05
+
+
+# Plot test 4
+# Plot like a tile sequence
+# https://stackoverflow.com/questions/10232525/geom-tile-heatmap-with-different-high-fill-colours-based-on-factor
+tile3.sequence.p05 <- raw.df %>%
+  ggplot(aes(x = FN, y= QN)) + # ,alpha = z  
+  geom_tile(aes(fill=IDAOI, width=0.7, height=0.7), size=3) + 
+  theme_minimal() +
+  labs(y = "Question number", x = "Fixation sequence", fill ="AOI") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
+tile3.sequence.p05
+
 
  # + 
 #  scale_fill_manual(values = c('red','blue'))
