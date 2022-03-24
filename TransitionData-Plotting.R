@@ -164,6 +164,7 @@ stacked2.chart.p05 <- raw.df %>%
   ggplot(aes(fill=IDAOI, y=FN, x=QN)) + 
   coord_flip() +
   labs(x = "Question number", y = "AOI percentage", fill ="AOI") +
+  scale_fill_brewer(palette="Set1") +
   scale_x_discrete(limits=as.factor(seq(1, 24, 1))) +
   geom_bar(position="fill", stat="identity") 
 stacked2.chart.p05
@@ -232,8 +233,9 @@ for (i in 1:nrow(raw.rectangle.df)) {
 rect.plot <- raw.rectangle.df %>% 
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), 
-            color="black", alpha=0.5) + 
+            color="black", alpha=0.9) + 
   theme_minimal() +
+  scale_fill_brewer(palette="Set1") +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 rect.plot
@@ -242,14 +244,17 @@ rect.plot
 # Plot test 7
 # Plot with rectangles without borders to show duration and sequence
 # Computes the plot for the rectangles with the duration in milisecs
+# Remove the gray plot "#999999"
 rect.plot2 <- raw.rectangle.df %>% 
   ggplot() + 
-  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), 
-            alpha=0.5) + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
   theme_minimal() +
+  scale_fill_brewer(palette="Set1") +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 rect.plot2
+
+
 
 
 
@@ -280,3 +285,7 @@ rect.plot2
 #                     QN = row.data$QN,
 #                     IDAOI = row.data$Index,
 #                     Duration = row.data$Duration)
+
+# Color bling palette values
+# cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+#  scale_fill_manual(cbPalette) +
