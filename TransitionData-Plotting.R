@@ -41,33 +41,33 @@ for (i in 1:nrow(participant05.data)) {
   
   # Indicated the selected AOI of the fixation
   if (row.data$Answer=="1") {
-    aoi.fixation <- 1
+    aoi.fixation <- "Answer"
     num.selected.aois <-  num.selected.aois + 1
   }
   if (row.data$Buttons=="1") {
-    aoi.fixation <- 2
+    aoi.fixation <- "Buttons"
     num.selected.aois <-  num.selected.aois + 1
   }
   if (row.data$CTC=="1") {
-    aoi.fixation <- 3
+    aoi.fixation <- "CTC"
     num.selected.aois <-  num.selected.aois + 1
   }
   if (row.data$FM =="1") {
-    aoi.fixation <- 4
+    aoi.fixation <- "FM"
     num.selected.aois <-  num.selected.aois + 1
   }
   if (row.data$Legend=="1") {
-    aoi.fixation <- 5
+    aoi.fixation <- "Legend"
     num.selected.aois <-  num.selected.aois + 1
   }
   if (row.data$Question=="1") {
-    aoi.fixation <- 6
+    aoi.fixation <- "Question"
     num.selected.aois <-  num.selected.aois + 1
   }
   
   # if no AOI fixation was selected then mark it as Window, i.e. not in any AOI
   if (aoi.fixation == 0) {
-    aoi.fixation <- 7
+    aoi.fixation <- "Window"
   }
 
   # Error checking
@@ -101,10 +101,11 @@ raw.df <- raw.df %>%
 # Simple scatter plot, x axis = FN, y axis = QN, color based on IDAOI values 1..7
 scatter.squence.p05 <- raw.df %>%
   ggplot(aes (x=FN, y=QN)) +
-  geom_point(aes(color=IDAOI)) +
+  geom_point(aes(color=IDAOI),size=5) + # , size=5
   theme_minimal() +
   labs(y = "Question number", x = "Fixation sequence") +
-  scale_color_brewer(palette = "Set2", name="AOI")
+  scale_color_brewer(palette = "Set1", name="AOI") +   
+  scale_y_discrete(limits=seq(1, 24, 1))
 scatter.squence.p05
 
 
