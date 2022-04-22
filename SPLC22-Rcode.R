@@ -234,12 +234,16 @@ bars.4.3 <- correct.incorrect.df %>% filter (NoF==4 & NoC==3) %>%
 ##################
 
 library(gridExtra)
+library(grid)
 
 # Creates the grid for the tables
-grid.arrange(bars.1.1, bars.2.1, bars.3.1, bars.4.1,
+grid.data <- grid.arrange(bars.1.1, bars.2.1, bars.3.1, bars.4.1,
              bars.1.2, bars.2.2, bars.3.1, bars.4.2,
              bars.1.3, bars.2.3, bars.3.3, bars.4.3,
-             ncol=4, nrow=3) 
+             ncol=4, nrow=3,
+             bottom = textGrob("NoF Ranges (1)..(4)",gp=gpar(fontsize=20,font=3)),
+             left = textGrob("NoC Ranges (1)..(3)", rot=90, gp=gpar(fontsize=20,font=3)))
+
 
 
 ##################################################################################################
