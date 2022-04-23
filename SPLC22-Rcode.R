@@ -417,11 +417,11 @@ ctc.df[12,1] <- 'time'
 ctc.df[12,2] <- 'Question'
 ctc.df[12,3] <- ctc.avg.perc.time.Question  
 
-% Changes the order to 
+# Changes the order to 
 ctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
-ctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+ctc.plot <- ctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
   geom_bar(position="fill", stat="identity") +
-  labs(x="Proportion of Fixation Time and Time Count for Tasks with CTCs per AOI", y="") 
+  labs(x="With CTCs", y="") 
 
 # Computing the data for without CTCs
 
@@ -483,9 +483,27 @@ noctc.df[12,2] <- 'Question'
 noctc.df[12,3] <- noctc.avg.perc.time.Question  
 
 noctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
-noctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+
+noctc.plot <- noctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
   geom_bar(position="fill", stat="identity") +
-  labs(x="Proportion of Fixation Time and Time Count for Tasks without CTCs per AOI", y="") 
+  labs(x="No CTCs", y="") 
+
+
+
+# Test of merging the plots into a single figure
+# https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+library(cowplot)
+prow <- plot_grid(ctc.plot + theme(legend.position="none"),
+                   noctc.plot + theme(legend.position="none"),
+                   align = 'vh',
+                   # labels = c("CTC", "no CTC"),
+                   hjust = -1,
+                   nrow = 1)
+
+legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
+fixation.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
+fixation.plot
+
 
 ####################################################################################################
 ####################################################################################################
