@@ -417,10 +417,75 @@ ctc.df[12,1] <- 'time'
 ctc.df[12,2] <- 'Question'
 ctc.df[12,3] <- ctc.avg.perc.time.Question  
 
+% Changes the order to 
+ctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
 ctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity")
+  geom_bar(position="fill", stat="identity") +
+  labs(x="Proportion of Fixation Time and Time Count for Tasks with CTCs per AOI", y="") 
+
+# Computing the data for without CTCs
+
+# Creates the data frame with the information, 4 NoF, 3 NoC, correct, incorrect, Number
+noctc.df <- data.frame(matrix(nrow = 2 * 6, ncol = 3))
+columnNamesCTC <- c("Measure", "AOI", "Percentage")
+colnames(noctc.df) <- columnNamesCTC
+
+noctc.df[1,1] <- 'count'
+noctc.df[1,2] <- 'Answer'
+noctc.df[1,3] <- noctc.avg.perc.fixations.Answer
+
+noctc.df[2,1] <- 'count'
+noctc.df[2,2] <- 'Buttons'
+noctc.df[2,3] <- noctc.avg.perc.fixations.Buttons
+
+noctc.df[3,1] <- 'count'
+noctc.df[3,2] <- 'CTC'
+noctc.df[3,3] <- noctc.avg.perc.fixations.CTC
 
 
+noctc.df[4,1] <- 'count'
+noctc.df[4,2] <- 'FM'
+noctc.df[4,3] <-  noctc.avg.perc.fixations.FM 
+
+noctc.df[5,1] <- 'count'
+noctc.df[5,2] <- 'Legend'
+noctc.df[5,3] <-  noctc.avg.perc.fixations.Legend  
+
+
+noctc.df[6,1] <- 'count'
+noctc.df[6,2] <- 'Question'
+noctc.df[6,3] <- noctc.avg.perc.fixations.Question  
+
+noctc.df[7,1] <- 'time'
+noctc.df[7,2] <- 'Answer'
+noctc.df[7,3] <- noctc.avg.perc.time.Answer  
+
+noctc.df[8,1] <- 'time'
+noctc.df[8,2] <- 'Buttons'
+noctc.df[8,3] <- noctc.avg.perc.time.Buttons
+
+noctc.df[9,1] <- 'time'
+noctc.df[9,2] <- 'CTC'
+noctc.df[9,3] <- noctc.avg.perc.time.CTC
+
+
+noctc.df[10,1] <- 'time'
+noctc.df[10,2] <- 'FM'
+noctc.df[10,3] <-  noctc.avg.perc.time.FM 
+
+noctc.df[11,1] <- 'time'
+noctc.df[11,2] <- 'Legend'
+noctc.df[11,3] <-  noctc.avg.perc.time.Legend  
+
+
+noctc.df[12,1] <- 'time'
+noctc.df[12,2] <- 'Question'
+noctc.df[12,3] <- noctc.avg.perc.time.Question  
+
+noctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
+noctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity") +
+  labs(x="Proportion of Fixation Time and Time Count for Tasks without CTCs per AOI", y="") 
 
 ####################################################################################################
 ####################################################################################################
