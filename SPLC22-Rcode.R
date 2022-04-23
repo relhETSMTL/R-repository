@@ -326,16 +326,120 @@ grid.data <- grid.arrange(boxplot.3, boxplot.2, boxplot.1,
 
 ####################################################################################################
 
-# Questions with CTC
+# Plot to support the creation of 
 
 data.CTC    <- experiment.complete.data %>% filter (fixations.CTC!=0.0)
 data.noCTC  <- experiment.complete.data %>% filter (fixations.CTC==0.0)
 
-avg.perc.fixations.Answer <- mean (experiment.complete.data$perc.fixations.Answer)
+ctc.avg.perc.fixations.Answer <- mean (data.CTC$perc.fixations.Answer)
+ctc.avg.perc.fixations.Buttons <- mean (data.CTC$perc.fixations.Buttons)
+ctc.avg.perc.fixations.CTC <- mean (data.CTC$perc.fixations.CTC)
+ctc.avg.perc.fixations.FM <- mean (data.CTC$perc.fixations.FM)
+ctc.avg.perc.fixations.Legend <- mean (data.CTC$perc.fixations.Legend)
+ctc.avg.perc.fixations.Question <- mean (data.CTC$perc.fixations.Question)
+
+noctc.avg.perc.fixations.Answer <- mean (data.noCTC$perc.fixations.Answer)
+noctc.avg.perc.fixations.Buttons <- mean (data.noCTC$perc.fixations.Buttons)
+noctc.avg.perc.fixations.CTC <- mean (data.noCTC$perc.fixations.CTC)
+noctc.avg.perc.fixations.FM <- mean (data.noCTC$perc.fixations.FM)
+noctc.avg.perc.fixations.Legend <- mean (data.noCTC$perc.fixations.Legend)
+noctc.avg.perc.fixations.Question <- mean (data.noCTC$perc.fixations.Question)
+
+ctc.avg.perc.time.Answer <- mean (data.CTC$perc.time.Answer)
+ctc.avg.perc.time.Buttons <- mean (data.CTC$perc.time.Buttons)
+ctc.avg.perc.time.CTC <- mean (data.CTC$perc.time.CTC)
+ctc.avg.perc.time.FM <- mean (data.CTC$perc.time.FM)
+ctc.avg.perc.time.Legend <- mean (data.CTC$perc.time.Legend)
+ctc.avg.perc.time.Question <- mean (data.CTC$perc.time.Question)
+
+noctc.avg.perc.time.Answer <- mean (data.noCTC$perc.time.Answer)
+noctc.avg.perc.time.Buttons <- mean (data.noCTC$perc.time.Buttons)
+noctc.avg.perc.time.CTC <- mean (data.noCTC$perc.time.CTC)
+noctc.avg.perc.time.FM <- mean (data.noCTC$perc.time.FM)
+noctc.avg.perc.time.Legend <- mean (data.noCTC$perc.time.Legend)
+noctc.avg.perc.time.Question <- mean (data.noCTC$perc.time.Question)
+
+
+# Creates the data frame with the information, 4 NoF, 3 NoC, correct, incorrect, Number
+ctc.df <- data.frame(matrix(nrow = 2 * 6, ncol = 3))
+columnNamesCTC <- c("Measure", "AOI", "Percentage")
+colnames(ctc.df) <- columnNamesCTC
+
+ctc.df[1,1] <- 'count'
+ctc.df[1,2] <- 'Answer'
+ctc.df[1,3] <- ctc.avg.perc.fixations.Answer
+
+ctc.df[2,1] <- 'count'
+ctc.df[2,2] <- 'Buttons'
+ctc.df[2,3] <- ctc.avg.perc.fixations.Buttons
+
+ctc.df[3,1] <- 'count'
+ctc.df[3,2] <- 'CTC'
+ctc.df[3,3] <- ctc.avg.perc.fixations.CTC
+
+
+ctc.df[4,1] <- 'count'
+ctc.df[4,2] <- 'FM'
+ctc.df[4,3] <-  ctc.avg.perc.fixations.FM 
+
+ctc.df[5,1] <- 'count'
+ctc.df[5,2] <- 'Legend'
+ctc.df[5,3] <-  ctc.avg.perc.fixations.Legend  
+
+
+ctc.df[6,1] <- 'count'
+ctc.df[6,2] <- 'Question'
+ctc.df[6,3] <- ctc.avg.perc.fixations.Question  
+
+ctc.df[7,1] <- 'time'
+ctc.df[7,2] <- 'Answer'
+ctc.df[7,3] <- ctc.avg.perc.time.Answer  
+
+ctc.df[8,1] <- 'time'
+ctc.df[8,2] <- 'Buttons'
+ctc.df[8,3] <- ctc.avg.perc.time.Buttons
+
+ctc.df[9,1] <- 'time'
+ctc.df[9,2] <- 'CTC'
+ctc.df[9,3] <- ctc.avg.perc.time.CTC
+
+
+ctc.df[10,1] <- 'time'
+ctc.df[10,2] <- 'FM'
+ctc.df[10,3] <-  ctc.avg.perc.time.FM 
+
+ctc.df[11,1] <- 'time'
+ctc.df[11,2] <- 'Legend'
+ctc.df[11,3] <-  ctc.avg.perc.time.Legend  
+
+
+ctc.df[12,1] <- 'time'
+ctc.df[12,2] <- 'Question'
+ctc.df[12,3] <- ctc.avg.perc.time.Question  
+
+ctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity")
+
 
 
 ####################################################################################################
 ####################################################################################################
+
+# Example of stacked bar
+# https://r-graph-gallery.com/48-grouped-barplot-with-ggplot2.html
+# create a dataset
+specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
+condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
+value <- abs(rnorm(12 , 0 , 15))
+data <- data.frame(specie,condition,value)
+
+# Stacked + percent
+ggplot(data, aes(fill=condition, y=value, x=specie)) + 
+  geom_bar(position="fill", stat="identity")
+
+
+
+
 # Tree map example
 # https://r-charts.com/part-whole/treemapify/
 
