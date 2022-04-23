@@ -420,7 +420,8 @@ ctc.df[12,3] <- ctc.avg.perc.time.Question
 # Changes the order to 
 ctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
 ctc.plot <- ctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity") +
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
   labs(x="With CTCs", y="") 
 
 # Computing the data for without CTCs
@@ -485,7 +486,8 @@ noctc.df[12,3] <- noctc.avg.perc.time.Question
 noctc.df$Measure <- factor(ctc.df$Measure, levels = c('time', 'count'))
 
 noctc.plot <- noctc.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity") +
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
   labs(x="No CTCs", y="") 
 
 
