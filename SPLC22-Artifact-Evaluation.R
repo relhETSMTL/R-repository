@@ -239,27 +239,12 @@ library(tidyverse)
 library(hrbrthemes)
 
 # File reads the experiment data 
-curatedParticipantsData <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", header=TRUE)
-attach (curatedParticipantsData)
-
-# Response time of correct answers, plot with all the numbers
-participantCorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="True") %>% 
-  ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
-  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
-  #  coord_flip() +
-  labs(x="Question Number", y="Correct answers - Time secs") +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-  #  theme_minimal() +
-  #  scale_x_continuous(breaks=seq(1, 24, 1))
-  scale_x_discrete(limits=seq(1, 24, 1))  +
-  ylim(0, 300) +
-  scale_y_continuous(breaks=seq(0, 300, 60))
-participantCorrectResponseTime
+curatedParticipantsData <- experiment.complete.data
 
 
 
 # NoC=1 
-boxplot.1 <- curatedParticipantsData %>% filter(Correct=="True" & NoC==1) %>% 
+boxplot.1 <- curatedParticipantsData %>% filter(Correct=="2" & NoC==1) %>% 
   ggplot(aes(x=NoF, group=NoF, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="lightblue", alpha=0.8) +
   labs(x="", y="") +
@@ -271,7 +256,7 @@ boxplot.1
 
 
 # NoC=2 
-boxplot.2 <- curatedParticipantsData %>% filter(Correct=="True" & NoC==2) %>% 
+boxplot.2 <- curatedParticipantsData %>% filter(Correct=="2" & NoC==2) %>% 
   ggplot(aes(x=NoF, group=NoF, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="lightblue", alpha=0.8) +
   labs(x="", y="") +
@@ -283,7 +268,7 @@ boxplot.2
 
 
 # NoC=3 
-boxplot.3 <- curatedParticipantsData %>% filter(Correct=="True" & NoC==3) %>% 
+boxplot.3 <- curatedParticipantsData %>% filter(Correct=="2" & NoC==3) %>% 
   ggplot(aes(x=NoF, group=NoF, ElapsedTime/1000)) +
   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="lightblue", alpha=0.8) +
   labs(x="", y="") +
