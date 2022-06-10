@@ -27,10 +27,12 @@ attach(experiment.complete.data)
 # Figure 3
 # Correct and Incorrect Responses per NoF and NoC
 
-responses.data <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", 
-                           header=TRUE)
-attach(responses.data)
+# responses.data <- read.csv(file = "../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", 
+#                           header=TRUE)
+# attach(responses.data)
 
+responses.data <- experiment.complete.data
+  
 # Creates the data frame with the information, 4 NoF, 3 NoC, correct, incorrect, Number
 correct.incorrect.df <- data.frame(matrix(nrow = 4 * 3 * 2, ncol = 4))
 columnNames <- c("NoF", "NoC", "Accuracy", "Number")
@@ -215,13 +217,13 @@ library(gridExtra)
 library(grid)
 
 # Creates the grid for the tables
-grid.data <- grid.arrange(bars.1.3, bars.2.3, bars.3.3, bars.4.3,
-                          bars.1.1, bars.2.1, bars.3.1, bars.4.1,
-                          bars.1.2, bars.2.2, bars.3.1, bars.4.2,
-                          ncol=4, nrow=3,
-                          bottom = textGrob("NoF Ranges (1)..(4)",gp=gpar(fontsize=15,font=3)),
-                          left = textGrob("NoC Ranges (1)..(3)", rot=90, gp=gpar(fontsize=15,font=3)))
-
+grid.data <- grid.arrange(
+  bars.1.3, bars.2.3, bars.3.3, bars.4.3,
+  bars.1.2, bars.2.2, bars.3.2, bars.4.2,
+  bars.1.1, bars.2.1, bars.3.1, bars.4.1,
+  ncol=4, nrow=3,
+  bottom = textGrob("NoF Ranges (1)..(4)",gp=gpar(fontsize=15,font=3)),
+  left = textGrob("NoC Ranges (1)..(3)", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 
