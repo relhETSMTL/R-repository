@@ -10,7 +10,7 @@ library(treemapify)
 
 ####################################################################################################
 
-
+  
 # Reads the participants data
 experiment.complete.data <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv", 
                 header=TRUE)
