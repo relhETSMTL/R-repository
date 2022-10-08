@@ -248,6 +248,36 @@ experimentDesign.data.frame[16,5] =mapCoverageToBoolean(sampledCoverage[4])
 # Writes out the experiment design file
 write.csv(experimentDesign.data.frame, "./FM-Visualization/ExperimentDesign.csv", row.names = FALSE, quote=FALSE)
 
+
+#####################
+
+# Creation of the random assignment of sequence of questions
+
+nQuestions <- 16
+nCombinations <- 50
+
+# Creates the data frame to save the combinations
+question.col.names <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14", "Q15", "Q16")
+
+questionSequences.data.frame <- 
+  setNames(data.frame(matrix(ncol = 16, nrow = 0)), question.col.names)
+
+# Loop that iterates over the number of combinations by adding a row to the frame
+for(i in 1:nCombinations) {
+  # Random order of the questions
+  samplei <- sample(1:nQuestions, nQuestions)
+
+  questionSequences.data.frame[i,] = sample(1:nQuestions, nQuestions)
+}
+
+
+# Writes out the random assignment file
+write.csv(questionSequences.data.frame, "./FM-Visualization/ParticipantsQuestionsAssignments.csv", row.names = FALSE, quote=FALSE)
+
+
+
+
+
 # Format of the generated file
 # QN	T	Vis	FM	Y-N
 # 1	2	1	FM1	Yes
