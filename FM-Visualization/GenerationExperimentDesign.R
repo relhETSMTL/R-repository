@@ -39,8 +39,8 @@ coverageAssignmentsOptions <- permutations(n = 4, r = 4, v = choices, repeats.al
 # Creating data frame to hold the experiment data matrix
 # QN - question number, T  strength 2 or 3, Vis visualization 1 or 2
 # FM feature model name
-# Y-N pair/triplet the expected correct answer is covered (True) or not (False) 
-column.names <- c("QN", "T", "Vis", "FM", "Y-N")
+# T-F pair/triplet the expected correct answer is covered (True) or not (False) 
+column.names <- c("QN", "T", "Vis", "FM", "T-F")
 
 experimentDesign.data.frame <- 
   setNames(data.frame(matrix(ncol = 5, nrow = 0)), column.names)
