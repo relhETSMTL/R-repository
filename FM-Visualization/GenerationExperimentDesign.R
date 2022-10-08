@@ -81,7 +81,7 @@ q2FM <- q2Data %>% sample_n(2)
 # Samples one combination of coverage assignments
 sampledNumber <- sample(24,1,replace=FALSE)
 sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
-
+sc1 <- sampledCoverage
 
 # Question 1
 experimentDesign.data.frame[1,1] ="1"
@@ -124,7 +124,7 @@ q2FM <- q2Data %>% sample_n(2)
 # Samples one combination of coverage assignments
 sampledNumber <- sample(24,1,replace=FALSE)
 sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
-
+sc2 <- sampledCoverage
 
 # Question 5
 experimentDesign.data.frame[5,1] ="5"
@@ -167,6 +167,7 @@ q2FM <- q2Data %>% sample_n(2)
 # Samples one combination of coverage assignments
 sampledNumber <- sample(24,1,replace=FALSE)
 sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
+sc3 <- sampledCoverage
 
 # Question 9
 experimentDesign.data.frame[9,1] ="9"
@@ -209,6 +210,7 @@ q2FM <- q2Data %>% sample_n(2)
 # Samples one combination of coverage assignments
 sampledNumber <- sample(24,1,replace=FALSE)
 sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
+sc4 <- sampledCoverage
 
 # Question 13
 experimentDesign.data.frame[13,1] ="13"
