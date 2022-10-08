@@ -7,8 +7,12 @@
 library(tidyverse)
 # library(hrbrthemes)
 
+#install.packages('gtools')  # install if necesssary
+library(gtools)
+
 # Seeds the random number generator for replicability
 set.seed(37)
+
 
 
 
@@ -22,9 +26,14 @@ attach (q2Data)
 
 
 # Loads the 16 alternatives for Covered Yes/No answers
-coverageAssignmentsData <- read.csv(file = "./FM-Visualization/ResponseAssignmentOptions.csv", header=TRUE)
-attach (coverageAssignmentsData)
+# coverageAssignmentsData <- read.csv(file = "./FM-Visualization/ResponseAssignmentOptions.csv", header=TRUE)
+# attach (coverageAssignmentsData)
 
+
+## Computes the 24 combinations of two True and two False for each of the matrix cell 2 x 2
+## 4 x 3 X 2 X 1 = 24 combinations
+choices <- c(1:4) # 1,2,3,4  different value assignments
+coverageAssignmentsOptions <- permutations(n = 4, r = 4, v = choices, repeats.allowed = FALSE)
 
 
 # CReating data frame to hold the experiment data matrix
@@ -44,8 +53,10 @@ experimentDesign.data.frame <-
 q1FM <- q1Data %>% sample_n(2)
 q2FM <- q2Data %>% sample_n(2)
 
-# Selection of coverage yes/no assignments
-coverage <- coverageAssignmentsData %>% sample_n(1)
+# Samples one combination of coverage assignments
+sampledNumber <- sample(24,1,replace=FALSE)
+sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
+
 
 # Question 1
 experimentDesign.data.frame[1,1] ="1"
@@ -85,8 +96,9 @@ experimentDesign.data.frame[4,5] =coverage$V4[1]
 q1FM <- q1Data %>% sample_n(2)
 q2FM <- q2Data %>% sample_n(2)
 
-# Selection of coverage yes/no assignments
-coverage <- coverageAssignmentsData %>% sample_n(1)
+# Samples one combination of coverage assignments
+sampledNumber <- sample(24,1,replace=FALSE)
+sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
 
 
 # Question 5
@@ -127,8 +139,9 @@ experimentDesign.data.frame[8,5] =coverage$V4[1]
 q1FM <- q1Data %>% sample_n(2)
 q2FM <- q2Data %>% sample_n(2)
 
-# Selection of coverage yes/no assignments
-coverage <- coverageAssignmentsData %>% sample_n(1)
+# Samples one combination of coverage assignments
+sampledNumber <- sample(24,1,replace=FALSE)
+sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
 
 # Question 9
 experimentDesign.data.frame[9,1] ="9"
@@ -168,8 +181,9 @@ experimentDesign.data.frame[12,5] =coverage$V4[1]
 q1FM <- q1Data %>% sample_n(2)
 q2FM <- q2Data %>% sample_n(2)
 
-# Selection of coverage yes/no assignments
-coverage <- coverageAssignmentsData %>% sample_n(1)
+# Samples one combination of coverage assignments
+sampledNumber <- sample(24,1,replace=FALSE)
+sampledCoverage <- coverageAssignmentsOptions[sampledNumber,]
 
 # Question 13
 experimentDesign.data.frame[13,1] ="13"
@@ -216,5 +230,28 @@ write.csv(experimentDesign.data.frame, "./FM-Visualization/ExperimentDesign.csv"
 # 3	2	1	FM5	No
 # 4	2	1	FM29	Yes
 
+
+## Testing the computation permutations of Yes, No
+
+# R starts with 1, so we need to create a list of 0 to 10
+choices = c(0:9)
+
+# n is the number of options, r is the number of groups, v is the value of our choices
+res = permutations(n = 10, r = 3, v = choices, repeats.allowed = FALSE)
+
+
+## For our purposes
+## 4 x 3 X 2 X 1 = 24 combinations
+choices = c(1:4)
+res = permutations(n = 4, r = 4, v = choices, repeats.allowed = FALSE)
+
+# Examples of obtaining the permutation data
+# > res[1,]
+# [1] 1 2 3 4
+# > res[1,][1]
+# [1] 1
+# > res[1,][2]
+# [1] 2
+# > res[21,][3]
 
 
