@@ -178,28 +178,23 @@ fm.dataframe <- data.frame(feature.model,number.pairs,number.triplets, array.pai
 write.csv(fm.dataframe,file = "../../../Eye-Tracking-Visualization/Experiment-Data/FeatureModelsData.csv", row.names = FALSE)
 
 
+####################################
+## Creation of the file Questions-MV-FM-Pairs
 
+ActualQuestionNumber <-c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+T <- c(2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3)
+Visualization.Method <-c("2D-PD","2D-PD","2D-PD","2D-PD","2D-SP","2D-SP","2D-SP","2D-SP",
+                         "3D-PD","3D-PD","3D-PD","3D-PD","3D-SP","3D-SP","3D-SP","3D-SP")
+feature.model <-c("FM02","FM05","FM08","FM07","FM09","FM10","FM08","FM04",
+                  "FM01","FM09","FM06","FM11","FM09","FM05","FM06","FM07")
 
+NumberElements <- c(num.fm02.pairs,num.fm05.pairs,num.fm08.pairs,num.fm07.pairs, # Fm02Par2, Fm05Par2, Fm08Par2, Fm07Par2
+                    num.fm09.pairs,num.fm10.pairs,num.fm08.pairs,num.fm04.pairs, # Fm09Scat2D, Fm10Scat2D, Fm08Scat2D, Fm04Scat2D
+                    num.fm01.triplets, num.fm09.triplets,num.fm06.triplets,num.fm11.triplets, # Fm01Par3, Fm09Par3, Fm06Par3, Fm11Par3
+                    num.fm09.triplets, num.fm05.triplets,num.fm06.triplets,num.fm07.triplets) # Fm09Scat3D, Fm05Scat3D, Fm06Scat3D, Fm07Scat3D
 
+map.question.vm.fm <- data.frame(ActualQuestionNumber,T,Visualization.Method,feature.model,NumberElements)
 
-# 
-# Fm02Par2
-# Fm05Par2
-# Fm08Par2
-# Fm07Par2
-# 
-# Fm09Scat2D
-# Fm10Scat2D
-# Fm08Scat2D
-# Fm04Scat2D
-# 
-# Fm01Par3
-# Fm09Par3
-# Fm06Par3
-# Fm11Par3
-# 
-# Fm09Scat3D
-# Fm05Scat3D
-# Fm06Scat3D
-# Fm07Scat3D
+# Saves the dataframe into a file
+write.csv(map.question.vm.fm,file = "../../../Eye-Tracking-Visualization/Experiment-Data/MappingQuestions-T-VM-Size.csv", row.names = FALSE)
 
