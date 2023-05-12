@@ -198,3 +198,21 @@ map.question.vm.fm <- data.frame(ActualQuestionNumber,T,Visualization.Method,fea
 # Saves the dataframe into a file
 write.csv(map.question.vm.fm,file = "../../../Eye-Tracking-Visualization/Experiment-Data/MappingQuestions-T-VM-Size.csv", row.names = FALSE)
 
+
+#####################################
+## Performs the join between the mapped questions to VM-T-FM and the participants data
+## The join is on the column ActualQuestionNumber
+
+joinedData <- full_join(participants.by.actualquestion,map.question.vm.fm)
+
+# Saves the joined dataframe into a file
+write.csv(joinedData,file = "../../../Eye-Tracking-Visualization/Experiment-Data/CompleteParticipantsResponseData.csv", row.names = FALSE)
+
+
+#####################################
+# TODO
+# Create the separated files for t=2 and t=3
+# Create updated variable dictionary file
+# Upload the files in the TransferETS repository
+
+
