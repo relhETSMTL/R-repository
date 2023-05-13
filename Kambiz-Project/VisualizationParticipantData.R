@@ -211,9 +211,10 @@ write.csv(joinedData,file = "../../../Eye-Tracking-Visualization/Experiment-Data
 
 #####################################
 # TODO
-# Create the separated files for t=2 and t=3
 # Create updated variable dictionary file
 # Upload the files in the TransferETS repository
+
+# Creates the separated files for t=2 and t=3
 
 t2.data <- joinedData %>% filter (T==2)
 write.csv(t2.data,file = "../../../Eye-Tracking-Visualization/Experiment-Data/2-ParticipantsResponses-Curated.csv", row.names = FALSE)
@@ -222,3 +223,36 @@ write.csv(t2.data,file = "../../../Eye-Tracking-Visualization/Experiment-Data/2-
 t3.data <- joinedData %>% filter (T==3)
 write.csv(t3.data,file = "../../../Eye-Tracking-Visualization/Experiment-Data/3-ParticipantsResponses-Curated.csv", row.names = FALSE)
 
+
+# Loads and cleans the curated data to remove unnecessary columns
+t2.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/2-ParticipantsResponses-Curated.csv", header=TRUE)
+t3.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/3-ParticipantsResponses-Curated.csv", header=TRUE)
+
+# Keeps the following columns in data frame - Question groups 1 and 2 of research questions
+# ParticipantsID, ActualQuestionNumber,IsCorrect,ElapsedTime,CertaintyAssessment,DifficultyLevel,Visualization.Method,NumberElements
+# Renaming: ParticipantsID -> ParticipantID, ActualQuestionNumber -> QuestionNumber, IsCorrect -> Accuracy
+
+t2.data.cleaned <- t2.data %>% 
+  select(ParticipantsID, ActualQuestionNumber,IsCorrect,ElapsedTime,CertaintyAssessment,DifficultyLevel,Visualization.Method,NumberElements) %>%
+  rename(Participant.ID="ParticipantsID",
+         Question.Number="ActualQuestionNumber",
+         Accuracy="IsCorrect",
+         Elapsed.Time="ElapsedTime",
+         Certainty.Assessment="CertaintyAssessment",
+         Difficulty.Level="DifficultyLevel",
+         Number.Elements="NumberElements")
+write.csv(t2.data.cleaned,file = "../../../Eye-Tracking-Visualization/Experiment-Data/2-ParticipantsResponses.csv", row.names = FALSE)
+
+
+
+
+t3.data.cleaned <- t3.data %>% 
+  select(ParticipantsID, ActualQuestionNumber,IsCorrect,ElapsedTime,CertaintyAssessment,DifficultyLevel,Visualization.Method,NumberElements) %>%
+  rename(Participant.ID="ParticipantsID",
+         Question.Number="ActualQuestionNumber",
+         Accuracy="IsCorrect",
+         Elapsed.Time="ElapsedTime",
+         Certainty.Assessment="CertaintyAssessment",
+         Difficulty.Level="DifficultyLevel",
+         Number.Elements="NumberElements")
+write.csv(t3.data.cleaned,file = "../../../Eye-Tracking-Visualization/Experiment-Data/3-ParticipantsResponses.csv", row.names = FALSE)
