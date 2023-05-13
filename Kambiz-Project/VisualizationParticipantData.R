@@ -215,4 +215,10 @@ write.csv(joinedData,file = "../../../Eye-Tracking-Visualization/Experiment-Data
 # Create updated variable dictionary file
 # Upload the files in the TransferETS repository
 
+t2.data <- joinedData %>% filter (T==2)
+write.csv(t2.data,file = "../../../Eye-Tracking-Visualization/Experiment-Data/2-ParticipantsResponses-Curated.csv", row.names = FALSE)
+
+
+t3.data <- joinedData %>% filter (T==3)
+write.csv(t3.data,file = "../../../Eye-Tracking-Visualization/Experiment-Data/3-ParticipantsResponses-Curated.csv", row.names = FALSE)
 
