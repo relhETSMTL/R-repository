@@ -202,7 +202,19 @@ grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
                           bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
                           left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
 
+
 #####
+# Tests of plotting difficulty level and certainty assessment
+# Note: Distribution of True vs False in the Difficulty Level and Certainty Assessment
+ggplot(allt.data, aes(x=Difficulty.Level, y=Certainty.Assessment)) + geom_point()
+
+ggplot(allt.data, aes(x=Difficulty.Level, y=Certainty.Assessment, shape=Accuracy, color=Accuracy)) +  #  
+  scale_color_manual(values=c("red", "green")) +
+  #scale_color_manual(values=c('#999999','#E69F00', '#56B4E9'))+ 
+  geom_point(size=5,alpha=0.5)
+
+
+
 
 # geom_bar(aes(fill=Accuracy, alpha=0.5)) +
 #  scale_fill_manual(values=c("green", "red")) +
