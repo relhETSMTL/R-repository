@@ -1,5 +1,6 @@
 # Kambiz project
 # Participants response data
+# Cleaning and producing files for t=2 and t=3
 
 library("tidyverse")
 
