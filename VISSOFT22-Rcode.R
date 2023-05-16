@@ -234,7 +234,8 @@ difficulty.level
 # Boxplots of difficulty level per question
 # Note: Here the distributions are more meaningful
 certainty.assessment <- allt.data %>% ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
-  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum") +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum", alpha=0.5) +
+  geom_jitter() +
   #  coord_flip() +
   labs(x="Question Number", y="Certainty Assessment") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
