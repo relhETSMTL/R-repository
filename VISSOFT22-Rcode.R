@@ -214,7 +214,36 @@ ggplot(allt.data, aes(x=Difficulty.Level, y=Certainty.Assessment, shape=Accuracy
   geom_point(size=5,alpha=0.5)
 
 
+#####
+#
+# Boxplots of difficulty level per question
+# Note: completely flatten, most of them with value of 1=very easy
+difficulty.level <- allt.data %>% ggplot(aes(x=Question.Number, group=Question.Number, Difficulty.Level)) +
+  geom_boxplot(aes(fill=Difficulty.Level), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Difficulty Level") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20) +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+difficulty.level
 
+
+# Boxplots of difficulty level per question
+# Note: Here the distributions are more meaningful
+certainty.assessment <- allt.data %>% ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum") +
+  #  coord_flip() +
+  labs(x="Question Number", y="Certainty Assessment") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20) +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+certainty.assessment
 
 # geom_bar(aes(fill=Accuracy, alpha=0.5)) +
 #  scale_fill_manual(values=c("green", "red")) +
