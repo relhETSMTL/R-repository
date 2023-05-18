@@ -246,6 +246,97 @@ certainty.assessment <- allt.data %>% ggplot(aes(x=Question.Number, group=Questi
   scale_y_continuous(breaks=seq(0, 20, 2))
 certainty.assessment
 
+
+
+# Grid of Certainty Assessment
+# t2 and parallel dimensions
+bp.t2.pd <- allt.data %>% filter (T==2 & Visualization.Method=="2D-PD") %>%
+  ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum", alpha=0.5) +
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Parallel Coordinates Plot", y="T=2") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.text.x=element_blank()) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20)  +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+bp.t2.pd
+
+
+# t2 and scattered plot
+bp.t2.sp <- allt.data %>% filter (T==2 & Visualization.Method=="2D-SP") %>%
+  ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum", alpha=0.5) +
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Scatter Plot", y="T=2") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.text.x=element_blank()) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20)  +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+bp.t2.sp
+
+
+# t3 and parallel dimensions
+bp.t3.pd <- allt.data %>% filter (T==3 & Visualization.Method=="3D-PD") %>%
+  ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum", alpha=0.5) +
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Parallel Coordinates Plot", y="T=3") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.text.x=element_blank()) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20)  +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+bp.t3.pd
+
+
+# t3 and scattered plot
+bp.t3.sp <- allt.data %>% filter (T==3 & Visualization.Method=="3D-SP") %>%
+  ggplot(aes(x=Question.Number, group=Question.Number, Certainty.Assessment)) +
+  geom_boxplot(aes(fill=Certainty.Assessment), varwidth=T, fill="plum", alpha=0.5) +
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Scatter Plot", y="T=3") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.text.x=element_blank()) +
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # scale_x_discrete(limits=seq(1, 16, 1))  +
+  ylim(0, 20)  +
+  scale_y_continuous(breaks=seq(0, 20, 2))
+bp.t3.sp
+
+
+# Grid for the bar plots
+# Creating the grid for the bars
+library(gridExtra)
+library(grid)
+
+# Creates the grid for the stack bars
+bp.grid.data <- grid.arrange(bp.t3.sp,bp.t3.pd,
+                          bp.t2.sp,bp.t2.pd,
+                          ncol=2, nrow=2,
+                          bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
+                          left = textGrob("Certainty Assessment", rot=90, gp=gpar(fontsize=15,font=3)))
+
+
+###################################
+# Eliminating some elements in the axis
+# theme(axis.title.x=element_blank(),
+#      axis.text.x=element_blank(),
+#      axis.ticks.x=element_blank())
+
+
 # geom_bar(aes(fill=Accuracy, alpha=0.5)) +
 #  scale_fill_manual(values=c("green", "red")) +
 
