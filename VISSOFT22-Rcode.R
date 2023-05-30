@@ -343,5 +343,21 @@ bp.grid.data <- grid.arrange(bp.t3.sp,bp.t3.pd,
 
 #################
 
+# GPL General statistics
+library("tidyverse")
+
+# Loads t=2 file data
+
+
+#################
+# Loads original participants responses
+gpl.t.2 <- read.csv(file = "../../../Eye-Tracking-Visualization/Paper-Sources/OrgGPL/FM17.m.2Sets.csv", header=TRUE)
+attach(gpl.t.2)
+
+# Loads t=3 file data
+
+gpl.t.3 <- read.csv(file = "../../../Eye-Tracking-Visualization/Paper-Sources/OrgGPL/FM17.m.3Sets.csv", header=TRUE)
+attach(gpl.t.3)
+
 
 #################
