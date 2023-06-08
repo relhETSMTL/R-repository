@@ -361,3 +361,100 @@ attach(gpl.t.3)
 
 
 #################
+
+
+#######
+## Figures for the paper
+
+# Accuracy, number of papers and visualization methods
+t2.acc.vm.pairs <- allt.data %>% filter (T==2 & Accuracy=="True") 
+
+library(ggplot2)
+
+ggplot(t2.acc.vm.pairs, aes(x = Number.Elements, y = Visualization.Method )) +  # , size = size
+  # geom_point()
+  geom_count()
+
+
+# Shows the number of pars as factors for the ones that responded correctly Accuracy=="True"
+ggplot(t2.acc.vm.pairs) + 
+  geom_count(mapping = aes(x = as.factor(Number.Elements), y = Visualization.Method))
+
+
+# TO DO, show the numbers in the bubbles and change color
+ggplot(t2.acc.vm.pairs) + 
+ geom_count(mapping = aes(x = as.factor(Number.Elements), y = Visualization.Method)) + 
+  scale_size_area()
+
+
+
+a <- c(1,1,3,4,5,5,1,1,2,3,4,1,3,2,1,1,5,1,4,3,2,3,1,0,2)
+b <- c(1,2,3,5,5,5,2,1,1,3,4,3,3,4,1,1,4,1,4,2,2,3,0,0,1)
+
+#I count the occurence of each couple of values. Eg : number of time a=1 and b=1, number of time a=1 and b=2 etc...
+AA <- xyTable(a,b)
+
+#Now I can plot this ! I represent the dots as big as the couple occurs often
+coeff_bigger <- 2
+plot(AA$x , AA$y , cex=AA$number*coeff_bigger  , pch=16 , col=rgb(0,0,1,0.5) , xlab= "value of a" , ylab="value of b" , xlim=c(0,6) , ylim=c(0,6) )
+text(AA$x , AA$y , AA$number )
+
+
+# Another example of graph
+
+data <- data.frame(x = c(2, 2, 2, 2, 3, 3, 3, 3, 3, 4),
+                   y = c(1, 2, 2, 2, 2, 2, 3, 3, 3, 3),
+                   id = c("a", "b", "b", "b", "c", 
+                          "c", "d", "d", "d", "e"))
+data2 <- data %>% 
+  group_by(id) %>%
+  summarise(x = mean(x), y = mean(y), count = n())
+
+
+# Testing grouping by visualization method, number of elements, and accuracy with summarizing by counting
+t2.vm.ne.acc <- allt.data %>% filter (T==2) %>% select(Visualization.Method,Number.Elements,Accuracy) %>%
+  group_by(Visualization.Method,Number.Elements,Accuracy) %>%
+  summarise(count=n())
+
+
+# ## Example with geom count
+# ggplot(mpg, aes(cty, hwy)) +
+#   geom_point()
+# 
+# 
+# ggplot(mpg, aes(cty, hwy)) +
+#   geom_count()
+# 
+# 
+# # Best used in conjunction with scale_size_area which ensures that
+# # counts of zero would be given size 0. Doesn't make much different
+# # here because the smallest count is already close to 0.
+# ggplot(mpg, aes(cty, hwy)) +
+#   geom_count() +
+#   scale_size_area()
+# 
+# 
+# # Display proportions instead of counts -------------------------------------
+# # By default, all categorical variables in the plot form the groups.
+# # Specifying geom_count without a group identifier leads to a plot which is
+# # not useful:
+# d <- ggplot(diamonds, aes(x = cut, y = clarity))
+# d + geom_count(aes(size = after_stat(prop)))
+# 
+# # To correct this problem and achieve a more desirable plot, we need
+# # to specify which group the proportion is to be calculated over.
+# d + geom_count(aes(size = after_stat(prop), group = 1)) +
+#   scale_size_area(max_size = 10)
+# 
+# 
+# # Or group by x/y variables to have rows/columns sum to 1.
+# d + geom_count(aes(size = after_stat(prop), group = cut)) +
+#   scale_size_area(max_size = 10)
+# 
+# d + geom_count(aes(size = after_stat(prop), group = clarity)) +
+#   scale_size_area(max_size = 10)
+
+
+
+
+
