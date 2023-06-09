@@ -475,6 +475,28 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   theme_classic() -> plot.vm.t2.accuracy
 
 
+# Using facets, horizontal by visualization method for t=3
+t3.vm.ne.acc <- allt.data %>% filter (T==3) %>% select(Visualization.Method,Number.Elements,Accuracy) %>%
+  group_by(Visualization.Method,Number.Elements,Accuracy) %>%
+  summarise(count=n()) %>% as.data.frame() %>% 
+  # Completing the table with the values that are zero
+  add_row(Visualization.Method="3D-SP", Number.Elements=2491, Accuracy="False", count=0)
+
+
+ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  geom_bar(position="dodge", stat="identity") + 
+  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  ggtitle("Accuracy results by Visualization Method and Number of Triplets") +
+  facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
+  theme(legend.position="none") +
+  scale_fill_manual(values=c("red", "green")) +
+  xlab("Number of Triplets") +
+  ylab("Count") + 
+  guides(alpha=FALSE) +
+  coord_flip() +
+  theme(strip.text.x = element_text(angle = 0)) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  theme_classic() -> plot.vm.t3.accuracy
 
 
 #######################################################################
