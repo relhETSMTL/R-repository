@@ -504,6 +504,71 @@ ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
 #######################################################################
 
 
+#######################################################################
+#######################################################################
+#######################################################################
+
+
+# Response time for t=2 and number of pairs and methods
+t2.vm.ne.et <- allt.data %>% filter (T==2 & Accuracy="True") %>% 
+  select(Visualization.Method,Number.Elements,Elapsed.Time)
+
+
+## All correct except the label of the legend
+ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+       shape = Visualization.Method, colour = Visualization.Method)) +  # , size=0.01, 
+  geom_point(size=2) + 
+  # guides(fill = guide_legend(title = "Visn Method", title.position = "left")) +
+  theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_colour_brewer(palette = "Set1") +
+  scale_shape_manual(values = c(1,2)) +
+  xlab("Number of Pairs") +
+  ylab("Elapsed Time in Seconds") + 
+  # ylim(0, 220) +
+  scale_y_continuous(breaks=seq(0, 220, 20)) + 
+  # geom_point(shape = 21) +
+  # scale_color_manual(name='Visualization Method') + 
+  geom_jitter(width = 0.25)
+
+
+# Plot with test for labeling legend
+ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+                        shape = Visualization.Method, colour = Visualization.Method)) +  # , size=0.01, 
+  geom_point(size=2) + 
+  theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
+        legend.position = "bottom") +
+  scale_colour_brewer(palette = "Set1") +
+  scale_shape_manual(values = c(1,2)) +
+  xlab("Number of Pairs") +
+  ylab("Elapsed Time in Seconds") + 
+  labs(colour = "Visualization Method", shape="Visualization Method") +
+  scale_y_continuous(breaks=seq(0, 220, 20)) + 
+  # guides(colour = FALSE) + # Does not work
+  geom_jitter(width = 0.25)
+
+
+# guides(fill = guide_legend(title = "Visualization Method")) + # , title.position = "left"
+# guides(fill = guide_legend(title = "LEFT", title.position = "left"))  
+
+
+# # Response time of correct answers
+# participantCorrectResponseTime <- curatedParticipantsData %>% filter(Correct=="True") %>% ggplot(aes(x=QNumber, group=QNumber, ElapsedTime/1000)) +
+#   geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="plum") +
+#   #  coord_flip() +
+#   labs(x="Question Number", y="Correct answers - Time secs") +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   #  theme_minimal() +
+#   #  scale_x_continuous(breaks=seq(1, 24, 1))
+#   scale_x_discrete(limits=seq(1, 24, 1))  +
+#   ylim(0, 300) +
+#   scale_y_continuous(breaks=seq(0, 300, 60))
+# participantCorrectResponseTime
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+
 
 ### Example with facets
 
