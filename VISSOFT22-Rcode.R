@@ -414,8 +414,134 @@ data2 <- data %>%
 # Testing grouping by visualization method, number of elements, and accuracy with summarizing by counting
 t2.vm.ne.acc <- allt.data %>% filter (T==2) %>% select(Visualization.Method,Number.Elements,Accuracy) %>%
   group_by(Visualization.Method,Number.Elements,Accuracy) %>%
-  summarise(count=n())
+  summarise(count=n()) %>% as.data.frame() %>% 
+  # Completing the table with the values that are zero
+  add_row(Visualization.Method="2D-PD", Number.Elements=136, Accuracy="False", count=0) %>%
+  add_row(Visualization.Method="2D-SP", Number.Elements=209, Accuracy="True", count=0) %>%
+  add_row(Visualization.Method="2D-SP", Number.Elements=440, Accuracy="False", count=0)
+  
 
+
+ggplot(t2.vm.ne.acc, aes(fill=Accuracy, y=count, x=as.factor(Number.Elements))) + 
+         geom_bar(position="dodge", stat="identity")
+
+
+x.values <- as.factor(t2.vm.ne.acc$Number.Elements)
+t2.vm.ne.acc %>% filter (Visualization.Method=="2D-SP") %>%
+  ggplot(aes(fill=Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  #theme(panel.background = element_blank()) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) + # theme_minimal
+  scale_fill_manual(values=c("red", "green")) +
+  guides(alpha=FALSE) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  labs(x="Number of Pairs",y="2D-Scatter Plot") +
+  geom_bar(position="dodge", stat="identity")
+
+
+
+t2.vm.ne.acc %>% filter (Visualization.Method=="2D-PD") %>%
+  ggplot(aes(fill=Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  #theme(panel.background = element_blank()) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) + # theme_minimal
+  scale_fill_manual(values=c("red", "green")) +
+  guides(alpha=FALSE) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  labs(x="Number of Pairs",y="2D-Parallel Dimensions") +
+  geom_bar(position="dodge", stat="identity")
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+# Using facets, horizontal by visualization method for t=2
+
+ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  geom_bar(position="dodge", stat="identity") + 
+  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  # hjust = -0.3, vjust= -0.5,
+  # vjust = -0.2 , hjust = -0.1
+  # scale_fill_viridis(discrete = T, option = "E") +
+  # scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
+  ggtitle("Accuracy results by Visualization Method and Number of Pairs") +
+  facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
+  theme(legend.position="none") +
+  scale_fill_manual(values=c("red", "green")) +
+  xlab("Number of Pairs") +
+  ylab("Count") + 
+  guides(alpha=FALSE) +
+  coord_flip() +
+  theme(strip.text.x = element_text(angle = 0)) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  theme_classic() -> plot.vm.t2.accuracy
+
+
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+
+
+
+### Example with facets
+
+# https://stackoverflow.com/questions/67775607/allowing-duplicate-x-axis-categorical-groups-in-ggplot2geom-bar
+
+library(ggplot2)
+library(viridis)
+specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
+condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
+value <- abs(rnorm(12 , 0 , 15))
+data <- data.frame(specie,condition,value, stringsAsFactors = FALSE)
+data$condition[c(11, 12)] <- "other"
+data$cond2 <- data$condition
+data$cond2[c(11, 12)] <- make.unique(data$condition[c(11, 12)]) 
+
+# Graph
+ggplot(data, aes(fill = condition, y=value, x=cond2)) + 
+  geom_bar(position="dodge", stat="identity") +
+  scale_fill_viridis(discrete = T, option = "E") +
+  scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
+  ggtitle("Studying 4 species..") +
+  facet_grid(specie~., scales = "free", space = "free") +
+  theme(legend.position="none") +
+  xlab("") +
+  coord_flip() +
+  theme(strip.text.x = element_text(angle = 0)) +
+  theme_classic()
+
+### End example with facets
+
+# Another example of facets
+# https://sscc.wisc.edu/sscc/pubs/dvr/two-variables.html
+# https://r-graphics.org/
+
+
+
+
+# axis.text.y=element_blank(), axis.ticks.y=element_blank(), 
+  #  theme_minimal () +
+  #  theme_minimal (axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
+  # labs(x="Participants' responses", y="Number of Correct and Incorrect responses") +
+  # coord_flip() +
+
+
+
+
+bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-PD") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  scale_fill_manual(values=c("red", "green")) +
+  labs(x="Parallel Coordinates Plot",y="T=3") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t3.pd
+
+
+# Completing the table with the values that are zero
+# 
 
 # ## Example with geom count
 # ggplot(mpg, aes(cty, hwy)) +
