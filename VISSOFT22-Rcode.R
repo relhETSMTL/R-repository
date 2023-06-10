@@ -510,7 +510,7 @@ ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
 
 
 # Response time for t=2 and number of pairs and methods
-t2.vm.ne.et <- allt.data %>% filter (T==2 & Accuracy="True") %>% 
+t2.vm.ne.et <- allt.data %>% filter (T==2 & Accuracy=="True") %>% 
   select(Visualization.Method,Number.Elements,Elapsed.Time)
 
 
@@ -531,12 +531,14 @@ ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000,
   geom_jitter(width = 0.25)
 
 
-# Plot with test for labeling legend
+# Plot with test for labeling legend CORRECT --> USED FOR PAPER FIGURE --> plot-vismethod-t2-response-time
 ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
                         shape = Visualization.Method, colour = Visualization.Method)) +  # , size=0.01, 
   geom_point(size=2) + 
   theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
-        legend.position = "bottom") +
+        legend.position = "top",
+        legend.title = element_text(size = 12)) +  
+  # face = "italic", family = "Times", colour = "red", 
   scale_colour_brewer(palette = "Set1") +
   scale_shape_manual(values = c(1,2)) +
   xlab("Number of Pairs") +
@@ -544,6 +546,27 @@ ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000,
   labs(colour = "Visualization Method", shape="Visualization Method") +
   scale_y_continuous(breaks=seq(0, 220, 20)) + 
   # guides(colour = FALSE) + # Does not work
+  geom_jitter(width = 0.25)
+
+
+#########################
+# Response time for t=3 and number of triplets and methods --> plot-vismethod-t3-response-time
+t3.vm.ne.et <- allt.data %>% filter (T==3 & Accuracy=="True") %>% 
+  select(Visualization.Method,Number.Elements,Elapsed.Time)
+
+
+ggplot(t3.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+                        shape = Visualization.Method, colour = Visualization.Method)) +  # , size=0.01, 
+  geom_point(size=2) + 
+  theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
+        legend.position = "top",
+        legend.title = element_text(size = 12)) +  
+  scale_colour_brewer(palette = "Set1") +
+  scale_shape_manual(values = c(1,2)) +
+  xlab("Number of Triplets") +
+  ylab("Elapsed Time in Seconds") + 
+  labs(colour = "Visualization Method", shape="Visualization Method") +
+  scale_y_continuous(breaks=seq(0, 480, 40)) + 
   geom_jitter(width = 0.25)
 
 
