@@ -52,3 +52,16 @@ correct.participant.t %>% filter (T==3) %>% summary()
 # P08    : 1     Max.   :3   Max.   :8.00  
 
 ## Correct responses by visualization method
+correct.participant.vm  <- allt.data %>% filter (Accuracy=="True") %>% 
+  select(Participant.ID,Visualization.Method) %>%
+  group_by(Participant.ID,Visualization.Method) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+# Scatterred Plot 2D-SP or 3D-SP
+correct.participant.vm %>% 
+  filter (Visualization.Method=="2D-SP" | Visualization.Method=="3D-SP") %>% 
+  select(Participant.ID,count)
+
+  group_by(Participant.ID)
+  summary()
+
