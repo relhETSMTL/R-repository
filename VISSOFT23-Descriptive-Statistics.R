@@ -58,11 +58,22 @@ correct.participant.vm  <- allt.data %>% filter (Accuracy=="True") %>%
   summarise(count=n()) %>% as.data.frame()
 
 # Scattered Plot 2D-SP or 3D-SP
-correct.participant.vm %>% 
+correct.participant.vm.sp <- correct.participant.vm %>% 
   filter (Visualization.Method=="2D-SP" | Visualization.Method=="3D-SP") %>% 
   select(Participant.ID,count) %>%
-  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame() %>%
-  summary()
+  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
 
+summary(correct.participant.vm.sp$total)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 3.000   4.000   5.000   4.917   6.000   6.000 
 
+# Parallel dimensions Plot 2D-PD or 3D-PD
+correct.participant.vm.pd <- correct.participant.vm %>% 
+  filter (Visualization.Method=="2D-PD" | Visualization.Method=="3D-PD") %>% 
+  select(Participant.ID,count) %>%
+  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
+
+summary(correct.participant.vm.pd$total)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 3.000   5.750   7.000   6.708   8.000   8.000 
 
