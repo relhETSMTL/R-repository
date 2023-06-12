@@ -57,11 +57,12 @@ correct.participant.vm  <- allt.data %>% filter (Accuracy=="True") %>%
   group_by(Participant.ID,Visualization.Method) %>%
   summarise(count=n()) %>% as.data.frame()
 
-# Scatterred Plot 2D-SP or 3D-SP
+# Scattered Plot 2D-SP or 3D-SP
 correct.participant.vm %>% 
   filter (Visualization.Method=="2D-SP" | Visualization.Method=="3D-SP") %>% 
-  select(Participant.ID,count)
-
-  group_by(Participant.ID)
+  select(Participant.ID,count) %>%
+  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame() %>%
   summary()
+
+
 
