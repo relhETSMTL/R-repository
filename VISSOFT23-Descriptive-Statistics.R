@@ -77,3 +77,58 @@ summary(correct.participant.vm.pd$total)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 3.000   5.750   7.000   6.708   8.000   8.000 
 
+
+################################################################################
+
+## Total Elapsed time by participants (incorrect and correct answers)
+elapsed.time.participant <- allt.data %>%
+  select(Participant.ID, Elapsed.Time) %>%
+  group_by(Participant.ID) %>%
+  summarise(total=sum(Elapsed.Time)/1000/60)  # Total time in minutes
+
+
+# Sanity check
+allt.data %>% select(Participant.ID, Elapsed.Time) %>% 
+  filter(Participant.ID=="P03") %>% summarize(total=sum(Elapsed.Time)/1000/60)
+
+summary(elapsed.time.participant$total)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 6.125  13.598  16.836  17.457  22.103  24.960 
+
+sd(elapsed.time.participant$total)
+# [1] 5.073546
+
+# Total Elapsed time for correct answers, in general --> not by participant
+elapsed.time.participant.correct <- allt.data %>% filter (Accuracy=="True")  %>% 
+  select(Elapsed.Time) # %>%
+  # group_by(Participant.ID) %>%
+  # summarise(total=sum(Elapsed.Time)/1000/60)  # Total time in minutes
+
+
+summary(elapsed.time.participant.correct$Elapsed.Time/1000)
+# In seconds
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 4.256  35.798  50.225  68.194  82.270 465.551 
+
+# In minutes
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.07093 0.59664 0.83708 1.13656 1.37118 7.75918 
+
+sd(elapsed.time.participant.correct$Elapsed.Time/1000)
+# 53.14025
+
+
+# Total Elapsed time for incorrect answers, in general --> not by participant
+elapsed.time.participant.incorrect <- allt.data %>% filter (Accuracy=="False")  %>% 
+  select(Elapsed.Time) 
+
+
+summary(elapsed.time.participant.incorrect$Elapsed.Time/1000)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 7.985  29.919  47.167  58.209  76.494 161.983 
+
+sd(elapsed.time.participant.incorrect$Elapsed.Time/1000)
+# [1] 36.22685
+
+
+
