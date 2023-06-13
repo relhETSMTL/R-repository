@@ -144,11 +144,31 @@ bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-SP") %>%
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
   labs(x="Scatter Plot",y="T=2") +
   guides(fill = FALSE, alpha=FALSE) +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
 bars.t2.sp
+
+# geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) + 
+
+# Test adding the count label to the bar --> done, OK
+# bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-SP") %>% 
+#   ggplot(aes(x=Accuracy, weight = Number)) + 
+#   coord_cartesian(ylim = c(0, 100)) +
+#   scale_y_discrete(limits=seq(0, 100, 10)) +
+#   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+#   geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + # , colour = "white" , vjust = 1.5
+# #  geom_text(aes(label = Number),  vjust= -0.4, position = position_dodge(1), size = 3.5) +  # text on bars
+#   scale_fill_manual(values=c("red", "green")) +
+#   labs(x="Scatter Plot",y="T=2") +
+#   guides(fill = FALSE, alpha=FALSE) +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+# bars.t2.sp
+
+
+
 
 
 # Bar t=2 2D-PD
@@ -157,6 +177,7 @@ bars.t2.pd <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-PD") %>%
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
   labs(x="Parallel Coordinates Plot",y="T=2") +
   guides(fill = FALSE, alpha=FALSE) +
@@ -170,6 +191,7 @@ bars.t3.sp <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-SP") %>%
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
   labs(x="Scatter Plot",y="T=3") +
   guides(fill = FALSE, alpha=FALSE) +
@@ -183,6 +205,7 @@ bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-PD") %>%
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
   labs(x="Parallel Coordinates Plot",y="T=3") +
   guides(fill = FALSE, alpha=FALSE) +

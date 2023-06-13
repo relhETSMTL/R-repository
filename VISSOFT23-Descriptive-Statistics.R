@@ -14,6 +14,30 @@ allt.data <- bind_rows(t2.data,t3.data)
 T <- c(rep(2,192),rep(3,192))
 allt.data$T = T
 
+
+#######
+## Responses by t value and visualization methods
+
+
+ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  geom_bar(position="dodge", stat="identity") + 
+  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  ggtitle("Accuracy results by Visualization Method and Number of Triplets") +
+  facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
+  theme(legend.position="none") +
+  scale_fill_manual(values=c("red", "green")) +
+  xlab("Number of Triplets") +
+  ylab("Count") + 
+  guides(alpha=FALSE) +
+  coord_flip() +
+  theme(strip.text.x = element_text(angle = 0)) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  theme_classic() -> plot.vm.t3.accuracy
+
+
+
+
+
 #######
 ## Correct responses per participant
 
