@@ -16,27 +16,45 @@ allt.data$T = T
 
 
 #######
-## Responses by t value and visualization methods
+# ## Responses by t value and visualization methods
+# 
+# 
+# ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+#   geom_bar(position="dodge", stat="identity") + 
+#   geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+#   ggtitle("Accuracy results by Visualization Method and Number of Triplets") +
+#   facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
+#   theme(legend.position="none") +
+#   scale_fill_manual(values=c("red", "green")) +
+#   xlab("Number of Triplets") +
+#   ylab("Count") + 
+#   guides(alpha=FALSE) +
+#   coord_flip() +
+#   theme(strip.text.x = element_text(angle = 0)) +
+#   scale_y_continuous(breaks=seq(0, 24, 1)) +
+#   theme_classic() -> plot.vm.t3.accuracy
 
 
-ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
-  geom_bar(position="dodge", stat="identity") + 
-  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
-  ggtitle("Accuracy results by Visualization Method and Number of Triplets") +
-  facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
-  theme(legend.position="none") +
-  scale_fill_manual(values=c("red", "green")) +
-  xlab("Number of Triplets") +
-  ylab("Count") + 
-  guides(alpha=FALSE) +
-  coord_flip() +
-  theme(strip.text.x = element_text(angle = 0)) +
-  scale_y_continuous(breaks=seq(0, 24, 1)) +
-  theme_classic() -> plot.vm.t3.accuracy
-
-
-
-
+########
+## Participant responses in general, total correct and total incorrect
+accuracy.general <- allt.data %>%  
+  group_by(Accuracy) %>%
+  summarise(count=n()) %>% as.data.frame()
+# Accuracy count
+# 1    False   105
+# 2     True   279
+# > 24 * 16
+# [1] 384
+# > 105 + 279
+# [1] 384
+# > 105/384
+# [1] 0.2734375
+# > 279/384
+# [1] 0.7265625
+# > 70+80+48+81   # Total correct responses
+# [1] 279
+# > 26+16+48+15   # Total incorrect responses
+# [1] 105
 
 #######
 ## Correct responses per participant
@@ -104,6 +122,84 @@ summary(correct.participant.vm.pd$total)
 
 ################################################################################
 
+############
+# Grid of Response time per t value and visualization method
+
+# t2 and parallel dimensions
+bp.t2.pd.res <- allt.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE)) %>%
+  filter (T==2 & Visualization.Method=="2D-PD") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) + #  Question.Number, Certainty.Assessment
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) + #  fill="plum",
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Parallel Coordinates Plot", y="For T=2 time in seconds") + 
+  # scale_fill_manual(values=c("red", "green")) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) # + axis.text.x=element_blank()
+  #  theme_minimal() +
+  #  scale_x_continuous(breaks=seq(1, 24, 1))
+  # scale_x_discrete(limits=seq(1, 16, 1))  +
+  
+  # ylim(0, 20)  +
+  # scale_y_continuous(breaks=seq(0, 20, 2))
+bp.t2.pd.res
+
+
+# t2 and scatter plot
+bp.t2.sp.res <- allt.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE)) %>%
+  filter (T==2 & Visualization.Method=="2D-SP") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) + #  Question.Number, Certainty.Assessment
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) + #  fill="plum",
+  geom_jitter() +
+  #  coord_flip() +
+  labs(x="Scatter Plot", y="For T=2 time in seconds") + 
+  # scale_fill_manual(values=c("red", "green")) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+bp.t2.sp.res
+
+
+# t3 and parallel dimensions
+bp.t3.pd.res <- allt.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE)) %>%
+  filter (T==3 & Visualization.Method=="3D-PD") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Parallel Coordinates Plot", y="For T=3 time in seconds") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bp.t3.pd.res
+
+
+# t3 and scatter plot
+bp.t3.sp.res <- allt.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE)) %>%
+  filter (T==3 & Visualization.Method=="3D-SP") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Scatter Plot", y="For T=3 time in seconds") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bp.t3.sp.res
+
+# Grid for the bar plots
+# Creating the grid for the bars
+library(gridExtra)
+library(grid)
+
+# Creates the grid for the stack bars
+grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
+                          bp.t2.sp.res,bp.t2.pd.res,
+                          ncol=2, nrow=2,
+                          bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
+                          left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
+
+
+
+# allt.data %>% mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE))
+
+
 ## Total Elapsed time by participants (incorrect and correct answers)
 elapsed.time.participant <- allt.data %>%
   select(Participant.ID, Elapsed.Time) %>%
@@ -153,6 +249,8 @@ summary(elapsed.time.participant.incorrect$Elapsed.Time/1000)
 
 sd(elapsed.time.participant.incorrect$Elapsed.Time/1000)
 # [1] 36.22685
+
+
 
 
 
