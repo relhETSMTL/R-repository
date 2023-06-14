@@ -432,6 +432,8 @@ his.difficulty
 # 1 = 368, 2=1, 3=4, 4=2, 5=2, 6=2,9=1,10=1,11=1,13=1,20=1
 # 368 + 1 + 4 + 2 + 2 + 2 + 1 + 1 + 1 +1 + 1 = 384
 
+# TODO analysis of the 16 entries that are not 1
+
 # ggplot(data = d, 
 #        aes(x = discrete_var)) + 
 #   geom_histogram(stat = "count") +
