@@ -133,15 +133,12 @@ bp.t2.pd.res <- allt.data %>%
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) + #  fill="plum",
   geom_jitter() +
   #  coord_flip() +
-  labs(x="Parallel Coordinates Plot", y="For T=2 time in seconds") + 
+  labs(x="Parallel Coordinates Plot", y="T=2") + 
   # scale_fill_manual(values=c("red", "green")) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) # + axis.text.x=element_blank()
-  #  theme_minimal() +
-  #  scale_x_continuous(breaks=seq(1, 24, 1))
-  # scale_x_discrete(limits=seq(1, 16, 1))  +
-  
-  # ylim(0, 20)  +
-  # scale_y_continuous(breaks=seq(0, 20, 2))
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#  ylim(0, 550)  +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+
 bp.t2.pd.res
 
 
@@ -153,9 +150,11 @@ bp.t2.sp.res <- allt.data %>%
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) + #  fill="plum",
   geom_jitter() +
   #  coord_flip() +
-  labs(x="Scatter Plot", y="For T=2 time in seconds") + 
+  labs(x="Scatter Plot", y="T=2") + 
   # scale_fill_manual(values=c("red", "green")) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#  ylim(0, 550)  +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
 
 bp.t2.sp.res
 
@@ -165,10 +164,14 @@ bp.t3.pd.res <- allt.data %>%
   mutate(Accuracy = case_when(Accuracy == 'True' ~ TRUE, Accuracy == 'False' ~ FALSE)) %>%
   filter (T==3 & Visualization.Method=="3D-PD") %>%
   ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  # ylim(0, 550)  +
+  scale_y_continuous(breaks=seq(0, 350, 50), limits = c(0, 350)) +
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) +  
   geom_jitter() +
-  labs(x="Parallel Coordinates Plot", y="For T=3 time in seconds") + 
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+  labs(x="Parallel Coordinates Plot", y="T=3") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) # +
+  # ylim(0, 550)  +
+  # scale_y_continuous(breaks=seq(0, 550, 50))
 bp.t3.pd.res
 
 
@@ -179,8 +182,11 @@ bp.t3.sp.res <- allt.data %>%
   ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) +  
   geom_jitter() +
-  labs(x="Scatter Plot", y="For T=3 time in seconds") + 
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+  labs(x="Scatter Plot", y="T=3") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  ylim(0, 550)  +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+  
 bp.t3.sp.res
 
 # Grid for the bar plots
@@ -193,7 +199,7 @@ grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
                           bp.t2.sp.res,bp.t2.pd.res,
                           ncol=2, nrow=2,
                           bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
-                          left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
+                          left = textGrob("Covering Array Strength - Time in secs", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 
@@ -251,6 +257,157 @@ sd(elapsed.time.participant.incorrect$Elapsed.Time/1000)
 # [1] 36.22685
 
 
+## Response time over the t values
+# t=2
+t2.et <- allt.data %>% filter (T==2)  %>% 
+  select(Elapsed.Time)
+summary(t2.et)
+# Elapsed.Time   
+# Min.   :  7985  
+# 1st Qu.: 28907  
+# Median : 41128  
+# Mean   : 49383  
+# 3rd Qu.: 58108  
+# Max.   :208219  
+
+sd(t2.et$Elapsed.Time)
+# [1] 31466.61
+
+# t=3
+t3.et <- allt.data %>% filter (T==3)  %>% 
+  select(Elapsed.Time)
+summary(t3.et)
+# Min.   :  4256  
+# 1st Qu.: 44360  
+# Median : 71400  
+# Mean   : 81544  
+# 3rd Qu.: 99999  
+# Max.   :465551   
+
+sd(t3.et$Elapsed.Time)
+# [1] 57918.63 
 
 
+## Response time over visualization methods
+# vm = scatter plot
+sp.res <- allt.data %>% filter (Visualization.Method=="2D-SP" | Visualization.Method=="3D-SP")  %>% 
+  select(Elapsed.Time)
+summary(sp.res)
+# Elapsed.Time   
+# Min.   :  4484  
+# 1st Qu.: 31458  
+# Median : 49425  
+# Mean   : 69844  
+# 3rd Qu.: 90270  
+# Max.   :465551  
 
+sd(sp.res$Elapsed.Time)
+# [1] 59741.97
+
+
+# vm = parallel dimensions plot
+pd.res <- allt.data %>% filter (Visualization.Method=="2D-PD" | Visualization.Method=="3D-PD")  %>% 
+  select(Elapsed.Time)
+summary(pd.res)
+# Elapsed.Time   
+# Min.   :  4256  
+# 1st Qu.: 36179  
+# Median : 49968  
+# Mean   : 61084  
+# 3rd Qu.: 75968  
+# Max.   :199136  
+
+sd(pd.res$Elapsed.Time)
+# [1] 35452.81
+
+## Cross factors results
+
+# scatter plot, t=3,correct
+allt.data %>% filter (Visualization.Method=="3D-SP" & Accuracy=="True") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False: 0   Min.   :  4484  
+# 2D-SP: 0             True :70   1st Qu.: 44999  
+# 3D-PD: 0                        Median : 82146  
+# 3D-SP:70                        Mean   :100418  
+# 3rd Qu.:129488  
+# Max.   :465551  
+
+# scatter plot, t=3, incorrect
+allt.data %>% filter (Visualization.Method=="3D-SP" & Accuracy=="False") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False:26   Min.   : 24863  
+# 2D-SP: 0             True : 0   1st Qu.: 71948  
+# 3D-PD: 0                        Median : 80393  
+# 3D-SP:26                        Mean   : 87670  
+# 3rd Qu.:111337  
+# Max.   :161983 
+
+
+# parallel coordinates plot, t=3,correct
+allt.data %>% filter (Visualization.Method=="3D-PD" & Accuracy=="True") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False: 0   Min.   :  4256  
+# 2D-SP: 0             True :80   1st Qu.: 44976  
+# 3D-PD:80                        Median : 60800  
+# 3D-SP: 0                        Mean   : 69309  
+# 3rd Qu.: 84808  
+# Max.   :199136  
+
+
+# parallel coordinates plot, t=3,incorrect
+allt.data %>% filter (Visualization.Method=="3D-PD" & Accuracy=="False") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False:16   Min.   : 16210  
+# 2D-SP: 0             True : 0   1st Qu.: 31740  
+# 3D-PD:16                        Median : 41414  
+# 3D-SP: 0                        Mean   : 50191  
+# 3rd Qu.: 53058  
+# Max.   :133983  
+
+# parallel coordinates plot, t=2,incorrect
+allt.data %>% filter (Visualization.Method=="2D-PD" & Accuracy=="False") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD:15             False:15   Min.   : 23247  
+# 2D-SP: 0             True : 0   1st Qu.: 47327  
+# 3D-PD: 0                        Median : 54143  
+# 3D-SP: 0                        Mean   : 65858  
+# 3rd Qu.: 76224  
+# Max.   :156703 
+
+# parallel coordinates plot, t=2,correct
+allt.data %>% filter (Visualization.Method=="2D-PD" & Accuracy=="True") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD:81             False: 0   Min.   : 15776  
+# 2D-SP: 0             True :81   1st Qu.: 33791  
+# 3D-PD: 0                        Median : 46223  
+# 3D-SP: 0                        Mean   : 54228  
+# 3rd Qu.: 64956  
+# Max.   :156559 
+
+# scatter plot, t=2,incorrect
+allt.data %>% filter (Visualization.Method=="2D-SP" & Accuracy=="False") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False:48   Min.   :  7985  
+# 2D-SP:48             True : 0   1st Qu.: 23668  
+# 3D-PD: 0                        Median : 37807  
+# 3D-SP: 0                        Mean   : 42534  
+# 3rd Qu.: 52063  
+# Max.   :126866 
+
+# scatter plot, t=2,correct
+allt.data %>% filter (Visualization.Method=="2D-SP" & Accuracy=="True") %>% 
+  select(Visualization.Method, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Method  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False: 0   Min.   : 10544  
+# 2D-SP:48             True :48   1st Qu.: 25972  
+# 3D-PD: 0                        Median : 35976  
+# 3D-SP: 0                        Mean   : 42910  
+# 3rd Qu.: 56575  
+# Max.   :208219  
