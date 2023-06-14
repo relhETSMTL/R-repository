@@ -411,3 +411,45 @@ allt.data %>% filter (Visualization.Method=="2D-SP" & Accuracy=="True") %>%
 # 3D-SP: 0                        Mean   : 42910  
 # 3rd Qu.: 56575  
 # Max.   :208219  
+
+#####
+## Difficulty level data
+## General histogram
+
+# library
+library(ggplot2)
+
+# basic histogram
+his.difficulty <- ggplot(allt.data, aes(x=Difficulty.Level)) + 
+  geom_histogram(binwidth=1, stat="count") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  #           position = position_stack(vjust = -0.5)) +
+#  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  scale_x_continuous(breaks=seq(1, 20, 1)) 
+
+his.difficulty
+
+# 1 = 368, 2=1, 3=4, 4=2, 5=2, 6=2,9=1,10=1,11=1,13=1,20=1
+# 368 + 1 + 4 + 2 + 2 + 2 + 1 + 1 + 1 +1 + 1 = 384
+
+# ggplot(data = d, 
+#        aes(x = discrete_var)) + 
+#   geom_histogram(stat = "count") +
+#   stat_count(binwidth = 1, 
+#              geom = 'text', 
+#              color = 'white', 
+#              aes(label = ..count..),
+#              position = position_stack(vjust = 0.5))
+
+# Certainty assessment
+# Simple histogram
+his.certainty <- ggplot(allt.data, aes(x=Certainty.Assessment)) + 
+  geom_histogram(binwidth=1, stat="count") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  #           position = position_stack(vjust = -0.5)) +
+  #  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  scale_x_continuous(breaks=seq(1, 20, 1)) 
+
+his.certainty
+
+
