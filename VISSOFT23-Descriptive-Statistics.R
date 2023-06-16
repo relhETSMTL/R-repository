@@ -434,6 +434,9 @@ his.difficulty
 
 # TODO analysis of the 16 entries that are not 1
 
+allt.data %>% filter(Difficulty.Level>1) -> difficulty.outlier
+
+
 # ggplot(data = d, 
 #        aes(x = discrete_var)) + 
 #   geom_histogram(stat = "count") +
@@ -454,4 +457,14 @@ his.certainty <- ggplot(allt.data, aes(x=Certainty.Assessment)) +
 
 his.certainty
 
+summary(allt.data$Certainty.Assessment)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 1.00    2.00    3.00    4.37    5.00   20.00 
+sd(allt.data$Certainty.Assessment)
+# [1] 4.07421
+
+# Q1
+q1.certainty <- allt.data %>% filter(Question.Number==1) %>% select(Accuracy,Certainty.Assessment)
+
+wilcox.test(formula=q1.certainty$Certainty.Assessment~q1.certainty$Accuracy)
 
