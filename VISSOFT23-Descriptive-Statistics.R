@@ -133,7 +133,7 @@ bp.t2.pd.res <- allt.data %>%
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) + #  fill="plum",
   geom_jitter() +
   #  coord_flip() +
-  labs(x="Parallel Coordinates Plot", y="T=2") + 
+  labs(x="Parallel Dimensions Plot", y="T=2") + 
   # scale_fill_manual(values=c("red", "green")) +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
 #  ylim(0, 550)  +
@@ -168,7 +168,7 @@ bp.t3.pd.res <- allt.data %>%
   scale_y_continuous(breaks=seq(0, 350, 50), limits = c(0, 350)) +
   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("red", "green"), alpha=0.5) +  
   geom_jitter() +
-  labs(x="Parallel Coordinates Plot", y="T=3") + 
+  labs(x="Parallel Dimensions Plot", y="T=3") + 
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) # +
   # ylim(0, 550)  +
   # scale_y_continuous(breaks=seq(0, 550, 50))
@@ -198,7 +198,7 @@ library(grid)
 grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
                           bp.t2.sp.res,bp.t2.pd.res,
                           ncol=2, nrow=2,
-                          bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
+                          bottom = textGrob("Visualization Techniques",gp=gpar(fontsize=15,font=3)),
                           left = textGrob("Covering Array Strength - Time in secs", rot=90, gp=gpar(fontsize=15,font=3)))
 
 

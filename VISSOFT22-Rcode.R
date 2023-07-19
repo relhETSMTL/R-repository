@@ -179,7 +179,7 @@ bars.t2.pd <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-PD") %>%
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
   geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
-  labs(x="Parallel Coordinates Plot",y="T=2") +
+  labs(x="Parallel Dimensions Plot",y="T=2") +
   guides(fill = FALSE, alpha=FALSE) +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
 bars.t2.pd
@@ -207,7 +207,7 @@ bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-PD") %>%
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
   geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
   scale_fill_manual(values=c("red", "green")) +
-  labs(x="Parallel Coordinates Plot",y="T=3") +
+  labs(x="Parallel Dimensions Plot",y="T=3") +
   guides(fill = FALSE, alpha=FALSE) +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
 bars.t3.pd
@@ -222,7 +222,7 @@ library(grid)
 grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
                           bars.t2.sp,bars.t2.pd,
                           ncol=2, nrow=2,
-                          bottom = textGrob("Visualization Methods",gp=gpar(fontsize=15,font=3)),
+                          bottom = textGrob("Visualization Techniques",gp=gpar(fontsize=15,font=3)),
                           left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
@@ -485,7 +485,8 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # vjust = -0.2 , hjust = -0.1
   # scale_fill_viridis(discrete = T, option = "E") +
   # scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
-  ggtitle("Accuracy results by Visualization Method and Number of Pairs") +
+  # ggtitle("Accuracy results by Visualization Technique and Number of Pairs") +
+  ggtitle("     Scatter Plot (2D-SP)       Parallel Dimensions (2D-PD)") +
   facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
   theme(legend.position="none") +
   scale_fill_manual(values=c("red", "green")) +
@@ -509,7 +510,8 @@ t3.vm.ne.acc <- allt.data %>% filter (T==3) %>% select(Visualization.Method,Numb
 ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
   geom_bar(position="dodge", stat="identity") + 
   geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
-  ggtitle("Accuracy results by Visualization Method and Number of Triplets") +
+#  ggtitle("Accuracy results by Visualization Technique and Number of Triplets") +
+  ggtitle("     Scatter Plot (3D-SP)     Parallel Dimensions (3D-PD)") +
   facet_grid(Visualization.Method ~ . , scales = "free", space = "free") +  # vertical facets
   theme(legend.position="none") +
   scale_fill_manual(values=c("red", "green")) +
@@ -565,8 +567,9 @@ ggplot(t2.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000,
   scale_colour_brewer(palette = "Set1") +
   scale_shape_manual(values = c(1,2)) +
   xlab("Number of Pairs") +
-  ylab("Elapsed Time in Seconds") + 
-  labs(colour = "Visualization Method", shape="Visualization Method") +
+  ylab("Elapsed Time in seconds") + 
+#  labs(colour = "Visualization Method", shape="Visualization Method") +
+  labs(colour = "Visualization Technique", shape="Visualization Technique") +
   scale_y_continuous(breaks=seq(0, 220, 20)) + 
   # guides(colour = FALSE) + # Does not work
   geom_jitter(width = 0.25)
@@ -587,8 +590,9 @@ ggplot(t3.vm.ne.et, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000,
   scale_colour_brewer(palette = "Set1") +
   scale_shape_manual(values = c(1,2)) +
   xlab("Number of Triplets") +
-  ylab("Elapsed Time in Seconds") + 
-  labs(colour = "Visualization Method", shape="Visualization Method") +
+  ylab("Elapsed Time in seconds") + 
+#  labs(colour = "Visualization Method", shape="Visualization Method") +
+  labs(colour = "Visualization Technique", shape="Visualization Technique") +
   scale_y_continuous(breaks=seq(0, 480, 40)) + 
   geom_jitter(width = 0.25)
 
