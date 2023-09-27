@@ -467,4 +467,4 @@ sd(allt.data$Certainty.Assessment)
 q1.certainty <- allt.data %>% filter(Question.Number==1) %>% select(Accuracy,Certainty.Assessment)
 
 wilcox.test(formula=q1.certainty$Certainty.Assessment~q1.certainty$Accuracy)
-
+ 
