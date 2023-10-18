@@ -41,4 +41,16 @@ with_NA <- gaze.data %>% filter(is.na(Solution.pfcount))
 gaze.data <- gaze.data %>% replace_na(list(Solution.pftime=0, Solution.pfcount=0))
 
 ## Add a column that adds up all the fixation times percentages
+gaze.data.totals <- gaze.data %>% mutate(TotalPercTime = Question.pftime + Response.pftime + Misc.pftime + Navigation.pftime +
+                                    Axial.pftime + Solution.pftime + Target.pftime,
+                                  TotalPectFixations = Question.pfcount + Response.pfcount + Misc.pfcount + Navigation.pfcount +
+                                    Axial.pfcount + Solution.pfcount + Target.pfcount )
+
+# Checking the rows with percentages > 1, 287 time, 279 fixations,  269 both,  percentage 70% just too many ...
+gaze.data.totals %>% filter( TotalPercTime > 1 ) %>% count()
+
+gaze.data.totals %>% filter( TotalPectFixations > 1 ) %>% count()
+
+gaze.data.totals %>% filter( TotalPercTime > 1 & TotalPectFixations > 1 ) %>% count()
+
 
