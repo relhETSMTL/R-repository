@@ -40,3 +40,5 @@ with_NA <- gaze.data %>% filter(is.na(Solution.pfcount))
 ## Replace the NAs with 0
 gaze.data <- gaze.data %>% replace_na(list(Solution.pftime=0, Solution.pfcount=0))
 
+## Add a column that adds up all the fixation times percentages
+
