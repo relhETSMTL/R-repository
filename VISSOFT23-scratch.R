@@ -28,6 +28,42 @@ independent_var <- iris$Species
 
 manova_model <- manova(dependent_vars ~ independent_var, data = iris)
 summary(manova_model)
+# Df Pillai approx F num Df den Df    Pr(>F)    
+# independent_var   2 1.1919   53.466      8    290 < 2.2e-16 ***
+#   Residuals       147                                            
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+summary.aov(manova_model)
+
+# Response 1 :
+#   Df Sum Sq Mean Sq F value    Pr(>F)    
+# independent_var   2 63.212  31.606  119.26 < 2.2e-16 ***
+#   Residuals       147 38.956   0.265                      
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Response 2 :
+#   Df Sum Sq Mean Sq F value    Pr(>F)    
+# independent_var   2 11.345  5.6725   49.16 < 2.2e-16 ***
+#   Residuals       147 16.962  0.1154                      
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Response 3 :
+#   Df Sum Sq Mean Sq F value    Pr(>F)    
+# independent_var   2 437.10 218.551  1180.2 < 2.2e-16 ***
+#   Residuals       147  27.22   0.185                      
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Response 4 :
+#   Df Sum Sq Mean Sq F value    Pr(>F)    
+# independent_var   2 80.413  40.207  960.01 < 2.2e-16 ***
+#   Residuals       147  6.157   0.042                      
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
 # Effect size on the dependent variables, partial eta squared
@@ -85,3 +121,7 @@ ggplot(lda_df) +
   geom_point(aes(x = lda.LD1, y = lda.LD2, color = species), size = 4) +
   theme_classic()
 
+# Conclusion: he setosa species is significantly different when 
+# compared to virginica and versicolor. These two are more similar, 
+# suggesting that it was the setosa group that had the most impact for us to reject
+# the null hypothesis.
