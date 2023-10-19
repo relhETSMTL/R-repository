@@ -104,6 +104,9 @@ p25.act11.data.cleaned %>% filter(AOI.P25.Q06.Act11.Axis4==1) %>% count()
 p25.act11.data.cleaned %>% filter(AOI.P25.Q06.Act11.Axis4==1 & AOI.P25.Q06.Act11.Axis4Solution) %>% count()
 
 
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
 # Note: bind_rows(...)  --> Axial.data <- bind_rows(Axis1.data, Axis2.data, Axis3.data)
 # Axial data Axis1 NULL, Axis2 NULL
 # Axial3 data has 60 rows
@@ -127,5 +130,75 @@ Axial.data <- bind_rows(Axis3.data, Axis4.data)
 Solution.data <- p25.act11.data.cleaned %>% 
   # In Axis 4 with the solution selected 
   filter(AOI.P25.Q06.Act11.Axis4==1 & AOI.P25.Q06.Act11.Axis4Solution==1) 
+
+
+# Response data, 15 fixations
+Response.data <- p25.act11.data.cleaned %>% 
+  # The Answer is selected 
+  filter(AOI.P25.Q06.Act11.Answer==1) 
+
+
+# Target data, 12 fixations
+Target.data <- p25.act11.data.cleaned %>% 
+  # Any of the Axis_i_Feature_j_ are selected 
+  filter(AOI.P25.Q06.Act11.Axis1Feature1==1 | AOI.P25.Q06.Act11.Axis1Feature2==1 | AOI.P25.Q06.Act11.Axis1Feature3==1 |
+         AOI.P25.Q06.Act11.Axis2Feature1==1 | AOI.P25.Q06.Act11.Axis2Feature2==1 | AOI.P25.Q06.Act11.Axis2Feature3==1 |
+         AOI.P25.Q06.Act11.Axis3Feature1==1 | AOI.P25.Q06.Act11.Axis3Feature2==1 | AOI.P25.Q06.Act11.Axis3Feature3==1) 
+
+# Navigation data, Diagram AOI - SUM all Axis , 45 fixations
+Navigation.data <- p25.act11.data.cleaned %>%
+  # Diagram selected but the rest of Axis 1..4 unselected
+  filter(AOI.P25.Q06.Act11.Diagram==1 & AOI.P25.Q06.Act11.Axis1==0 & AOI.P25.Q06.Act11.Axis2==0 & 
+         AOI.P25.Q06.Act11.Axis3==0 & AOI.P25.Q06.Act11.Axis4==0)
+  
+# Question data, 32 fixations
+Question.data <- p25.act11.data.cleaned %>%
+  # Diagram selected but the rest of Axis 1..4 unselected
+  filter(AOI.P25.Q06.Act11.Question==1)
+  
+# Miscellaneous, Stimulus - Question - Response - Diagram
+Misc.data <- p25.act11.data.cleaned %>%
+  # Stimulus selected but Question, Answer and Diagram unselected
+  filter(AOI.P25.Q06.Act11.Stimulus==1 & AOI.P25.Q06.Act11.Question==0 & AOI.P25.Q06.Act11.Answer==0 &
+         AOI.P25.Q06.Act11.Diagram==0)
+
+
+# Computing the percentages of fixations and percentage of time
+# Elapsed.Time and Number.Fixations
+
+# (ParticipantID, QuestionNumber, T, Visualization,Accuracy,
+#   ElapsedTime, Question.pftime, Question.pfcount, Response.pftime, Response.pfcount,
+#   Misc.pftime, Misc.pfcount, Navigation.pftime, Navigation.pfcount, Axial.pftime,
+#   Axial.pfcount, Solution.pftime, Solution.pfcount, Target.pftime, Target.pfcount)
+
+pElapsedTime <- Elapsed.Time
+pQuestion.pftime <- sum(Question.data$Gaze.event.duration..ms.)/Elapsed.Time
+pResponse.pftime <- sum(Response.data$Gaze.event.duration..ms.)/Elapsed.Time
+pMisc.pftime <- sum(Misc.data$Gaze.event.duration..ms.)/Elapsed.Time
+pNavigation.pftime <- sum(Navigation.data$Gaze.event.duration..ms.)/Elapsed.Time
+pAxial.pftime <- sum(Axial.data$Gaze.event.duration..ms.)/Elapsed.Time
+pSolution.pftime <- sum(Solution.data$Gaze.event.duration..ms.)/Elapsed.Time
+pTarget.pftime <- sum(Target.data$Gaze.event.duration..ms.)/Elapsed.Time
+
+# 1.023971, still over 1
+p25.totalpftime <- pQuestion.pftime + pResponse.pftime + pMisc.pftime + pNavigation.pftime + 
+  pAxial.pftime + pSolution.pftime + pTarget.pftime
+
+# 228 rows
+nrow(Question.data) + nrow(Response.data) + nrow(Misc.data) + nrow(Navigation.data) + nrow(Axial.data) +
+  nrow(Solution.data) + nrow(Target.data)
+
+# 219 rows
+nrow(p25.act11.data.cleaned)
+
+# Problem, I am counting 9 rows duplicated
+p25.act11.data.duplicated <- bind_rows(Question.data, Response.data, Misc.data, Navigation.data, Axial.data, 
+                                       Solution.data, Target.data)
+
+
+# Finding the duplicated rows
+duplicates <- p25.act11.data.duplicated %>% group_by_all() %>% filter(n() > 1) %>% ungroup()
+
+# Which filters capture the duplicates
 
 
