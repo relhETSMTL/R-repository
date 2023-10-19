@@ -274,9 +274,56 @@ pTarget.pftime <- sum(Target.data$Gaze.event.duration..ms.)/Elapsed.Time
 p25.totalpftime2 <- pQuestion.pftime + pResponse.pftime + pMisc.pftime + pNavigation.pftime + 
   pAxial.pftime + pSolution.pftime + pTarget.pftime
 
-# 228 rows
-nrow(Question.data) + nrow(Response.data) + nrow(Misc.data) + nrow(Navigation.data) + nrow(Axial.data) +
+# 219 rows
+nrow(Question.data) + nrow(Response.data) + nrow(Misc.data) + nrow(Navigation2.data) + nrow(Axial.data) +
   nrow(Solution.data) + nrow(Target.data)
   
 ### Now computing the data for the fixation counts
+pQuestion.pfcount <- nrow(Question.data)/Number.Fixations
+pResponse.pfcount <- nrow(Response.data)/Number.Fixations
+pMisc.pfcount <- nrow(Misc.data)/Number.Fixations
+pNavigation.pfcount <- nrow(Navigation2.data)/Number.Fixations
+pAxial.pfcount <- nrow(Axial.data)/Number.Fixations
+pSolution.pfcount <- nrow(Solution.data)/Number.Fixations
+pTarget.pfcount <- nrow(Target.data)/Number.Fixations
+
+# Exactly the value of 1
+p25.totalpfcount <- pQuestion.pfcount + pResponse.pfcount + pMisc.pfcount + pNavigation.pfcount + 
+  pAxial.pfcount + pSolution.pfcount + pTarget.pfcount
+
+
+# Displaying the values for comparison with Kambiz's results
+
+pQuestion.pftime + pResponse.pftime + pMisc.pftime + pNavigation.pftime + 
+  pAxial.pftime + pSolution.pftime + pTarget.pftime
+
+pQuestion.pfcount + pResponse.pfcount + pMisc.pfcount + pNavigation.pfcount + 
+  pAxial.pfcount + pSolution.pfcount + pTarget.pfcount
+
+# Data from Excel file
+# P25	11	3	PD	TRUE	94447	1.35	1.138	0.105	0.143	0.053	0.067	0.014	0.018	0.086	0.161	0.36	0.408	0.355	0.157	0.377	0.184	NA	NA	NA	NA
+# Elapsed Time 94447, Elapsed.Time 77844 --> OK less than the recorded time. Was it from the web interface? Remove rows with Stimulus==0
+# pfTime 1.35, 1 --> you have more repeated rows than the 9 rows I had
+# pfCount 1.138, 1 
+# Question.pftime 0.105, 0.1052104 --> seems OK
+# Question.pfcount 0.143, 0.1461187 --> it is lower
+# Response.pftime 0.053, 	0.05374852 --> seems OK
+# Response.pfcount 0.067, 0.06849315 --> it is lower
+# Misc.pftime 0.014, 0.01360413 --> seems OK rounded up
+# Misc.pfcount 0.018, 0.01826484 --> seems OK when truncated
+# Navigation.pftime 0.086, 0.08681465 --> seems OK	  
+# Navigation.pfcount 0.161, 0.1643836 --> it is lower
+# Axial.pftime 0.36, 0.3396794 --> it is higher	!!!
+# Axial.pfcount 0.408, 0.3881279 --> it is higher !!!
+# Solution.pftime 0.355, 0.3568162 --> it is lower
+# Solution.pfcount 0.157, 0.1598174 --> it is lower
+# Target.pftime 0.377, 0.04412671 --> way bigger!!!
+# Target.pfcount 0.184, 0.05479452 --> way bigger
+
+# Checking values of pftimes for Kambiz data
+# pftime = 1.35
+0.105 + 0.053 + 0.014 + 0.086 + 0.36 + 0.355 + 0.377
+# pfcount = 1.138
+0.143 + 0.067 + 0.018 + 0.161 + 0.408 + 0.157 + 0.184
+
 
