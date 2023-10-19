@@ -153,7 +153,7 @@ Navigation.data <- p25.act11.data.cleaned %>%
   
 # Question data, 32 fixations
 Question.data <- p25.act11.data.cleaned %>%
-  # Diagram selected but the rest of Axis 1..4 unselected
+  # Question selected
   filter(AOI.P25.Q06.Act11.Question==1)
   
 # Miscellaneous, Stimulus - Question - Response - Diagram
@@ -199,6 +199,84 @@ p25.act11.data.duplicated <- bind_rows(Question.data, Response.data, Misc.data, 
 # Finding the duplicated rows
 duplicates <- p25.act11.data.duplicated %>% group_by_all() %>% filter(n() > 1) %>% ungroup()
 
-# Which filters capture the duplicates
+# Which filters capture the duplicated rows?
 
+# Question 12 hits 
+duplicates %>% filter(AOI.P25.Q06.Act11.Question==1) %>% count()   
+
+# Response  6 hits
+duplicates %>% filter(AOI.P25.Q06.Act11.Answer==1) %>% count()
+
+# Misc 0 hits
+duplicates %>% filter(AOI.P25.Q06.Act11.Stimulus==1 & AOI.P25.Q06.Act11.Question==0 & AOI.P25.Q06.Act11.Answer==0 &
+                        AOI.P25.Q06.Act11.Diagram==0) %>% count()
+
+# Navigation 18 hits -- all the duplicates
+duplicates %>% filter(AOI.P25.Q06.Act11.Diagram==1 & AOI.P25.Q06.Act11.Axis1==0 & AOI.P25.Q06.Act11.Axis2==0 & 
+                          AOI.P25.Q06.Act11.Axis3==0 & AOI.P25.Q06.Act11.Axis4==0) %>% count()
+
+# Axial - Axis1 and Axis2 NULL, Axis3 & Axis 4, 0 hits
+duplicates %>%  filter((AOI.P25.Q06.Act11.Axis3==1 & 
+                         AOI.P25.Q06.Act11.Axis3Feature1==0 & AOI.P25.Q06.Act11.Axis3Feature2==0 & 
+                         AOI.P25.Q06.Act11.Axis3Feature3==0) |
+                        (AOI.P25.Q06.Act11.Axis4==1 & AOI.P25.Q06.Act11.Axis4Solution==0)) %>% count() 
+
+# Solution, 0 hits
+duplicates %>% filter(AOI.P25.Q06.Act11.Axis4==1 & AOI.P25.Q06.Act11.Axis4Solution==1) %>% count()
+
+
+# Target, 0 hits
+duplicates %>%   
+  filter(AOI.P25.Q06.Act11.Axis1Feature1==1 | AOI.P25.Q06.Act11.Axis1Feature2==1 | AOI.P25.Q06.Act11.Axis1Feature3==1 |
+         AOI.P25.Q06.Act11.Axis2Feature1==1 | AOI.P25.Q06.Act11.Axis2Feature2==1 | AOI.P25.Q06.Act11.Axis2Feature3==1 |
+         AOI.P25.Q06.Act11.Axis3Feature1==1 | AOI.P25.Q06.Act11.Axis3Feature2==1 | AOI.P25.Q06.Act11.Axis3Feature3==1) %>% count()
+
+
+#######
+## Fixing the duplication
+
+# Original definition of Navigation data, Diagram AOI - SUM all Axis , 45 fixations
+Navigation.data <- p25.act11.data.cleaned %>%
+  # Diagram selected but the rest of Axis 1..4 unselected
+  filter(AOI.P25.Q06.Act11.Diagram==1 & AOI.P25.Q06.Act11.Axis1==0 & AOI.P25.Q06.Act11.Axis2==0 & 
+           AOI.P25.Q06.Act11.Axis3==0 & AOI.P25.Q06.Act11.Axis4==0)
+
+
+# Extended definition of Navigation --> 36 rows, the 9 that result in the duplicated are removed
+Navigation2.data <- p25.act11.data.cleaned %>%
+  # Diagram selected but the rest of Axis 1..4 unselected
+  filter(AOI.P25.Q06.Act11.Diagram==1 & AOI.P25.Q06.Act11.Axis1==0 & AOI.P25.Q06.Act11.Axis2==0 & 
+           AOI.P25.Q06.Act11.Axis3==0 & AOI.P25.Q06.Act11.Axis4==0 &
+           AOI.P25.Q06.Act11.Question==0 & AOI.P25.Q06.Act11.Answer==0) # Added
+
+# Reconstructing, obtains the same number from the cleaned version
+p25.act11.data.duplicated2 <- bind_rows(Question.data, Response.data, Misc.data, Navigation2.data, Axial.data, 
+                                       Solution.data, Target.data)
+# > count(p25.act11.data.duplicated2)
+# n
+# 1 219
+
+# Finding the duplicated rows --> no duplicates
+no.duplicates <- p25.act11.data.duplicated2 %>% group_by_all() %>% filter(n() > 1) %>% ungroup()
+
+
+# Rechecking the time
+pElapsedTime <- Elapsed.Time
+pQuestion.pftime <- sum(Question.data$Gaze.event.duration..ms.)/Elapsed.Time
+pResponse.pftime <- sum(Response.data$Gaze.event.duration..ms.)/Elapsed.Time
+pMisc.pftime <- sum(Misc.data$Gaze.event.duration..ms.)/Elapsed.Time
+pNavigation.pftime <- sum(Navigation2.data$Gaze.event.duration..ms.)/Elapsed.Time
+pAxial.pftime <- sum(Axial.data$Gaze.event.duration..ms.)/Elapsed.Time
+pSolution.pftime <- sum(Solution.data$Gaze.event.duration..ms.)/Elapsed.Time
+pTarget.pftime <- sum(Target.data$Gaze.event.duration..ms.)/Elapsed.Time
+
+# 1.023971, still over 1, p25.totalpftime2 exactly equal to 1
+p25.totalpftime2 <- pQuestion.pftime + pResponse.pftime + pMisc.pftime + pNavigation.pftime + 
+  pAxial.pftime + pSolution.pftime + pTarget.pftime
+
+# 228 rows
+nrow(Question.data) + nrow(Response.data) + nrow(Misc.data) + nrow(Navigation.data) + nrow(Axial.data) +
+  nrow(Solution.data) + nrow(Target.data)
+  
+### Now computing the data for the fixation counts
 
