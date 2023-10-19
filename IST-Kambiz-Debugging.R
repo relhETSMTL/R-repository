@@ -326,4 +326,12 @@ pQuestion.pfcount + pResponse.pfcount + pMisc.pfcount + pNavigation.pfcount +
 # pfcount = 1.138
 0.143 + 0.067 + 0.018 + 0.161 + 0.408 + 0.157 + 0.184
 
+## Summary of problems found
+## Fixations outside of the Stimulus, Stimulus==0. Action: Remove them
+## Rows with (Question or Answer AOI set) and Diagram set. Action: Do not consider them for the Navigation data.
 
+# Consistency checks
+# 1. Each fixation/row must be assigned only to exactly one of the categories. That means all the subsets are disjoints. 
+#    You can check that the Union of all the subsets has the same size (count()) and there are no duplicated rows (see code above)
+# 2. If you computed the ElapsedTime from the Web interface, check that the accumulated total time per question 
+# sum(data$Gaze.event.duration..ms.) is lower than recorded time
