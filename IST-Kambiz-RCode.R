@@ -36,6 +36,14 @@ eye.tracker.data.cleaned <- eye.tracker.data.cleaned %>%
 # "Axial.pftime"             "Axial.pfcount"            "Solution.pftime"          "Solution.pfcount"        
 # "Target.pftime"            "Target.pfcount"          
 
+# Changing the values of visualization technique
+eye.tracker.data.cleaned <- eye.tracker.data.cleaned %>%
+  mutate(Visualization.Technique = case_when ((Visualization.Technique == "PD" & T==2) ~ "2D-PD",
+                                              (Visualization.Technique == "PD" & T==3) ~ "3D-PD",
+                                              (Visualization.Technique == "SP" & T==2) ~ "2D-SP",
+                                              (Visualization.Technique == "SP" & T==3) ~ "3D-SP"))
+
+
 # Writes out the cleaned data in a file
 write.csv(eye.tracker.data.cleaned,
           file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Eye-Tracker-Data-Curated.csv", 
@@ -67,3 +75,20 @@ complete.web.data.cleaned <- complete.web.data %>% rename(Visualization.Techniqu
 write.csv(complete.web.data.cleaned,
           file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Web-Interface-Data-Curated.csv", 
           row.names=FALSE)
+
+
+
+
+
+
+#### Scratch code
+# eye.tracker.data.cleaned %>%
+#   mutate(Visualization.Technique = case_when (Visualization.Technique == "PD" ~ "2D-PD",
+#                                               TRUE ~ Visualization.Technique))
+# 
+# et <- eye.tracker.data.cleaned %>%
+#   mutate(Visualization.Technique = if_else (Visualization.Technique == "PD", "2D-PD"))
+# 
+# # Works for t=2 and PD
+# eye.tracker.data.cleaned %>%
+#   mutate(Visualization.Technique = case_when ((Visualization.Technique == "PD" & T==2) ~ "2D-PD"))
