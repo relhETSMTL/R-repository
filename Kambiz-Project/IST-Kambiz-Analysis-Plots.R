@@ -41,7 +41,7 @@ participant.accuracy <- experiment.data %>%
   theme(axis.text.y=element_blank(), axis.ticks.y=element_blank(), panel.background = element_blank()) +
   #  theme_minimal () +
   #  theme_minimal (axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
-  labs(x="Participants' responses", y="Number of Correct (True) and Incorrect (False) responses") +
+  labs(x="Participants' responses", y="Number of Accurate (True) and Inaccurate (False) responses") +
   coord_flip() +
   scale_y_continuous(breaks=seq(1, 24, 1)) +
   scale_fill_manual(values=c("red", "green"))
