@@ -78,9 +78,20 @@ write.csv(complete.web.data.cleaned,
 
 
 
+###########################################################################
+# Joining the two web and eye-tracker data
+complete.experiment.data <- full_join(eye.tracker.data.cleaned, complete.web.data.cleaned)
+
+# Writes out the cleaned data in the file
+write.csv(complete.experiment.data,
+          file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", 
+          row.names=FALSE)
 
 
 
+###########################################################################
+###########################################################################
+###########################################################################
 #### Scratch code
 # eye.tracker.data.cleaned %>%
 #   mutate(Visualization.Technique = case_when (Visualization.Technique == "PD" ~ "2D-PD",
