@@ -1,6 +1,13 @@
 # Kambiz project
-# Participants response data
+# Participants response data in the web interface
 # Cleaning and producing files for t=2 and t=3
+# Transforms the raw data from the web interface (ExperimentParticipantsResponses) into the following files:
+# FeatureModelsData.csv -- summary information of the feature models used
+# MappingQuestions-T-VM-Size -- map of questions to values of t, visualization method, feature model, and number pairs/triplets
+#
+# These files are input for the final processing and joining with the eye-tracker data IST-Kambiz-RCode.R file
+# Last update: 2023-11-14
+
 
 library("tidyverse")
 
