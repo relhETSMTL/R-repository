@@ -25,8 +25,8 @@ eye.tracker.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experim
                           header=TRUE)
 
 # Eliminating the following columns, originally 29 columns
-elim.cols <- c(HTMLvsCOMPUTER,RecordingElapsedTime,ComputerElapsedTime,COMPUTERvsFIXATION,
-AccumulatedFixationTime,AccumulatedFixationCount,NA)
+# elim.cols <- c(HTMLvsCOMPUTER,RecordingElapsedTime,ComputerElapsedTime,COMPUTERvsFIXATION,
+# AccumulatedFixationTime,AccumulatedFixationCount,NA)
 
 # Removing 7 consistency columns
 eye.tracker.data.cleaned <- eye.tracker.data %>% 
