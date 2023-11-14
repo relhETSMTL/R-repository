@@ -1,6 +1,19 @@
 # IST Journal 
-# R Code
-# Contains all the code for the graphs and the statistical analysis of the journal paper
+# Contains all the code for cleaning and merging the experiment data from web interface and eye-tracker
+#
+# First step: Clean unnedded columns and modify column names from row eye tracker data
+# Input file for eye-tracker data: Eye-Tracker-Data.csv  # Raw export from Kambiz code
+# Output file for curated eye-tracker data: Eye-Tracker-Data-Curated.csv
+# 
+# Second step: Merges the participants responses into a single one
+# Input files: 2-ParticipantsResponses.csv, 3-ParticipantsResponses.csv --> curated web interfaces responses data
+# Output file: Web-Interface-Data-Curated.csv --> merged and completed data from these curated participants files
+#
+# Third step: Joins the web data with the eye tracker data into a single file
+# Input: two data frames with the computed data
+# Output file: Complete-Experiment-Data.csv
+#
+# Last update: 2023-11-14
 
 library("tidyverse")
 
