@@ -279,6 +279,72 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   
   accuracy.vm.ne.t3
   
+  ## Correct responses per participant
+  correct.participant <- experiment.data %>% filter (Accuracy=="True") %>% 
+    group_by(Participant.ID) %>%
+    summarise(count=n()) %>% as.data.frame()
+  
+  summary(correct.participant$count)
+  # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 8.00   13.00   14.00   13.54   15.25   16.00 
+
+  ## Correct responses by t value
+  correct.participant.t <- experiment.data %>% filter (Accuracy=="True") %>% 
+    select(Participant.ID,T) %>%
+    group_by(Participant.ID,T) %>%
+    summarise(count=n()) %>% as.data.frame()
+  
+  # t=2
+  correct.participant.t %>% filter (T==2) %>% summary()
+  # Participant.ID       T         count      
+  # P03    : 1     Min.   :2   Min.   :4.000  
+  # P04    : 1     1st Qu.:2   1st Qu.:7.000  
+  # P05    : 1     Median :2   Median :8.000  
+  # P06    : 1     Mean   :2   Mean   :7.292  
+  # P07    : 1     3rd Qu.:2   3rd Qu.:8.000  
+  # P08    : 1     Max.   :2   Max.   :8.000    
+  
+  # t=3
+  correct.participant.t %>% filter (T==3) %>% summary()
+  # Participant.ID       T         count     
+  # P03    : 1     Min.   :3   Min.   :3.00  
+  # P04    : 1     1st Qu.:3   1st Qu.:6.00  
+  # P05    : 1     Median :3   Median :6.00  
+  # P06    : 1     Mean   :3   Mean   :6.25  
+  # P07    : 1     3rd Qu.:3   3rd Qu.:8.00  
+  # P08    : 1     Max.   :3   Max.   :8.00  
+  
+
+  ## Correct responses by visualization method
+  correct.participant.vm  <- experiment.data %>% filter (Accuracy=="True") %>% 
+    select(Participant.ID,Visualization.Technique) %>%
+    group_by(Participant.ID,Visualization.Technique) %>%
+    summarise(count=n()) %>% as.data.frame()
+  
+  # Scattered Plot 2D-SP or 3D-SP
+  correct.participant.vm.sp <- correct.participant.vm %>% 
+    filter (Visualization.Technique=="2D-SP" | Visualization.Technique=="3D-SP") %>% 
+    select(Participant.ID,count) %>%
+    group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
+  
+  summary(correct.participant.vm.sp$total)
+  # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 5.000   6.000   7.000   6.833   8.000   8.000   
+  
+  # Parallel dimensions Plot 2D-PD or 3D-PD
+  correct.participant.vm.pd <- correct.participant.vm %>% 
+    filter (Visualization.Technique=="2D-PD" | Visualization.Technique=="3D-PD") %>% 
+    select(Participant.ID,count) %>%
+    group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
+  
+  summary(correct.participant.vm.pd$total)
+  # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 3.000   5.750   7.000   6.708   8.000   8.000
+
+  
+  
+  
+  
 ################################################################################################
 ### Scratch code
 # "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv"
