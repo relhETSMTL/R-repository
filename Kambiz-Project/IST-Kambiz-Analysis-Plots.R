@@ -219,7 +219,66 @@ grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
                           bottom = textGrob("Visualization Techniques",gp=gpar(fontsize=15,font=3)),
                           left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
 
+# Facet plots for accuracy distributed by t and number of pairs
 
+# t=2 value,  grouping by visualization technique, number of pairs, and accuracy with summarizing by counting
+t2.vm.ne.acc <- experiment.data %>% filter (T==2) %>% select(Visualization.Technique,Number.Elements,Accuracy) %>%
+  group_by(Visualization.Technique,Number.Elements,Accuracy) %>%
+  summarise(count=n()) %>% as.data.frame() %>% 
+  # Completing the table with the values that are zero
+  add_row(Visualization.Technique="2D-PD", Number.Elements=136, Accuracy="False", count=0) %>%
+  add_row(Visualization.Technique="2D-SP", Number.Elements=209, Accuracy="False", count=0) %>%
+  add_row(Visualization.Technique="2D-SP", Number.Elements=440, Accuracy="False", count=0)
+
+ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+  geom_bar(position="dodge", stat="identity") + 
+  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  # hjust = -0.3, vjust= -0.5,
+  # vjust = -0.2 , hjust = -0.1
+  # scale_fill_viridis(discrete = T, option = "E") +
+  # scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
+  # ggtitle("Accuracy results by Visualization Technique and Number of Pairs") +
+  ggtitle("     Scatter Plot (2D-SP)       Parallel Dimensions (2D-PD)") +
+  facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+  theme(legend.position="none") +
+  scale_fill_manual(values=c("red", "green")) +
+  xlab("Number of Pairs") +
+  ylab("Count") + 
+  guides(alpha=FALSE) +
+  coord_flip() +
+  theme(strip.text.x = element_text(angle = 0)) +
+  scale_y_continuous(breaks=seq(0, 24, 1)) +
+  theme_classic() -> accuracy.vm.ne.t2
+
+  accuracy.vm.ne.t2
+
+
+  # t=3 value,  grouping by visualization technique, number of pairs, and accuracy with summarizing by counting
+  t3.vm.ne.acc <- experiment.data %>% filter (T==3) %>% select(Visualization.Technique,Number.Elements,Accuracy) %>%
+    group_by(Visualization.Technique,Number.Elements,Accuracy) %>%
+    summarise(count=n()) %>% as.data.frame() %>% 
+    # Completing the table with the values that are zero
+    add_row(Visualization.Technique="3D-SP", Number.Elements=2491, Accuracy="False", count=0)
+  
+  
+  ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+    geom_bar(position="dodge", stat="identity") + 
+    geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+    #  ggtitle("Accuracy results by Visualization Technique and Number of Triplets") +
+    ggtitle("     Scatter Plot (3D-SP)     Parallel Dimensions (3D-PD)") +
+    facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+    theme(legend.position="none") +
+    scale_fill_manual(values=c("red", "green")) +
+    xlab("Number of Triplets") +
+    ylab("Count") + 
+    guides(alpha=FALSE) +
+    coord_flip() +
+    theme(strip.text.x = element_text(angle = 0)) +
+    scale_y_continuous(breaks=seq(0, 24, 1)) +
+    theme_classic() -> accuracy.vm.ne.t3 
+  
+  accuracy.vm.ne.t3
+  
 ################################################################################################
 ### Scratch code
 # "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv"
