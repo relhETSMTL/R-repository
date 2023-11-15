@@ -4,6 +4,9 @@
 library("tidyverse")
 library(ggplot2)
 library(hrbrthemes)
+library(gridExtra)
+library(grid)
+
 
 # Loads the complete experiment data file
 experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", header=TRUE)
@@ -65,6 +68,156 @@ question.accuracy <- experiment.data %>%
   scale_fill_manual(values=c("red", "green"))
 question.accuracy
 
+
+## Correct responses per participant
+correct.participant <- experiment.data %>% filter (Accuracy=="True") %>% 
+  group_by(Participant.ID) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+summary(correct.participant$count)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 8.00   13.00   14.00   13.54   15.25   16.00 
+
+# Correct responses per question
+correct.question <- experiment.data %>% filter (Accuracy=="True") %>% 
+  group_by(Question.Number) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+summary(correct.question$count)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 10.00   17.75   23.00   20.31   23.25   24.00 
+
+
+# Plot grid of bars of Correct and Incorrect responses, y dimension t values, y dimensions 
+accuracy.df <- data.frame(matrix(nrow = 4 * 2, ncol = 4))
+columnNames <- c("T", "Visualization.Method", "Accuracy", "Number")
+colnames(accuracy.df) <- columnNames
+
+# Bar for t=2 and Scattered Plot
+bars.t2.sp.data <- experiment.data  %>% filter (T==2 & Visualization.Method=="2D-SP") %>% select(Accuracy) %>% 
+  group_by(Accuracy) %>% summarise(n=n())
+
+k <- 1
+accuracy.df$T[k] <- 2
+accuracy.df$Visualization.Method[k] <- "2D-SP"
+accuracy.df$Accuracy[k] <- TRUE
+accuracy.df$Number[k] <- as.numeric(bars.t2.sp.data[2,2]) # number of TRUE values
+
+k <- k + 1
+accuracy.df$T[k] <- 2
+accuracy.df$Visualization.Method[k] <- "2D-SP"
+accuracy.df$Accuracy[k] <- FALSE
+accuracy.df$Number[k] <- as.numeric(bars.t2.sp.data[1,2]) # number of FALSE values
+
+# Bar for t=2 and Parallel Dimensions
+bars.t2.pd.data <- experiment.data  %>% filter (T==2 & Visualization.Method=="2D-PD") %>% select(Accuracy) %>% 
+  group_by(Accuracy) %>% summarise(n=n())
+
+k <- k + 1
+accuracy.df$T[k] <- 2
+accuracy.df$Visualization.Method[k] <- "2D-PD"
+accuracy.df$Accuracy[k] <- TRUE
+accuracy.df$Number[k] <- as.numeric(bars.t2.pd.data[2,2]) # number of TRUE values
+
+k <- k + 1
+accuracy.df$T[k] <- 2
+accuracy.df$Visualization.Method[k] <- "2D-PD"
+accuracy.df$Accuracy[k] <- FALSE
+accuracy.df$Number[k] <- as.numeric(bars.t2.pd.data[1,2]) # number of FALSE values
+
+# Bar for t=3 and Scattered Plot
+bars.t3.sp.data <- experiment.data  %>% filter (T==3 & Visualization.Method=="3D-SP") %>% select(Accuracy) %>% 
+  group_by(Accuracy) %>% summarise(n=n())
+
+k <- k + 1
+accuracy.df$T[k] <- 3
+accuracy.df$Visualization.Method[k] <- "3D-SP"
+accuracy.df$Accuracy[k] <- TRUE
+accuracy.df$Number[k] <- as.numeric(bars.t3.sp.data[2,2]) # number of TRUE values
+
+k <- k + 1
+accuracy.df$T[k] <- 3
+accuracy.df$Visualization.Method[k] <- "3D-SP"
+accuracy.df$Accuracy[k] <- FALSE
+accuracy.df$Number[k] <- as.numeric(bars.t3.sp.data[1,2]) # number of FALSE values
+
+# Bar for t=3 and Parallel Dimensions
+bars.t3.pd.data <- experiment.data  %>% filter (T==3 & Visualization.Method=="3D-PD") %>% select(Accuracy) %>% 
+  group_by(Accuracy) %>% summarise(n=n())
+
+k <- k + 1
+accuracy.df$T[k] <- 3
+accuracy.df$Visualization.Method[k] <- "3D-PD"
+accuracy.df$Accuracy[k] <- TRUE
+accuracy.df$Number[k] <- as.numeric(bars.t3.pd.data[2,2]) # number of TRUE values
+
+k <- k + 1
+accuracy.df$T[k] <- 3
+accuracy.df$Visualization.Method[k] <- "3D-PD"
+accuracy.df$Accuracy[k] <- FALSE
+accuracy.df$Number[k] <- as.numeric(bars.t3.pd.data[1,2]) # number of FALSE values
+
+# Bar t=2 2D-SP
+bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-SP") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.4, size = 5) + 
+  # geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
+  scale_fill_manual(values=c("red", "green")) +
+  labs(x="Scatter Plot",y="T=2") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t2.sp
+
+# Bar t=2 2D-PD
+bars.t2.pd <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-PD") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
+  scale_fill_manual(values=c("red", "green")) +
+  labs(x="Parallel Dimensions Plot",y="T=2") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t2.pd
+
+
+# Bar t=3 3D-SP
+bars.t3.sp <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-SP") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
+  scale_fill_manual(values=c("red", "green")) +
+  labs(x="Scatter Plot",y="T=3") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t3.sp
+
+
+# Bar t=3 2D-PD
+bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-PD") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
+  scale_fill_manual(values=c("red", "green")) +
+  labs(x="Parallel Dimensions Plot",y="T=3") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t3.pd
+
+# Creates the grid for the stack bars of accuracy results
+grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
+                          bars.t2.sp,bars.t2.pd,
+                          ncol=2, nrow=2,
+                          bottom = textGrob("Visualization Techniques",gp=gpar(fontsize=15,font=3)),
+                          left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 ################################################################################################
