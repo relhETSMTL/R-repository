@@ -629,88 +629,42 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   
 
   ### Summary of time-on-task based on values of t and visualization techniques
-  
-  # Response time for t=2 and number of pairs and visualization technique
-  t2.vt.ne.tot <- experiment.data %>% filter (T==2) %>% #  & Accuracy=="True"
-    select(Visualization.Technique,Number.Elements,Elapsed.Time)
-  
-  ggplot(t2.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
-                          shape = Visualization.Technique, colour = Visualization.Technique)) +  # , size=0.01, 
-    geom_point(size=2) + 
-    theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
-          legend.position = "top",
-          legend.title = element_text(size = 12)) +  
-    # face = "italic", family = "Times", colour = "red", 
-    scale_colour_brewer(palette = "Set1") +
-    scale_shape_manual(values = c(1,2)) +
-    xlab("Number of Pairs") +
-    ylab("Elapsed Time in seconds") + 
-    #  labs(colour = "Visualization Method", shape="Visualization Method") +
-    labs(colour = "Visualization Technique", shape="Visualization Technique") +
-    scale_y_continuous(breaks=seq(0, 220, 20)) + 
-    # guides(colour = FALSE) + # Does not work
-    geom_jitter(width = 0.25)
-  
-  ## Revised plot, including accuracy to distinguish points in the grid by False or True
-  t2.vt.ne.tot <- experiment.data %>% filter (T==2) %>% #  & Accuracy=="True"
+
+  ## For t=2
+  t2.vt.ne.tot <- experiment.data %>% filter (T==2) %>% 
     select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
   
-  ggplot(t2.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
-                           shape = Accuracy, colour = Accuracy)) +  # , size=0.01, 
-    geom_point(size=2) + 
-    theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
-          legend.position = "top",
-          legend.title = element_text(size = 12)) +  
-    # face = "italic", family = "Times", colour = "red", 
-    scale_colour_brewer(palette = "Set1") +
-    scale_shape_manual(values = c(1,2)) +
-    xlab("Number of Pairs") +
-    ylab("Elapsed Time in seconds") + 
-    #  labs(colour = "Visualization Method", shape="Visualization Method") +
-    labs(colour = "Accuracy", shape="Accuracy") +
-    scale_y_continuous(breaks=seq(0, 220, 20)) + 
-    # guides(colour = FALSE) + # Does not work
-    geom_jitter(width = 0.25)
-  
-  ##### point for REVISION
-  ### Test of facet for t=2
-  ggplot(t2.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements),
-                           shape=Accuracy, colour=Accuracy)) + 
-    # geom_bar(position="dodge", stat="identity") + 
-    geom_point(size=2) +
-    # geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  ggplot(t2.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy)) +
+    geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
     facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
     theme(legend.position="none") +
-    scale_fill_manual(values=c("red", "green")) +
+    scale_color_manual(values = c("red","green")) +
     xlab("Number of Pairs") +
     ylab("Time-on-task seconds") +  
     guides(alpha=FALSE) +
     coord_flip() +
     theme(strip.text.x = element_text(angle = 0)) +
-#    scale_y_continuous(breaks=seq(0, 24, 1)) +
+    theme_classic()
+  
+
+  # For t=3 
+  t3.vt.ne.tot <- experiment.data %>% filter (T==3) %>% 
+    select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
+  
+  ggplot(t3.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy)) +
+    geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
+    facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+    theme(legend.position="none") +
+    scale_color_manual(values = c("red","green")) +
+    xlab("Number of Triplets") +
+    ylab("Time-on-task seconds") +  
+    guides(alpha=FALSE) +
+    coord_flip() +
+    theme(strip.text.x = element_text(angle = 0)) +
     theme_classic()
   
   
   
-  # Response time for t=3 and number of triplets and visualization techniques
-  t3.vt.ne.tot <- experiment.data %>% filter (T==3) %>%  #  & Accuracy=="True"
-    select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
-  
-  
-  ggplot(t3.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
-                          shape = Visualization.Technique, colour = Visualization.Technique)) +  # , size=0.01, 
-    geom_point(size=2) + 
-    theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
-          legend.position = "top",
-          legend.title = element_text(size = 12)) +  
-    scale_colour_brewer(palette = "Set1") +
-    scale_shape_manual(values = c(1,2)) +
-    xlab("Number of Triplets") +
-    ylab("Elapsed Time in seconds") + 
-    #  labs(colour = "Visualization Method", shape="Visualization Method") +
-    labs(colour = "Visualization Technique", shape="Visualization Technique") +
-    scale_y_continuous(breaks=seq(0, 480, 40)) + 
-    geom_jitter(width = 0.25)
   
 
 ### Facet for the  
@@ -718,13 +672,95 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
 # t=2 value,  grouping by visualization technique, number of pairs, and accuracy with summarizing by counting
 
 
-  
-  
-  
-
-  
 ################################################################################################
 ### Scratch code
+
+### Complete working facet figure for time on task
+  # ## Revised plot, including accuracy to distinguish points in the grid by False or True
+  # t2.vt.ne.tot <- experiment.data %>% filter (T==2) %>% 
+  #   select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
+  # 
+  # ggplot(t2.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy
+  # )) +   # alpha=0.5, shape=Accuracy colour=Accuracy , colour=Accuracy
+  #   # geom_bar(position="dodge", stat="identity") + 
+  #   geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
+  #   #scale_shape(solid = FALSE) +
+  #   # geom_jitter(width = 0.25) + 
+  #   # geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+  #   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+  #   theme(legend.position="none") +
+  #   #    scale_color_manual(values = ifelse(t2.vt.ne.tot$Accuracy=="FALSE","red","green")) +
+  #   scale_color_manual(values = c("red","green")) +
+  #   # scale_fill_manual(values=c("red", "green")) +
+  #   xlab("Number of Pairs") +
+  #   ylab("Time-on-task seconds") +  
+  #   guides(alpha=FALSE) +
+  #   coord_flip() +
+  #   theme(strip.text.x = element_text(angle = 0)) +
+  #   #    scale_y_continuous(breaks=seq(0, 24, 1)) +
+  #   theme_classic()
+  
+  
+### Old examples of graphs for time on task (elapsed time)  
+
+  # # Response time for t=2 and number of pairs and visualization technique
+  # t2.vt.ne.tot <- experiment.data %>% filter (T==2) %>% #  & Accuracy=="True"
+  #   select(Visualization.Technique,Number.Elements,Elapsed.Time)
+  # 
+  # ggplot(t2.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+  #                          shape = Visualization.Technique, colour = Visualization.Technique)) +  # , size=0.01, 
+  #   geom_point(size=2) + 
+  #   theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
+  #         legend.position = "top",
+  #         legend.title = element_text(size = 12)) +  
+  #   # face = "italic", family = "Times", colour = "red", 
+  #   scale_colour_brewer(palette = "Set1") +
+  #   scale_shape_manual(values = c(1,2)) +
+  #   xlab("Number of Pairs") +
+  #   ylab("Elapsed Time in seconds") + 
+  #   #  labs(colour = "Visualization Method", shape="Visualization Method") +
+  #   labs(colour = "Visualization Technique", shape="Visualization Technique") +
+  #   scale_y_continuous(breaks=seq(0, 220, 20)) + 
+  #   # guides(colour = FALSE) + # Does not work
+  #   geom_jitter(width = 0.25)    
+  
+  
+  # ggplot(t2.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+  #                          shape = Accuracy, colour = Accuracy)) +  # , size=0.01, 
+  #   geom_point(size=2) + 
+  #   theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
+  #         legend.position = "top",
+  #         legend.title = element_text(size = 12)) +  
+  #   # face = "italic", family = "Times", colour = "red", 
+  #   scale_colour_brewer(palette = "Set1") +
+  #   scale_shape_manual(values = c(1,2)) +
+  #   xlab("Number of Pairs") +
+  #   ylab("Elapsed Time in seconds") + 
+  #   #  labs(colour = "Visualization Method", shape="Visualization Method") +
+  #   labs(colour = "Accuracy", shape="Accuracy") +
+  #   scale_y_continuous(breaks=seq(0, 220, 20)) + 
+  #   # guides(colour = FALSE) + # Does not work
+  #   geom_jitter(width = 0.25)  
+
+  # ggplot(t3.vt.ne.tot, aes(x = as.factor(Number.Elements), y = Elapsed.Time/1000, 
+  #                          shape = Visualization.Technique, colour = Visualization.Technique)) +  # , size=0.01, 
+  #   geom_point(size=2) + 
+  #   theme(panel.background = element_blank(),panel.grid.major.y = element_line(colour = "grey50"),
+  #         legend.position = "top",
+  #         legend.title = element_text(size = 12)) +  
+  #   scale_colour_brewer(palette = "Set1") +
+  #   scale_shape_manual(values = c(1,2)) +
+  #   xlab("Number of Triplets") +
+  #   ylab("Elapsed Time in seconds") + 
+  #   #  labs(colour = "Visualization Method", shape="Visualization Method") +
+  #   labs(colour = "Visualization Technique", shape="Visualization Technique") +
+  #   scale_y_continuous(breaks=seq(0, 480, 40)) + 
+  #   geom_jitter(width = 0.25)
+  
+  
+  
+    
+  
 # "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv"
 
 ## Loads the data files and completes the framework including T value
