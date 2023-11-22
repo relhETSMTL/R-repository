@@ -15,6 +15,46 @@ experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experime
 ###############################################################
 # General descriptive statistics
 
+## Difficulty assessment 
+his.difficulty <- ggplot(experiment.data, aes(x=Difficulty.Level)) + 
+  geom_histogram(binwidth=1, stat="count", fill="blue") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  scale_x_continuous(breaks=seq(0, 20, 1)) +
+  scale_y_continuous(breaks=seq(0, 380, 20)) + 
+  xlab("Difficulty Assessment, Very easy..Very difficult") +
+  theme_classic()
+
+his.difficulty
+
+experiment.data %>% select(Difficulty.Level) %>% summary()
+# Difficulty.Level
+# Min.   : 1.000  
+# 1st Qu.: 1.000  
+# Median : 1.000  
+# Mean   : 1.237  
+# 3rd Qu.: 1.000  
+# Max.   :20.000  
+
+## Certainty assessment
+his.certainty <- ggplot(experiment.data, aes(x=Certainty.Assessment)) + 
+  geom_histogram(binwidth=1, stat="count", fill="blue") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  scale_x_continuous(breaks=seq(0, 20, 1)) +
+  scale_y_continuous(breaks=seq(0, 120, 10)) + 
+  xlab("Certainty Assessment, Perfect..Failure") +
+  theme_classic()
+
+his.certainty
+
+experiment.data %>% select(Certainty.Assessment) %>% summary()
+# Certainty.Assessment
+# Min.   : 1.00       
+# 1st Qu.: 2.00       
+# Median : 3.00       
+# Mean   : 4.37       
+# 3rd Qu.: 5.00       
+# Max.   :20.00       
+
 #######################
 ## Accuracy RQ1
 
@@ -665,6 +705,8 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   
   
   
+  
+    
   
 
 ### Facet for the  

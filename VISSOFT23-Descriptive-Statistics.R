@@ -449,7 +449,7 @@ allt.data %>% filter(Difficulty.Level>1) -> difficulty.outlier
 # Certainty assessment
 # Simple histogram
 his.certainty <- ggplot(allt.data, aes(x=Certainty.Assessment)) + 
-  geom_histogram(binwidth=1, stat="count") +
+  geom_histogram(binwidth=1, stat="count", fill="blue") +
   stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
   #           position = position_stack(vjust = -0.5)) +
   #  geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
