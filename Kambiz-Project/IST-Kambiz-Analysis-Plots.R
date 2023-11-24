@@ -728,7 +728,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # count, time
   # Axial, Misc, Navigation, Question, Response, Solution, Target  
   
-  
+  #####################################################################################
   # Data for t=2, Visualization Technique scatter plots
   t2.sp.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-SP") 
   
@@ -799,7 +799,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   t2.sp.aois.plot <- t2.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
     geom_bar(position="fill", stat="identity", alpha=0.7) +
     theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-    labs(x="t=2 and scatter plots", y="") 
+    labs(x="t=2 and scatter plot", y="") 
   t2.sp.aois.plot
   
   
@@ -873,20 +873,274 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   t2.pd.aois.plot <- t2.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
     geom_bar(position="fill", stat="identity", alpha=0.7) +
     theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-    labs(x="t=2 and parallel dimensions plots", y="") 
+    labs(x="t=2 and parallel dimensions plot", y="") 
   t2.pd.aois.plot
   
   
+  #####################################################################################
+  # Data for t=3, Visualization Technique scatter plots
+  t3.sp.data <- experiment.data %>% filter(T==3 & Visualization.Technique=="3D-SP") 
   
   
+  t3.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+  columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+  colnames(t3.sp.df) <- columnNamesAOIs
+  
+  t3.sp.df[1,1] <- 'count'
+  t3.sp.df[1,2] <- 'Axial'
+  t3.sp.df[1,3] <- mean (t3.sp.data$Axial.pfcount)
+  
+  t3.sp.df[2,1] <- 'count'
+  t3.sp.df[2,2] <- 'Misc'
+  t3.sp.df[2,3] <- mean(t3.sp.data$Misc.pfcount)
+  
+  t3.sp.df[3,1] <- 'count'
+  t3.sp.df[3,2] <- 'Navigation'
+  t3.sp.df[3,3] <- mean(t3.sp.data$Navigation.pfcount)
+  
+  t3.sp.df[4,1] <- 'count'
+  t3.sp.df[4,2] <- 'Question'
+  t3.sp.df[4,3] <- mean (t3.sp.data$Question.pfcount)
+  
+  t3.sp.df[5,1] <- 'count'
+  t3.sp.df[5,2] <- 'Response'
+  t3.sp.df[5,3] <- mean(t3.sp.data$Response.pfcount)
+  
+  t3.sp.df[6,1] <- 'count'
+  t3.sp.df[6,2] <- 'Solution'
+  t3.sp.df[6,3] <- mean(t3.sp.data$Solution.pfcount)
+  
+  t3.sp.df[7,1] <- 'count'
+  t3.sp.df[7,2] <- 'Target'
+  t3.sp.df[7,3] <- mean (t3.sp.data$Target.pfcount)
+  
+  t3.sp.df[8,1] <- 'time'
+  t3.sp.df[8,2] <- 'Axial'
+  t3.sp.df[8,3] <- mean (t3.sp.data$Axial.pftime)
+  
+  t3.sp.df[9,1] <- 'time'
+  t3.sp.df[9,2] <- 'Misc'
+  t3.sp.df[9,3] <- mean(t3.sp.data$Misc.pftime)
+  
+  t3.sp.df[10,1] <- 'time'
+  t3.sp.df[10,2] <- 'Navigation'
+  t3.sp.df[10,3] <- mean(t3.sp.data$Navigation.pftime)
+  
+  t3.sp.df[11,1] <- 'time'
+  t3.sp.df[11,2] <- 'Question'
+  t3.sp.df[11,3] <- mean (t3.sp.data$Question.pftime)
+  
+  t3.sp.df[12,1] <- 'time'
+  t3.sp.df[12,2] <- 'Response'
+  t3.sp.df[12,3] <- mean(t3.sp.data$Response.pftime)
+  
+  t3.sp.df[13,1] <- 'time'
+  t3.sp.df[13,2] <- 'Solution'
+  t3.sp.df[13,3] <- mean(t3.sp.data$Solution.pftime)
+  
+  t3.sp.df[14,1] <- 'time'
+  t3.sp.df[14,2] <- 'Target'
+  t3.sp.df[14,3] <- mean (t3.sp.data$Target.pftime)
+  
+  # makes Measure factor values instead of characters
+  t3.sp.df$Measure <- factor(t3.sp.df$Measure, levels = c('time', 'count'))
+  
+  t3.sp.aois.plot <- t3.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+    geom_bar(position="fill", stat="identity", alpha=0.7) +
+    theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+    labs(x="t=3 and scatter plot", y="") 
+  t3.sp.aois.plot
   
   
-    
+  ### Data for t=3, Visualization Technique parallel dimensions plots
+  t3.pd.data <- experiment.data %>% filter(T==3 & Visualization.Technique=="3D-PD") 
+  
+  
+  t3.pd.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+  columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+  colnames(t3.pd.df) <- columnNamesAOIs
+  
+  t3.pd.df[1,1] <- 'count'
+  t3.pd.df[1,2] <- 'Axial'
+  t3.pd.df[1,3] <- mean (t3.pd.data$Axial.pfcount)
+  
+  t3.pd.df[2,1] <- 'count'
+  t3.pd.df[2,2] <- 'Misc'
+  t3.pd.df[2,3] <- mean(t3.pd.data$Misc.pfcount)
+  
+  t3.pd.df[3,1] <- 'count'
+  t3.pd.df[3,2] <- 'Navigation'
+  t3.pd.df[3,3] <- mean(t3.pd.data$Navigation.pfcount)
+  
+  t3.pd.df[4,1] <- 'count'
+  t3.pd.df[4,2] <- 'Question'
+  t3.pd.df[4,3] <- mean (t3.pd.data$Question.pfcount)
+  
+  t3.pd.df[5,1] <- 'count'
+  t3.pd.df[5,2] <- 'Response'
+  t3.pd.df[5,3] <- mean(t3.pd.data$Response.pfcount)
+  
+  t3.pd.df[6,1] <- 'count'
+  t3.pd.df[6,2] <- 'Solution'
+  t3.pd.df[6,3] <- mean(t3.pd.data$Solution.pfcount)
+  
+  t3.pd.df[7,1] <- 'count'
+  t3.pd.df[7,2] <- 'Target'
+  t3.pd.df[7,3] <- mean (t3.pd.data$Target.pfcount)
+  
+  t3.pd.df[8,1] <- 'time'
+  t3.pd.df[8,2] <- 'Axial'
+  t3.pd.df[8,3] <- mean (t3.pd.data$Axial.pftime)
+  
+  t3.pd.df[9,1] <- 'time'
+  t3.pd.df[9,2] <- 'Misc'
+  t3.pd.df[9,3] <- mean(t3.pd.data$Misc.pftime)
+  
+  t3.pd.df[10,1] <- 'time'
+  t3.pd.df[10,2] <- 'Navigation'
+  t3.pd.df[10,3] <- mean(t3.pd.data$Navigation.pftime)
+  
+  t3.pd.df[11,1] <- 'time'
+  t3.pd.df[11,2] <- 'Question'
+  t3.pd.df[11,3] <- mean (t3.pd.data$Question.pftime)
+  
+  t3.pd.df[12,1] <- 'time'
+  t3.pd.df[12,2] <- 'Response'
+  t3.pd.df[12,3] <- mean(t3.pd.data$Response.pftime)
+  
+  t3.pd.df[13,1] <- 'time'
+  t3.pd.df[13,2] <- 'Solution'
+  t3.pd.df[13,3] <- mean(t3.pd.data$Solution.pftime)
+  
+  t3.pd.df[14,1] <- 'time'
+  t3.pd.df[14,2] <- 'Target'
+  t3.pd.df[14,3] <- mean (t3.pd.data$Target.pftime)
+  
+  # makes Measure factor values instead of characters
+  t3.pd.df$Measure <- factor(t3.pd.df$Measure, levels = c('time', 'count'))
+  
+  t3.pd.aois.plot <- t3.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+    geom_bar(position="fill", stat="identity", alpha=0.7) +
+    theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+    labs(x="t=3 and parallel dimensions plot", y="") 
+  t3.pd.aois.plot
+  
+
 ## Computing the average percentages per question  
   
+  # Test of merging the plots into a single figure
+  # https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+  library(cowplot)
+  prow <- plot_grid(t3.sp.aois.plot + theme(legend.position="none"),
+                    t3.pd.aois.plot + theme(legend.position="none"),
+                    align = 'vh',
+                    # labels = c("CTC", "no CTC"),
+                    hjust = -1,
+                    nrow = 1)
+  
+  legend_b <- get_legend(t3.pd.aois.plot + theme(legend.position="bottom"))
+  aois.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
+  aois.plot
 
 
+  # Plot with the four combinations, mean percentage of fixation time and fixation count
+  prow4 <- plot_grid(t3.sp.aois.plot + theme(legend.position="none"),
+                     t3.pd.aois.plot + theme(legend.position="none"),
+                     t2.sp.aois.plot + theme(legend.position="none"),
+                     t2.pd.aois.plot + theme(legend.position="none"),
+                     align = 'vh',
+                    hjust = -1,
+                    nrow = 2)
+  legend_b4 <- get_legend(t3.pd.aois.plot + theme(legend.position="bottom"))
+  aois.plot4 <- plot_grid( prow4, legend_b4, ncol = 1, rel_heights = c(1, .2))
+  aois.plot4
 
+  
+  #####################################################################################
+  # Reordering the AOI data by time and count in descending order
+  
+  t2.sp.df %>% filter(Measure=='time') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1    time Navigation 0.24318438
+  # 2    time     Target 0.22318437
+  # 3    time      Axial 0.21334583
+  # 4    time   Question 0.18165312
+  # 5    time   Response 0.07565938
+  # 6    time   Solution 0.04076042
+  # 7    time       Misc 0.02221250
+    
+  t2.sp.df %>% filter(Measure=='count') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1   count Navigation 0.26278333
+  # 2   count      Axial 0.24077187
+  # 3   count     Target 0.20298229
+  # 4   count   Question 0.19607604
+  # 5   count   Response 0.04378125
+  # 6   count   Solution 0.02973542
+  # 7   count       Misc 0.02387292
+    
+  t2.pd.df %>% filter(Measure=='time') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1    time      Axial 0.36291563
+  # 2    time Navigation 0.19619792
+  # 3    time   Question 0.15041771
+  # 4    time     Target 0.13832812
+  # 5    time   Solution 0.06678021
+  # 6    time   Response 0.05933021
+  # 7    time       Misc 0.02602917
+    
+  t2.pd.df %>% filter(Measure=='count') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1   count      Axial 0.35606875
+  # 2   count Navigation 0.24196146
+  # 3   count   Question 0.18446250
+  # 4   count     Target 0.08887813
+  # 5   count   Solution 0.05118229
+  # 6   count   Response 0.04323542
+  # 7   count       Misc 0.03420521  
+  
+  
+  t3.sp.df %>% filter(Measure=='time') %>% arrange(desc(Percentage))
+  # 1    time Navigation 0.29747396
+  # 2    time     Target 0.21359896
+  # 3    time      Axial 0.17944896
+  # 4    time   Question 0.14352917
+  # 5    time       Misc 0.12094062
+  # 6    time   Response 0.03138125
+  # 7    time   Solution 0.01410729
+    
+  t3.sp.df %>% filter(Measure=='count') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1   count Navigation 0.28285729
+  # 2   count     Target 0.20028229
+  # 3   count      Axial 0.19175833
+  # 4   count   Question 0.17665938
+  # 5   count       Misc 0.11778646
+  # 6   count   Response 0.02099583
+  # 7   count   Solution 0.01011250
+  
+  
+  t3.pd.df %>% filter(Measure=='time') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1    time      Axial 0.35480417
+  # 2    time     Target 0.16628125
+  # 3    time Navigation 0.16516771
+  # 4    time   Question 0.15792917
+  # 5    time   Response 0.06853125
+  # 6    time   Solution 0.06415729
+  # 7    time       Misc 0.02311458  
+
+  t3.pd.df %>% filter(Measure=='count') %>% arrange(desc(Percentage))
+  # Measure        AOI Percentage
+  # 1   count      Axial 0.35863646
+  # 2   count Navigation 0.21635104
+  # 3   count   Question 0.19246979
+  # 4   count     Target 0.11715417
+  # 5   count   Response 0.04775833
+  # 6   count   Solution 0.03842188
+  # 7   count       Misc 0.02920521  
+  
+      
 ################################################################################################
 ### Scratch code
 
