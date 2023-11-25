@@ -1140,7 +1140,43 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # 6   count   Solution 0.03842188
   # 7   count       Misc 0.02920521  
   
+
+  
+  #####################################################################################
+  # Box plots of time and count per combination
+  
+ summary(experiment.data$Fixation.Time)
+  # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 3651   28204   40637   53161   66064  408149 
+
+  # Box plots of fixation time per visualizaton technique  
+  bp.fixation.time <- experiment.data %>% 
+    ggplot(aes(x=Visualization.Technique, group=Visualization.Technique,Fixation.Time/1000)) +  
+    geom_boxplot(aes(fill=Fixation.Time/1000), varwidth=T, fill=c("turquoise", "magenta","blue","yellow"), alpha=0.5) +  # fill=c("red", "green"),
+    geom_jitter() +
+    labs(x="Visualization Technique", y="Fixation Time (secs)") + 
+    theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
+    scale_y_continuous(breaks=seq(0, 450, 50),limits = c(0, 450))
+  
+  bp.fixation.time  
+    
+  summary(experiment.data$Fixation.Count)
+  # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 9.00   97.75  136.00  178.73  219.00  987.00  
       
+  # Box plots of fixation count per visualizaton technique  
+  bp.fixation.count <- experiment.data %>% 
+    ggplot(aes(x=Visualization.Technique, group=Visualization.Technique,Fixation.Count)) +  
+    geom_boxplot(aes(fill=Fixation.Count), varwidth=T, fill=c("turquoise", "magenta","blue","yellow"), alpha=0.5) +  # fill=c("red", "green"),
+    geom_jitter() +
+    labs(x="Visualization Technique", y="Fixation Count") + 
+    theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
+    scale_y_continuous(breaks=seq(0, 1000, 100),limits = c(0, 1000))
+  
+  bp.fixation.count  
+  
+  # TODO: can the order of the visualization techniques be arranged?
+        
 ################################################################################################
 ### Scratch code
 
