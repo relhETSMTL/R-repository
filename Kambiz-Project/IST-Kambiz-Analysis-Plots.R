@@ -1177,6 +1177,31 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   
   bp.fixation.count 
   
+  
+  ### Fixation time and fixation count summaries
+
+  experiment.data %>% select(Fixation.Count, Visualization.Technique) %>% group_by(Visualization.Technique) %>%
+    summarise(median = median (Fixation.Count), avg = mean(Fixation.Count), std = sd(Fixation.Count), 
+              min = min(Fixation.Count), max = max(Fixation.Count)) %>% as.data.frame()
+  
+  # Visualization.Technique median      avg       std min max
+  # 1                   2D-PD  122.0 142.8021  76.43485  48 459
+  # 2                   2D-SP  113.0 131.6250  85.58003  24 596
+  # 3                   3D-PD  146.5 174.1354  97.68032   9 535
+  # 4                   3D-SP  232.5 266.3438 172.83353  31 987
+
+    
+
+  experiment.data %>% select(Fixation.Time, Visualization.Technique) %>% group_by(Visualization.Technique) %>%
+    summarise(median = median (Fixation.Time), avg = mean(Fixation.Time/1000), std = sd(Fixation.Time/1000), 
+              min = min(Fixation.Time/1000), max = max(Fixation.Time/1000)) %>% as.data.frame()
+  
+  # Visualization.Technique median      avg      std    min     max
+  # 1                   2D-PD  36736 45.09638 25.93038 13.022 133.775
+  # 2                   2D-SP  28921 34.15934 23.11749  8.376 171.443
+  # 3                   3D-PD  43140 53.50670 30.60615  3.651 169.558
+  # 4                   3D-SP  66875 79.88126 61.83897  8.926 408.149
+
 ################################################################################################
 ### Scratch code
 
