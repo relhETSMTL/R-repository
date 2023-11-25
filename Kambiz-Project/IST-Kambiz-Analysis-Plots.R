@@ -1156,9 +1156,10 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
     geom_jitter() +
     labs(x="Visualization Technique", y="Fixation Time (secs)") + 
     theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
-    scale_y_continuous(breaks=seq(0, 450, 50),limits = c(0, 450))
+    scale_y_continuous(breaks=seq(0, 450, 50),limits = c(0, 450)) + 
+    xlim("2D-SP","2D-PD","3D-SP","3D-PD") # reorders the values
   
-  bp.fixation.time  
+  bp.fixation.time 
     
   summary(experiment.data$Fixation.Count)
   # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -1171,12 +1172,11 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
     geom_jitter() +
     labs(x="Visualization Technique", y="Fixation Count") + 
     theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
-    scale_y_continuous(breaks=seq(0, 1000, 100),limits = c(0, 1000))
+    scale_y_continuous(breaks=seq(0, 1000, 100),limits = c(0, 1000)) + 
+    xlim("2D-SP","2D-PD","3D-SP","3D-PD") # reorders the values 
   
-  bp.fixation.count  
+  bp.fixation.count 
   
-  # TODO: can the order of the visualization techniques be arranged?
-        
 ################################################################################################
 ### Scratch code
 
