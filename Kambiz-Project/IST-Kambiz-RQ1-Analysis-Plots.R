@@ -98,6 +98,13 @@ odds.n.ends(mod = t2.model)
 # Number.Elements:Visualization.Technique2D-SP  1.0156904   0.99759791  1.06
 
 # Those that DO NOT include the value of 1 in the range:
-# (Intercept) 
-# Visualization.Technique2D-SP
+# (Intercept)  7.2407362   2.73662762  21.453463 --> Unclear the interpretation 
+# Visualization.Technique2D-SP 1.0156904   0.99759791  1.06 --> 
+#   Interpretation: 2D-SP has slightly higher odds (1.0156904) of accurate responses over 2D-PD
+# No other significant odds ratio
+
+
+# compute GVIF
+car::vif(mod = t2.model)
+
 
