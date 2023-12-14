@@ -108,6 +108,31 @@ odds.n.ends(mod = t2.model)
 # the log-odds of the predicted probability against the continuous predictors of the model.
 # Continuous predictor: Number.Elements
 
+#make a variable of the log-odds of the predicted values
+logit.t2 <- log(x = t2.model$fitted.values/(1-t2.model$fitted.values))
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.data <- data.frame(logit.t2, Number.Elements = t2.model$model$Number.Elements)
+
+# create a plot (Figure 10.9)
+linearity.t2.data %>%
+  ggplot(aes(x = Number.Elements, y = logit.t2))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Number of Elements", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+
+# It is clearly non-linear from the figure.The loess curve is very far from the linear model line.
+# Assumption: Not met.
+# Question: We have only 5 values as number of elements. Is it really continuous or better model it was ordinal? If ordinal, then
+# the assumption is met by vacuity because there are no continuous predictors.
+
+
 ## Assumption 2: No perfect multicollinearity
 # compute GVIF
 vif.t2 <- car::vif(mod = t2.model)
