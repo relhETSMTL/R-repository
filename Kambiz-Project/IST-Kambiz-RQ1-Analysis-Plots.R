@@ -8,8 +8,7 @@ library("tidyverse")
 library(ggplot2)
 library(package = "tableone")     # descriptive statistics table
 library(package = "odds.n.ends")  # odds ratio analysis
-
-
+library(car)
 
 # library(hrbrthemes)
 # library(gridExtra)
@@ -104,7 +103,21 @@ odds.n.ends(mod = t2.model)
 # No other significant odds ratio
 
 
+## Assumption 1: Linearity
+## Notes: For logistic regression, the linearity is tested for each continuous predictor but not the relationship. Instead, 
+# the log-odds of the predicted probability against the continuous predictors of the model.
+# Continuous predictor: Number.Elements
+
+## Assumption 2: No perfect multicollinearity
 # compute GVIF
-car::vif(mod = t2.model)
-
-
+vif.t2 <- car::vif(mod = t2.model)
+vif.t2
+# Number.Elements         Visualization.Technique     Number.Elements:Visualization.Technique 
+# 1.118315                      4.749727                                4.510710 
+# The Df are 1 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
+# The values are:
+#   Number.Elements GVIF =  1.057504
+#   Visualization.Technique GVIF =  2.179387
+#   Number.Elements:Visualization.Technique = 2.123843 
+# Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
+  
