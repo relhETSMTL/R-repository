@@ -193,7 +193,7 @@ influence.t2 <- data.frame(influence.t2.mod$infmat)
 # Filtering by Cook Distance, > 4/n where n is the number of observations
 n.t2 <- nrow(rq1.data.t2.cleaned)
 influence.t2 %>% filter(cook.d > 4/n.t2) %>% nrow()
-# Conclusion: There are 17 observations above the threshold for Cood distance
+# Conclusion: There are 17 observations above the threshold for Cook distance
 
 
 # Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
