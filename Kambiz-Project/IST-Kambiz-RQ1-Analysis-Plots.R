@@ -145,4 +145,106 @@ vif.t2
 #   Visualization.Technique GVIF =  2.179387
 #   Number.Elements:Visualization.Technique = 2.123843 
 # Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
-  
+
+##### Model diagnostics
+
+## Finding outliers with residuals
+rq1.data.t2.cleaned <- rq1.data.t2 %>%
+   mutate(standarized = rstandard(model = t2.model))
+ 
+# check the residuals for large values > 2 or <-2
+rq1.data.t2.cleaned %>%
+#  drop_na(standarized) %>%
+  filter(standarized >2 | standarized < -2)
+
+# There are two outliers.
+# Visualization.Technique Number.Elements Accuracy standarized
+# 1                   2D-SP             127    False   -2.770048
+# 2                   2D-SP              66    False   -2.470792
+
+# Looking at the first outlier  
+rq1.data.t2.cleaned %>% filter (Number.Elements==127 & Accuracy=="False")
+
+# From all the points that are False and 127 Number.Elements, it is the only one for 2D-SP plots
+# 1                   2D-SP             127    False   -2.770048  <-- outlier
+# 2                   2D-PD             127    False   -1.992816
+# 3                   2D-PD             127    False   -1.992816
+# 4                   2D-PD             127    False   -1.992816
+# 5                   2D-PD             127    False   -1.992816
+
+# Looking at the second outlier
+rq1.data.t2.cleaned %>% filter (Number.Elements==66 & Accuracy=="False")  
+# It is the only one FALSE for Number.Elements 66, all of points are for 2D-SP plots
+
+# Conclusions: Yes, two outliers but they do not seem to be erroneous.
+
+## Using df-betas for identifying influential values
+
+# Computing influences
+influence.t2.mod <- influence.measures(model = t2.model)
+# summarize data frame with dfbetas, cooks, leverage
+summary(object = influence.t2.mod$infmat)
+# Conclusion: No df_beta values have a Maximum > 2, hence no influential observations
+
+
+# save the data frame
+influence.t2 <- data.frame(influence.t2.mod$infmat)
+
+# Filtering by Cook Distance, > 4/n where n is the number of observations
+n.t2 <- nrow(rq1.data.t2.cleaned)
+influence.t2 %>% filter(cook.d > 4/n.t2) %>% nrow()
+# Conclusion: There are 17 observations above the threshold for Cood distance
+
+
+# Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
+# Since we are considering the Number Elements, Visualization Technique, Interaction, and Intercept
+# https://online.stat.psu.edu/stat501/lesson/11/11.2
+# Threshold value = 2 * 4 / 192
+p.t2 <- 4
+influence.t2 %>% filter(hat > 0.04166667) %>% nrow() # ((2*4)/192)) # 2*p.t2/n.t2)
+# Conclusion: Based on this metric, no influential values were found
+
+### Forest plots
+
+#Box 10.2
+# get odds ratio table from lib.model
+odds.t2.mod <- data.frame(odds.n.ends(mod = t2.model)[6])
+
+# make row names a variable
+odds.t2.mod$var <- row.names(x = odds.t2.mod)
+
+# change variable names for easier use
+names(x = odds.t2.mod) <- c("OR", "lower", "upper", "variable")
+
+# forest plot of odds ratios from lib.model (Figure 10.15)
+odds.t2.mod %>%
+  ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
+  geom_pointrange(color = "#7463AC") +
+  geom_hline(yintercept = 1, lty = 2, color = "deeppink",
+             size = 1) +
+  coord_flip() +
+  labs(x = "Variable from accuracy model", y = "Odds ratio (95% CI)") +
+  theme_minimal()
+
+
+# clean variable names for graph
+odds.t2.mod.cleaned <- odds.t2.mod %>%
+  mutate(variable = dplyr::recode(.x = variable,   # Function name class with function from car package
+                           "(Intercept)" = "Intercept",
+                           "Number.Elements" = "Number Pairs",
+                           "Visualization.Technique2D-SP" = "Scatter Plots",
+                           "Number.Elements:Visualization.Technique2D-SP" = "Interaction"))
+                           
+
+# change scale of y-axis (flipped) to log scale for visualization
+odds.t2.mod.cleaned %>%
+  ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
+  geom_pointrange(color = "#7463AC") +
+  geom_hline(yintercept = 1, lty = 2, color = "deeppink", size = 1) +
+  scale_y_log10(breaks = c(0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10),
+                minor_breaks = NULL)+
+  coord_flip() +
+  labs(x = "Variable from accuracy model", y = "Odds ratio (95% CI)") +
+  theme_minimal()
+
+
