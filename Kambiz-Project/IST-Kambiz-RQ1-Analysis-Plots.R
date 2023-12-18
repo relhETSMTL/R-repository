@@ -313,20 +313,39 @@ summary(object = t3.model)
 # get model fit, model significance, odds ratios
 odds.n.ends(mod = t3.model)
 
+# $`Logistic regression model significance`
+# Chi-squared        d.f.           p 
+# 15.081       3.000       0.002 
+# 
+# $`Contingency tables (model fit): frequency predicted`
+#                   Number observed
+# Number predicted   1   0  Sum
+#               1   150  42 192
+#               0     0   0   0
+#               Sum 150  42 192
+# 
+# $`Count R-squared (model fit): percent correctly predicted`
+# [1] 78.125
+# $`Count R-squared (model fit): percent correctly predicted`
+# [1] 78.125
+# 
+# $`Model sensitivity`
+# [1] 1
+# 
+# $`Model specificity`
+# [1] 0
+
 # Analysis of Odd rations
 #                                               OR        2.5 %         97.5 %
 #   (Intercept)                                 2.9354765 1.3813932     6.637225
 # Number.Elements                               1.0006038 0.9999281     1.001463
-# Visualization.Technique3D-SP                 0.4556689 0.1629032      1.228265
-# Number.Elements:Visualization.Technique3D-SP 1.0003614 0.9992713      1.001523
-
-
-# TODO CONTINUE HERE
+# Visualization.Technique3D-SP                  0.4556689 0.1629032      1.228265
+# Number.Elements:Visualization.Technique3D-SP  1.0003614 0.9992713      1.001523
 
 # Those that DO NOT include the value of 1 in the range:
-# (Intercept)  7.2407362   2.73662762  21.453463 --> Unclear the interpretation 
-# Visualization.Technique2D-SP 1.0156904   0.99759791  1.06 --> 
-#   Interpretation: 2D-SP has slightly higher odds (1.0156904) of accurate responses over 2D-PD
+# (Intercept)  2.9354765 1.3813932     6.637225         --> Unclear the interpretation 
+# Visualization.Technique3D-SP 0.4556689 0.1629032      1.228265 --> 
+#   Interpretation: 2D-SP has slightly higher odds (1.228265) of accurate responses over 3D-PD
 # No other significant odds ratio
 
 
@@ -336,14 +355,14 @@ odds.n.ends(mod = t3.model)
 # Continuous predictor: Number.Elements
 
 #make a variable of the log-odds of the predicted values
-logit.t2 <- log(x = t2.model$fitted.values/(1-t2.model$fitted.values))
+logit.t3 <- log(x = t3.model$fitted.values/(1-t3.model$fitted.values))
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t2.data <- data.frame(logit.t2, Number.Elements = t2.model$model$Number.Elements)
+linearity.t3.data <- data.frame(logit.t3, Number.Elements = t3.model$model$Number.Elements)
 
 # create a plot (Figure 10.9)
-linearity.t2.data %>%
-  ggplot(aes(x = Number.Elements, y = logit.t2))+
+linearity.t3.data %>%
+  ggplot(aes(x = Number.Elements, y = logit.t3))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
@@ -356,95 +375,88 @@ linearity.t2.data %>%
 
 # It is clearly non-linear from the figure.The loess curve is very far from the linear model line.
 # Assumption: Not met.
-# Question: We have only 5 values as number of elements. Is it really continuous or better model it was ordinal? If ordinal, then
+# Question: We have only 6 values as number of elements. Is it really continuous or better model it was ordinal? If ordinal, then
 # the assumption is met by vacuity because there are no continuous predictors.
 
 
 ## Assumption 2: No perfect multicollinearity
 # compute GVIF
-vif.t2 <- car::vif(mod = t2.model)
-vif.t2
+vif.t3 <- car::vif(mod = t3.model)
+vif.t3
+# Number.Elements                 Visualization.Technique Number.Elements:Visualization.Technique 
+# 1.959208                                1.953720                                2.608900 
+
 # Number.Elements         Visualization.Technique     Number.Elements:Visualization.Technique 
 # 1.118315                      4.749727                                4.510710 
+
 # The Df are 1 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
 # The values are:
-#   Number.Elements GVIF =  1.057504
-#   Visualization.Technique GVIF =  2.179387
-#   Number.Elements:Visualization.Technique = 2.123843 
+#   Number.Elements GVIF =  1.399717 
+#   Visualization.Technique GVIF =  0.9768601
+#   Number.Elements:Visualization.Technique =  1.30445 
 # Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
 
 ##### Model diagnostics
 
 ## Finding outliers with residuals
-rq1.data.t2.cleaned <- rq1.data.t2 %>%
-  mutate(standarized = rstandard(model = t2.model))
+rq1.data.t3.cleaned <- rq1.data.t3 %>%
+  mutate(standarized = rstandard(model = t3.model))
 
 # check the residuals for large values > 2 or <-2
-rq1.data.t2.cleaned %>%
+rq1.data.t3.cleaned %>%
   #  drop_na(standarized) %>%
   filter(standarized >2 | standarized < -2)
 
-# There are two outliers.
+# There is one outlier.
 # Visualization.Technique Number.Elements Accuracy standarized
-# 1                   2D-SP             127    False   -2.770048
-# 2                   2D-SP              66    False   -2.470792
+# 1                   3D-PD            2491    False   -2.343966
 
 # Looking at the first outlier  
-rq1.data.t2.cleaned %>% filter (Number.Elements==127 & Accuracy=="False")
+rq1.data.t3.cleaned %>% filter (Number.Elements==2491)
+# Out of the 28 observations for this number of elements (2 questions x 24 participants) this was the only FALSE accuracy response
+# There was one question with parallel dimensions plots and one question for scatter plots
 
-# From all the points that are False and 127 Number.Elements, it is the only one for 2D-SP plots
-# 1                   2D-SP             127    False   -2.770048  <-- outlier
-# 2                   2D-PD             127    False   -1.992816
-# 3                   2D-PD             127    False   -1.992816
-# 4                   2D-PD             127    False   -1.992816
-# 5                   2D-PD             127    False   -1.992816
-
-# Looking at the second outlier
-rq1.data.t2.cleaned %>% filter (Number.Elements==66 & Accuracy=="False")  
-# It is the only one FALSE for Number.Elements 66, all of points are for 2D-SP plots
-
-# Conclusions: Yes, two outliers but they do not seem to be erroneous.
+# Conclusions: Yes, the outlier but they do not seem to be erroneous.
 
 ## Using df-betas for identifying influential values
 
 # Computing influences
-influence.t2.mod <- influence.measures(model = t2.model)
+influence.t3.mod <- influence.measures(model = t3.model)
 # summarize data frame with dfbetas, cooks, leverage
-summary(object = influence.t2.mod$infmat)
+summary(object = influence.t3.mod$infmat)
 # Conclusion: No df_beta values have a Maximum > 2, hence no influential observations
 
-
 # save the data frame
-influence.t2 <- data.frame(influence.t2.mod$infmat)
+influence.t3 <- data.frame(influence.t3.mod$infmat)
 
 # Filtering by Cook Distance, > 4/n where n is the number of observations
-n.t2 <- nrow(rq1.data.t2.cleaned)
-influence.t2 %>% filter(cook.d > 4/n.t2) %>% nrow()
-# Conclusion: There are 17 observations above the threshold for Cook distance
+n.t3 <- nrow(rq1.data.t3.cleaned)
+influence.t3 %>% filter(cook.d > 4/n.t3) %>% nrow()
+# Conclusion: There is one observation above the threshold for Cook distance
 
 
 # Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
 # Since we are considering the Number Elements, Visualization Technique, Interaction, and Intercept
 # https://online.stat.psu.edu/stat501/lesson/11/11.2
 # Threshold value = 2 * 4 / 192
-p.t2 <- 4
-influence.t2 %>% filter(hat > 0.04166667) %>% nrow() # ((2*4)/192)) # 2*p.t2/n.t2)
+p.t3 <- 4
+influence.t3 %>% filter(hat > 0.04166667) %>% nrow() 
 # Conclusion: Based on this metric, no influential values were found
 
 ### Forest plots
 
 #Box 10.2
 # get odds ratio table from lib.model
-odds.t2.mod <- data.frame(odds.n.ends(mod = t2.model)[6])
+odds.t3.mod <- data.frame(odds.n.ends(mod = t3.model)[6])
 
 # make row names a variable
-odds.t2.mod$var <- row.names(x = odds.t2.mod)
+odds.t3.mod$var <- row.names(x = odds.t3.mod)
 
 # change variable names for easier use
-names(x = odds.t2.mod) <- c("OR", "lower", "upper", "variable")
+names(x = odds.t3.mod) <- c("OR", "lower", "upper", "variable")
 
 # forest plot of odds ratios from lib.model (Figure 10.15)
-odds.t2.mod %>%
+odds.t3.mod %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink",
@@ -455,16 +467,16 @@ odds.t2.mod %>%
 
 
 # clean variable names for graph
-odds.t2.mod.cleaned <- odds.t2.mod %>%
+odds.t3.mod.cleaned <- odds.t3.mod %>%
   mutate(variable = dplyr::recode(.x = variable,   # Function name class with function from car package
                                   "(Intercept)" = "Intercept",
-                                  "Number.Elements" = "Number Pairs",
-                                  "Visualization.Technique2D-SP" = "Scatter Plots",
-                                  "Number.Elements:Visualization.Technique2D-SP" = "Interaction"))
+                                  "Number.Elements" = "Number Triplets",
+                                  "Visualization.Technique3D-SP" = "Scatter Plots",
+                                  "Number.Elements:Visualization.Technique3D-SP" = "Interaction"))
 
 
 # change scale of y-axis (flipped) to log scale for visualization
-odds.t2.mod.cleaned %>%
+odds.t3.mod.cleaned %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink", size = 1) +
