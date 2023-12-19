@@ -161,6 +161,16 @@ data.frame(tot.by.vist.numel.t2$residuals) %>%
   scale_linetype_manual(values = 1, name = "")
 
 
+shapiro.test(tot.by.vist.numel.t2$residuals)
+# 
+# Shapiro-Wilk normality test
+# 
+# data:  tot.by.vist.numel.t2$residuals
+# W = 0.81136, p-value = 9.075e-14
+# H0: Distribution is normal.
+# H1: Distribution is not normal.
+# p-value 9.075e-14 < alpha, then reject N0. Thus it is not normally distributed.
+
 
 
 ## 5) There is no perfect collinearity.

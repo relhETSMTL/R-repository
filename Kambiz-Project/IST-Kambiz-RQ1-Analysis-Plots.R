@@ -493,3 +493,11 @@ odds.t3.mod.cleaned %>%
 ############################################################################################################################
 ############################################################################################################################
 
+# https://rpubs.com/jmkelly91/883885
+library(lme4)
+model_fixed <- lm(Reaction ~ Days + Subject, data = sleepstudy)  # 18 unique values of participants, 10 observations per participant
+summary(model_fixed)
+
+
+# Subject is the participant ID, used for "nesting" the observation of reactions
+
