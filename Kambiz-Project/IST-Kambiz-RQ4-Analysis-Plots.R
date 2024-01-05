@@ -159,7 +159,6 @@ summary(object = t2.ptime.model)
 odds.n.ends(mod = t2.ptime.model)
 
 
-# $`Logistic regression model significance`
 # Chi-squared        d.f.           p 
 # 17.606       7.000       0.014 
 # 
@@ -191,44 +190,154 @@ odds.n.ends(mod = t2.ptime.model)
 # Target.pftime     Inf     0    Inf
 
 
-### UNTIL HERE !!!
-
 # Those that DO NOT include the value of 1 in the range:
-# (Intercept)  7.2407362   2.73662762  21.453463 --> Unclear the interpretation 
-# Visualization.Technique2D-SP 1.0156904   0.99759791  1.06 --> 
-#   Interpretation: 2D-SP has slightly higher odds (1.0156904) of accurate responses over 2D-PD
-# No other significant odds ratio
-
+# All of them include it in the range, thus unclear interpretation.
 
 
 ## Assumption 1: Linearity
 ## Notes: For logistic regression, the linearity is tested for each continuous predictor but not the relationship. Instead, 
 # the log-odds of the predicted probability against the continuous predictors of the model.
-# Continuous predictor: Number.Elements
+# Continuous predictor: Question.pftime,Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime 
 
+
+# Question AOI
+# Closer but may be not completely linear
 #make a variable of the log-odds of the predicted values
-logit.t2 <- log(x = t2.model$fitted.values/(1-t2.model$fitted.values))
+logit.t2.ptime <- log(x = t2.ptime.model$fitted.values/(1-t2.ptime.model$fitted.values))
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t2.data <- data.frame(logit.t2, Number.Elements = t2.model$model$Number.Elements)
+linearity.t2.ptime.question.data <- data.frame(logit.t2.ptime, Question.pftime = t2.ptime.model$model$Question.pftime)
 
 # create a plot (Figure 10.9)
-linearity.t2.data %>%
-  ggplot(aes(x = Number.Elements, y = logit.t2))+
+linearity.t2.ptime.question.data %>%
+  ggplot(aes(x = Question.pftime, y = logit.t2.ptime))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Number of Elements", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Time on Question AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+# Response AOI
+# Closer below 0.2 values where most of the observations are. May be not completely linear.
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.response.data <- data.frame(logit.t2.ptime, Response.pftime = t2.ptime.model$model$Response.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.response.data %>%
+  ggplot(aes(x = Response.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Response AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 
-# It is clearly non-linear from the figure.The loess curve is very far from the linear model line.
-# Assumption: Not met.
-# Question: We have only 5 values as number of elements. Is it really continuous or better model it was ordinal? If ordinal, then
-# the assumption is met by vacuity because there are no continuous predictors.
+# Misc AOI
+# Very close to linear with a a couple of bumps near 0.02 amd 0.04
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.misc.data <- data.frame(logit.t2.ptime, Misc.pftime = t2.ptime.model$model$Misc.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.misc.data %>%
+  ggplot(aes(x = Misc.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Misc AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+
+
+# Navigation AOI
+# Close at the middle, bigger on the sides, above 0.5 and below 0.1 
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.navigation.data <- data.frame(logit.t2.ptime, Navigation.pftime = t2.ptime.model$model$Navigation.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.navigation.data %>%
+  ggplot(aes(x = Navigation.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Navigation AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+
+# Axial AOI
+# Very close to line after 0.2  
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.axial.data <- data.frame(logit.t2.ptime, Axial.pftime = t2.ptime.model$model$Axial.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.axial.data %>%
+  ggplot(aes(x = Axial.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Axial AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+
+# Solution AOI
+# Very close, only separates after 0.15 for a few data  
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.solution.data <- data.frame(logit.t2.ptime, Solution.pftime = t2.ptime.model$model$Solution.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.solution.data %>%
+  ggplot(aes(x = Solution.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Solution AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+# Target AOI
+# Very close throughout the whole range. Most likely linear.  
+
+# make a small data frame with the log-odds variable and the age predictor
+linearity.t2.ptime.target.data <- data.frame(logit.t2.ptime, Target.pftime = t2.ptime.model$model$Target.pftime)
+
+# create a plot (Figure 10.9)
+linearity.t2.ptime.target.data %>%
+  ggplot(aes(x = Target.pftime, y = logit.t2.ptime))+
+  geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
+  geom_smooth(se = FALSE, aes(color = "Loess curve")) +
+  geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
+  theme_minimal() +
+  labs(x = "Proportion Fixation Time on Target AOI", y = "Log-odds of accuracy predicted probability") +
+  scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
+                                                       "deeppink")) +
+  scale_size_manual(values = 1.5, name = "")
+
+
+# Summary of linearity findings: Misc, Navigation, Axial, Solution, Target appear to be linear. 
+# The problems are in Question and Response. 
+
+# Assumption: Not clear if it is met or not.
 
 
 ## Assumption 2: No perfect multicollinearity
@@ -350,6 +459,23 @@ odds.t2.mod.cleaned %>%
 ############################################################################################################################
 ############################################################################################################################
 ############################################################################################################################
+
+## RQ4b, proportions of fixation counts on accuracy
+t2.pcount.model <- glm(formula = Accuracy ~ Question.pfcount + Response.pfcount + Misc.pfcount + Navigation.pfcount + Axial.pfcount + Solution.pfcount + Target.pfcount,
+                       data = rq4b.data.pcount.t2,
+                       family = binomial("logit"))
+summary(object = t2.pcount.model)
+
+# get model fit, model significance, odds ratios
+odds.n.ends(mod = t2.pcount.model)
+
+
+
+
+
+
+
+
 ### Analysis for T=3, triplets
 
 
