@@ -342,89 +342,106 @@ linearity.t2.ptime.target.data %>%
 
 ## Assumption 2: No perfect multicollinearity
 # compute GVIF
-vif.t2 <- car::vif(mod = t2.model)
-vif.t2
-# Number.Elements         Visualization.Technique     Number.Elements:Visualization.Technique 
-# 1.118315                      4.749727                                4.510710 
-# The Df are 1 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
-# The values are:
-#   Number.Elements GVIF =  1.057504
-#   Visualization.Technique GVIF =  2.179387
-#   Number.Elements:Visualization.Technique = 2.123843 
+vif.ptime.t2 <- car::vif(mod = t2.ptime.model)
+vif.ptime.t2
+
+# Question.pftime   Response.pftime       Misc.pftime Navigation.pftime      Axial.pftime   Solution.pftime     Target.pftime 
+# 1426130.63        1058400.64          60762.87        2665642.08        4562653.57         352851.31        1368079.84 
+
+# Checking values of GVIF
+vif.ptime.t2[1]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[2]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[3]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[4]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[5]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[6]^(1/(2*t2.ptime.model$df.null))
+vif.ptime.t2[7]^(1/(2*t2.ptime.model$df.null))
+
+# The Df are 191 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
+# Question.pftime  1.037792 
+# Response.pftime  1.036982 
+# Misc.pftime  1.029254 
+# Navigation.pftime 1.039493 
+# Axial.pftime 1.040956 
+# Solution.pftime 1.034005 
+# Target.pftime  1.037679 
 # Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
 
 ##### Model diagnostics
 
 ## Finding outliers with residuals
-rq1.data.t2.cleaned <- rq1.data.t2 %>%
-  mutate(standarized = rstandard(model = t2.model))
+rq4a.data.ptime.t2.cleaned <- rq4a.data.ptime.t2 %>%
+  mutate(standarized = rstandard(model = t2.ptime.model))
 
 # check the residuals for large values > 2 or <-2
-rq1.data.t2.cleaned %>%
+rq4a.data.ptime.t2.cleaned %>%
   #  drop_na(standarized) %>%
   filter(standarized >2 | standarized < -2)
 
-# There are two outliers.
-# Visualization.Technique Number.Elements Accuracy standarized
-# 1                   2D-SP             127    False   -2.770048
-# 2                   2D-SP              66    False   -2.470792
-
-# Looking at the first outlier  
-rq1.data.t2.cleaned %>% filter (Number.Elements==127 & Accuracy=="False")
-
-# From all the points that are False and 127 Number.Elements, it is the only one for 2D-SP plots
-# 1                   2D-SP             127    False   -2.770048  <-- outlier
-# 2                   2D-PD             127    False   -1.992816
-# 3                   2D-PD             127    False   -1.992816
-# 4                   2D-PD             127    False   -1.992816
-# 5                   2D-PD             127    False   -1.992816
-
-# Looking at the second outlier
-rq1.data.t2.cleaned %>% filter (Number.Elements==66 & Accuracy=="False")  
-# It is the only one FALSE for Number.Elements 66, all of points are for 2D-SP plots
-
-# Conclusions: Yes, two outliers but they do not seem to be erroneous.
+# There are eight outliers.
+# Accuracy Fixation.Time Question.pftime Response.pftime Misc.pftime Navigation.pftime Axial.pftime Solution.pftime Target.pftime
+# 1    False         30062          0.2603          0.0579      0.0519            0.1852       0.2923          0.0942        0.0582
+# 2    False         50516          0.0882          0.0225      0.0071            0.3509       0.2017          0.0096        0.3200
+# 3    False         40208          0.1701          0.0800      0.0860            0.2927       0.3486          0.0139        0.0087
+# 4    False         47544          0.0936          0.0487      0.0131            0.2192       0.3859          0.0100        0.2294
+# 5    False         44632          0.2588          0.0228      0.0104            0.0866       0.4197          0.0443        0.1574
+# 6    False         74966          0.2491          0.1253      0.0242            0.1753       0.3100          0.0000        0.1161
+# 7    False         35962          0.1624          0.0072      0.0172            0.2197       0.2693          0.1092        0.2151
+# 8    False        101820          0.0660          0.0318      0.0153            0.3623       0.2908          0.0019        0.2319
+# standarized
+# 1   -2.120111
+# 2   -2.941963
+# 3   -2.233403
+# 4   -2.376341
+# 5   -2.098842
+# 6   -2.068485
+# 7   -2.702816
+# 8   -2.663736
 
 ## Using df-betas for identifying influential values
 
 # Computing influences
-influence.t2.mod <- influence.measures(model = t2.model)
+influence.ptime.t2.mod <- influence.measures(model = t2.ptime.model)
 # summarize data frame with dfbetas, cooks, leverage
 summary(object = influence.t2.mod$infmat)
 # Conclusion: No df_beta values have a Maximum > 2, hence no influential observations
 
-
 # save the data frame
-influence.t2 <- data.frame(influence.t2.mod$infmat)
+influence.ptime.t2 <- data.frame(influence.ptime.t2.mod$infmat)
 
 # Filtering by Cook Distance, > 4/n where n is the number of observations
-n.t2 <- nrow(rq1.data.t2.cleaned)
-influence.t2 %>% filter(cook.d > 4/n.t2) %>% nrow()
-# Conclusion: There are 17 observations above the threshold for Cook distance
+n.ptime.t2 <- nrow(rq4a.data.ptime.t2.cleaned)
+influence.ptime.t2 %>% filter(cook.d > 4/n.ptime.t2) %>% nrow()
+# Conclusion: There are 16 observations above the threshold for Cook distance
 
 
 # Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
-# Since we are considering the Number Elements, Visualization Technique, Interaction, and Intercept
+# Since we are considering the 7 AOIs and Intercept
 # https://online.stat.psu.edu/stat501/lesson/11/11.2
-# Threshold value = 2 * 4 / 192
-p.t2 <- 4
-influence.t2 %>% filter(hat > 0.04166667) %>% nrow() # ((2*4)/192)) # 2*p.t2/n.t2)
-# Conclusion: Based on this metric, no influential values were found
+# Threshold value = 2 * 8 / 192
+p.ptime.t2 <- 8
+influence.ptime.t2 %>% filter(hat > 0.08333333) %>% nrow() # ((2*8)/192))
+# Conclusion: Based on this metric, 26 influential values were found
+
+# Finding influential values combining cook.d and hat metrics
+influence.ptime.t2 %>% filter(hat > 0.08333333 & cook.d > 4/n.ptime.t2)
+# There are 6 such influential values
+
 
 ### Forest plots
 
 #Box 10.2
 # get odds ratio table from lib.model
-odds.t2.mod <- data.frame(odds.n.ends(mod = t2.model)[6])
+odds.ptime.t2.mod <- data.frame(odds.n.ends(mod = t2.ptime.model)[6])
 
 # make row names a variable
-odds.t2.mod$var <- row.names(x = odds.t2.mod)
+odds.ptime.t2.mod$var <- row.names(x = odds.ptime.t2.mod)
 
 # change variable names for easier use
-names(x = odds.t2.mod) <- c("OR", "lower", "upper", "variable")
+names(x = odds.ptime.t2.mod) <- c("OR", "lower", "upper", "variable")
 
 # forest plot of odds ratios from lib.model (Figure 10.15)
-odds.t2.mod %>%
+odds.ptime.t2.mod %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink",
@@ -435,16 +452,20 @@ odds.t2.mod %>%
 
 
 # clean variable names for graph
-odds.t2.mod.cleaned <- odds.t2.mod %>%
+odds.ptime.t2.mod.cleaned <- odds.ptime.t2.mod %>%
   mutate(variable = dplyr::recode(.x = variable,   # Function name class with function from car package
                                   "(Intercept)" = "Intercept",
-                                  "Number.Elements" = "Number Pairs",
-                                  "Visualization.Technique2D-SP" = "Scatter Plots",
-                                  "Number.Elements:Visualization.Technique2D-SP" = "Interaction"))
+                                  "Axial.pftime" = "Axial AOI %FTime",
+                                  "Misc.pftime" = "Misc AOI %FTime",
+                                  "Navigation.pftime" = "Navigation AOI %FTime",
+                                  "Question.pftime" = "Question AOI %FTime",
+                                  "Response.pftime" = "Response AOI %FTime",
+                                  "Solution.pftime" = "Solution AOI %FTime",
+                                  "Target.pftime" = "Target AOI %FTime"))
 
 
 # change scale of y-axis (flipped) to log scale for visualization
-odds.t2.mod.cleaned %>%
+odds.ptime.t2.mod.cleaned %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink", size = 1) +
