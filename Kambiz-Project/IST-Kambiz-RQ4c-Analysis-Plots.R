@@ -486,3 +486,4 @@ odds.ptime.t3.mod.cleaned %>%
   labs(x = "Variable from accuracy model", y = "Odds ratio (95% CI)") +
   theme_minimal()
 
+# TODO Revise the whole interpretation one more time
