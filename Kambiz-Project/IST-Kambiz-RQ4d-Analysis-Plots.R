@@ -399,67 +399,70 @@ rq4d.data.pcount.t3.cleaned %>%
 ## Using df-betas for identifying influential values
 
 # Computing influential observations
-influence.ptime.t3.mod <- influence.measures(model = t3.ptime.model)
+influence.pcount.t3.mod <- influence.measures(model = t3.pcount.model)
 # summarize data frame with dfbetas, cooks, leverage
-summary(object = influence.ptime.t3.mod$infmat)
+summary(object = influence.pcount.t3.mod$infmat)
 
 
-# dfb.1_             dfb.Qst.            dfb.Rsp.            dfb.Msc.            dfb.Nvg.            dfb.Axl.            dfb.Slt.            dfb.Trg.        
-# Min.   :-0.414024   Min.   :-0.593765   Min.   :-0.592064   Min.   :-0.592160   Min.   :-0.593316   Min.   :-0.592097   Min.   :-0.596261   Min.   :-0.592262  
-# 1st Qu.:-0.003455   1st Qu.:-0.010863   1st Qu.:-0.010852   1st Qu.:-0.010908   1st Qu.:-0.010318   1st Qu.:-0.010869   1st Qu.:-0.010755   1st Qu.:-0.010837  
-# Median : 0.004576   Median :-0.004814   Median :-0.004287   Median :-0.004824   Median :-0.004473   Median :-0.004426   Median :-0.004388   Median :-0.004053  
-# Mean   :-0.001678   Mean   : 0.001657   Mean   : 0.001741   Mean   : 0.001705   Mean   : 0.001701   Mean   : 0.001680   Mean   : 0.001757   Mean   : 0.001694  
-# 3rd Qu.: 0.010646   3rd Qu.: 0.002818   3rd Qu.: 0.004345   3rd Qu.: 0.003394   3rd Qu.: 0.003675   3rd Qu.: 0.003631   3rd Qu.: 0.003219   3rd Qu.: 0.003410  
-# Max.   : 0.592688   Max.   : 0.414306   Max.   : 0.413459   Max.   : 0.415026   Max.   : 0.413773   Max.   : 0.413905   Max.   : 0.413550   Max.   : 0.414310  
-# dffit              cov.r            cook.d               hat          
-# Min.   :-0.63649   Min.   :0.8836   Min.   :0.0001743   Min.   :0.009483  
-# 1st Qu.: 0.07383   1st Qu.:1.0344   1st Qu.:0.0007443   1st Qu.:0.022280  
-# Median : 0.10205   Median :1.0493   Median :0.0012841   Median :0.029746  
-# Mean   : 0.04032   Mean   :1.0497   Mean   :0.0049585   Mean   :0.041667  
-# 3rd Qu.: 0.13328   3rd Qu.:1.0653   3rd Qu.:0.0046858   3rd Qu.:0.041155  
-# Max.   : 0.87479   Max.   :2.2713   Max.   :0.0777229   Max.   :0.552384  
+# dfb.1_             dfb.Qst.            dfb.Rsp.            dfb.Msc.            dfb.Nvg.            dfb.Axl.            dfb.Slt.        
+# Min.   :-0.423191   Min.   :-0.981896   Min.   :-0.980469   Min.   :-0.981855   Min.   :-0.982222   Min.   :-0.981548   Min.   :-0.988201  
+# 1st Qu.:-0.003319   1st Qu.:-0.013426   1st Qu.:-0.014309   1st Qu.:-0.013865   1st Qu.:-0.013587   1st Qu.:-0.013823   1st Qu.:-0.014360  
+# Median : 0.006200   Median :-0.006440   Median :-0.006172   Median :-0.006529   Median :-0.006465   Median :-0.006318   Median :-0.006479  
+# Mean   : 0.002445   Mean   :-0.002435   Mean   :-0.002377   Mean   :-0.002420   Mean   :-0.002403   Mean   :-0.002455   Mean   :-0.002351  
+# 3rd Qu.: 0.013809   3rd Qu.: 0.002820   3rd Qu.: 0.004967   3rd Qu.: 0.003545   3rd Qu.: 0.003223   3rd Qu.: 0.002994   3rd Qu.: 0.004715  
+# Max.   : 0.981854   Max.   : 0.424137   Max.   : 0.422377   Max.   : 0.423440   Max.   : 0.423617   Max.   : 0.422987   Max.   : 0.421579  
+# dfb.Trg.             dffit              cov.r            cook.d               hat         
+# Min.   :-0.981849   Min.   :-1.00779   Min.   :0.9058   Min.   :0.0002832   Min.   :0.00730  
+# 1st Qu.:-0.013605   1st Qu.: 0.07210   1st Qu.:1.0378   1st Qu.:0.0006832   1st Qu.:0.02171  
+# Median :-0.005883   Median : 0.09845   Median :1.0505   Median :0.0012865   Median :0.02906  
+# Mean   :-0.002447   Mean   : 0.03487   Mean   :1.0483   Mean   :0.0055141   Mean   :0.04167  
+# 3rd Qu.: 0.003851   3rd Qu.: 0.13682   3rd Qu.:1.0642   3rd Qu.:0.0057762   3rd Qu.:0.04327  
+# Max.   : 0.422563   Max.   : 0.67486   Max.   :2.0070   Max.   :0.1130952   Max.   :0.49018 
 
 
 # Conclusion: Only cov.r has values above 2.0, it is not one of the predictors. How to interpret the result?
 
 # save the data frame
-influence.ptime.t3 <- data.frame(influence.ptime.t3.mod$infmat)
+influence.pcount.t3 <- data.frame(influence.pcount.t3.mod$infmat)
 
 # Filtering by Cook Distance, > 4/n where n is the number of observations
-n.ptime.t3 <- nrow(rq4c.data.ptime.t3.cleaned)
-influence.ptime.t3 %>% filter(cook.d > 4/n.ptime.t3) %>% nrow()
-# Conclusion: There are 9 observations above the threshold for Cook distance
+n.pcount.t3 <- nrow(rq4d.data.pcount.t3.cleaned)
+influence.pcount.t3 %>% filter(cook.d > 4/n.pcount.t3) %>% nrow()
+# Conclusion: There are 11 observations above the threshold for Cook distance
 # How do we interpret that?
 
 # Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
 # Since we are considering the 7 AOIs and Intercept
 # https://online.stat.psu.edu/stat501/lesson/11/11.2
 # Threshold value = 2 * 8 / 192
-p.ptime.t3 <- 8
-influence.ptime.t3 %>% filter(hat > 0.08333333) %>% nrow() # ((2*8)/192))
-# Conclusion: Based on this metric, 12 influential values were found
+p.pcount.t3 <- 8
+influence.pcount.t3 %>% filter(hat > 0.08333333) %>% nrow() # ((2*8)/192))
+# Conclusion: Based on this metric, 14 influential values were found
 
 # Finding influential values combining cook.d and hat metrics
-influence.ptime.t3 %>% filter(hat > 0.08333333 & cook.d > 4/n.ptime.t3)
-# There are 2 such influential values
-# dfb.1_    dfb.Qst.    dfb.Rsp.    dfb.Msc.    dfb.Nvg.    dfb.Axl.    dfb.Slt.    dfb.Trg.      dffit    cov.r     cook.d        hat
-# 84  -0.03197323  0.02931793  0.04819797  0.03202169  0.03247698  0.03116546  0.02917575  0.03141494  0.8747895 2.271300 0.05499434 0.55238349
-# 160  0.59268807 -0.59376553 -0.59206442 -0.59216054 -0.59331558 -0.59209737 -0.59626060 -0.59226178 -0.6364887 0.972077 0.07772292 0.09343668
+influence.pcount.t3 %>% filter(hat > 0.08333333 & cook.d > 4/n.pcount.t3)
+
+# There are 3 such influential values
+# dfb.1_     dfb.Qst.    dfb.Rsp.     dfb.Msc.     dfb.Nvg.     dfb.Axl.     dfb.Slt.     dfb.Trg.      dffit    cov.r     cook.d       hat
+# 84  0.004275807 -0.005864623  0.01935351 -0.004601316 -0.003840865 -0.005482596 -0.008563571 -0.004686544  0.6748587 2.006956 0.03277082 0.4901827
+# 136 0.448684192 -0.450712684 -0.44870171 -0.449551219 -0.447228616 -0.449060038 -0.442361094 -0.448942592 -0.5287147 1.126753 0.02852952 0.1397968
+# 160 0.981854067 -0.981896178 -0.98046875 -0.981854754 -0.982221567 -0.981547536 -0.988201476 -0.981848609 -1.0077919 1.315980 0.11309523 0.2881695
+
 
 ### Forest plots
 
 #Box 10.2
 # get odds ratio table from lib.model
-odds.ptime.t3.mod <- data.frame(odds.n.ends(mod = t3.ptime.model)[6])
+odds.pcount.t3.mod <- data.frame(odds.n.ends(mod = t3.pcount.model)[6])
 
 # make row names a variable
-odds.ptime.t3.mod$var <- row.names(x = odds.ptime.t3.mod)
+odds.pcount.t3.mod$var <- row.names(x = odds.pcount.t3.mod)
 
 # change variable names for easier use
-names(x = odds.ptime.t3.mod) <- c("OR", "lower", "upper", "variable")
+names(x = odds.pcount.t3.mod) <- c("OR", "lower", "upper", "variable")
 
 # forest plot of odds ratios from lib.model (Figure 10.15)
-odds.ptime.t3.mod %>%
+odds.pcount.t3.mod %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink",
@@ -470,20 +473,20 @@ odds.ptime.t3.mod %>%
 
 
 # clean variable names for graph
-odds.ptime.t3.mod.cleaned <- odds.ptime.t3.mod %>%
+odds.pcount.t3.mod.cleaned <- odds.pcount.t3.mod %>%
   mutate(variable = dplyr::recode(.x = variable,   # Function name class with function from car package
                                   "(Intercept)" = "Intercept",
-                                  "Axial.pftime" = "Axial AOI %FTime",
-                                  "Misc.pftime" = "Misc AOI %FTime",
-                                  "Navigation.pftime" = "Navigation AOI %FTime",
-                                  "Question.pftime" = "Question AOI %FTime",
-                                  "Response.pftime" = "Response AOI %FTime",
-                                  "Solution.pftime" = "Solution AOI %FTime",
-                                  "Target.pftime" = "Target AOI %FTime"))
+                                  "Axial.pcount" = "Axial AOI %FCount",
+                                  "Misc.pcount" = "Misc AOI %FCount",
+                                  "Navigation.pfcount" = "Navigation AOI %FCount",
+                                  "Question.pfcount" = "Question AOI %FCount",
+                                  "Response.pfcount" = "Response AOI %FCount",
+                                  "Solution.pfcount" = "Solution AOI %FCount",
+                                  "Target.pfcount" = "Target AOI %FCount"))
 
 
 # change scale of y-axis (flipped) to log scale for visualization
-odds.ptime.t3.mod.cleaned %>%
+odds.pcount.t3.mod.cleaned %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink", size = 1) +
