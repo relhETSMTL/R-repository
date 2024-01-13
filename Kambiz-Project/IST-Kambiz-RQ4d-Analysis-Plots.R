@@ -1,6 +1,9 @@
+# Research Question 4a Analysis
 # RQ4: Is the response accuracy related to the proportion of the amount of visual attention given to the different
 #      components of the visual stimuli of the test coverage questions?
-# RQ4c: For triplets, t=3 accuracy and AOIs proportion time
+# RQ4d: For triplets, t=3 accuracy and AOIs proportion count
+# Note: Here, we only consider the accurate answers, Accuracy==True values
+
 
 # Loads the necessary libraries
 library("tidyverse")
@@ -15,27 +18,25 @@ library(car)
 
 
 # Loads the complete experiment data file
-# experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", 
-#                             header=TRUE)
+experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", 
+                             header=TRUE)
 
-experiment.data <- read.csv(file = "D:/Kambiz-Project/Complete-Experiment-Data.csv", 
-                            header=TRUE)
-
-
-
-# Selects the columns for T=3, for proportion of time and proportion of count for the 7 AOIs and the aggregated total and Accuracy
-rq4c.data.ptime.t3 <- experiment.data %>% filter(T==3) %>% 
-  select(Accuracy,Fixation.Time, Question.pftime, Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime) 
-
-rq4c.data.ptime.t3$Accuracy <- as.factor(rq4c.data.ptime.t3$Accuracy)
+# experiment.data <- read.csv(file = "D:/Kambiz-Project/Complete-Experiment-Data.csv", 
+#                            header=TRUE)
 
 
+
+# Selects the columns for T=3, for proportion of count and proportion of count for the 7 AOIs and the aggregated total and Accuracy
+rq4d.data.pcount.t3 <- experiment.data %>% filter(T==3) %>% 
+  select(Accuracy,Fixation.Count, Question.pfcount, Response.pfcount, Misc.pfcount, Navigation.pfcount, Axial.pfcount, Solution.pfcount, Target.pfcount) 
+
+rq4d.data.pcount.t3$Accuracy <- as.factor(rq4d.data.pcount.t3$Accuracy)
 
 
 ############################################################################################################################
 ############################################################################################################################
 ############################################################################################################################
-### Research Question 4c -  accuracy and AOIs proportion time 
+### Research Question 4d -  accuracy and AOIs proportion count 
 ### Analysis for T=3, triplets
 
 # Binary Logistic Regression
@@ -48,118 +49,120 @@ rq4c.data.ptime.t3$Accuracy <- as.factor(rq4c.data.ptime.t3$Accuracy)
 # Outcome Variable Levels: Reference group is the first value = False means WITHOUT the outcome, 
 #  Second value = True means WITH the outcome
 # Conclusion: No need to relevel the factors prior to applying the general linear mixed regression function
-# > levels(rq4a.data.ptime.t3$Accuracy)
+# > levels(rq4d.data.count.t3$Accuracy)
 # [1] "False" "True" 
 
 
-
 # Exploring normal distribution on Question.pftime
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Question.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Question.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Question.pftime t=3")
+  labs(y = "Probability density", x = "Question.pfcount t=3")
 
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Response.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Response.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Response.pftime t=3")
+  labs(y = "Probability density", x = "Response.pfcount t=3")
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Misc.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Misc.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Misc.pftime t=3")
+  labs(y = "Probability density", x = "Misc.pfcount t=3")
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Navigation.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Navigation.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Navigation.pftime t=3")
+  labs(y = "Probability density", x = "Navigation.pfcount t=3")
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Axial.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Axial.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Axial.pftime t=3")
+  labs(y = "Probability density", x = "Axial.pfcount t=3")
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Solution.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Solution.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Solution.pftime t=3")
+  labs(y = "Probability density", x = "Solution.pfcount t=3")
 
-rq4c.data.ptime.t3 %>%
-  ggplot(aes(x = Target.pftime)) +
+rq4d.data.pcount.t3 %>%
+  ggplot(aes(x = Target.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Target.pftime t=3")
+  labs(y = "Probability density", x = "Target.pfcount t=3")
 
 
-shapiro.test(rq4c.data.ptime.t3$Fixation.Time)
-#W = 0.76394, p-value = 2.837e-16
+shapiro.test(rq4d.data.pcount.t3$Fixation.Count)
+# W = 0.85237, p-value = 1.122e-12
 
-shapiro.test(rq4c.data.ptime.t3$Question.pftime)
-# W = 0.96867, p-value = 0.0002709
+shapiro.test(rq4d.data.pcount.t3$Question.pfcount)
+# W = 0.98633, p-value = 0.06006
 
-shapiro.test(rq4c.data.ptime.t3$Response.pftime)
-# W = 0.51869, p-value < 2.2e-16
 
-shapiro.test(rq4c.data.ptime.t3$Misc.pftime)
-#W = 0.6673, p-value < 2.2e-16
+shapiro.test(rq4d.data.pcount.t3$Response.pfcount)
+# W = 0.54203, p-value < 2.2e-16
 
-shapiro.test(rq4c.data.ptime.t3$Navigation.pftime)
-#W = 0.94248, p-value = 6.048e-07
+shapiro.test(rq4d.data.pcount.t3$Misc.pfcount)
+# W = 0.71452, p-value < 2.2e-16
 
-shapiro.test(rq4c.data.ptime.t3$Axial.pftime)
-#W = 0.94822, p-value = 1.987e-06
+shapiro.test(rq4d.data.pcount.t3$Navigation.pfcount)
+# W = 0.96488, p-value = 9.898e-05
 
-shapiro.test(rq4c.data.ptime.t3$Solution.pftime)
-# W = 0.73326, p-value < 2.2e-16
+shapiro.test(rq4d.data.pcount.t3$Axial.pfcount)
+# W = 0.96416, p-value = 8.239e-05
 
-shapiro.test(rq4c.data.ptime.t3$Target.pftime)
-# W = 0.95068, p-value = 3.38e-06
+shapiro.test(rq4d.data.pcount.t3$Solution.pfcount)
+# W = 0.79163, p-value = 2.868e-15
 
-# Note: All p-values were below < 0.05 --> 
+shapiro.test(rq4d.data.pcount.t3$Target.pfcount)
+# W = 0.96705, p-value = 0.0001752
+
+
+# Note: All p-values were below < 0.05 except for Question
 # p-values < alpha value --> Reject H0 that values are normally distributed
-# Conclusions: None of the variables are normally distributed
+# Conclusions: All except Question of the variables are normally distributed
 
 # Get a table of descriptive statistics
-table.desc.rq4c.time <- CreateTableOne(data = rq4c.data.ptime.t3,
+table.desc.rq4d.time <- CreateTableOne(data = rq4d.data.pcount.t3,
                                        strata="Accuracy")
-print(table.desc.rq4c.time,
-      nonnormal = c('Fixation.Time','Question.pftime','Response.pftime','Misc.pftime','Navigation.pftime',
-                    'Axial.pftime','Solution.pftime','Target.pftime'),
+print(table.desc.rq4d.time,
+      nonnormal = c('Fixation.Count','Response.pfcount','Misc.pfcount','Navigation.pfcount',
+                    'Axial.pfcount','Solution.pfcount','Target.pfcount'),
       showAllLevels = TRUE)
 
-#                 Stratified by Accuracy
-#                                 level False                         True                          p      test   
-#                   n                    42                           150                                    
-# Accuracy (%)                      False   42 (100.0)                 0 (  0.0)              <0.001        
-#                                   True     0 (  0.0)                   150 (100.0)                            
-# Fixation.Time (median [IQR])           51584.00 [34631.75, 75416.25] 54682.00 [35008.75, 82755.00]  0.548 nonnorm
-# Question.pftime (median [IQR])             0.16 [0.11, 0.21]             0.15 [0.09, 0.18]          0.079 nonnorm
-# Response.pftime (median [IQR])             0.04 [0.02, 0.08]             0.04 [0.02, 0.06]          0.545 nonnorm
-# Misc.pftime (median [IQR])                 0.03 [0.01, 0.11]             0.03 [0.01, 0.07]          0.408 nonnorm
-# Navigation.pftime (median [IQR])           0.17 [0.11, 0.31]             0.21 [0.12, 0.32]          0.466 nonnorm
-# Axial.pftime (median [IQR])                0.25 [0.15, 0.40]             0.23 [0.14, 0.35]          0.498 nonnorm
-# Solution.pftime (median [IQR])             0.01 [0.00, 0.05]             0.02 [0.00, 0.07]          0.490 nonnorm
-# Target.pftime (median [IQR])               0.15 [0.11, 0.25]             0.17 [0.08, 0.28]          0.676 nonnorm
+#                                     level False                   True                    p      test   
+# n                                           42                     150                                
+# Accuracy (%)                      False     42 (100.0)               0 (  0.0)          <0.001        
+# True       0 (  0.0)             150 (100.0)                        
+# Fixation.Count (median [IQR])           181.50 [111.50, 256.75] 180.50 [121.25, 287.50]  0.646 nonnorm
+# Question.pfcount (mean (SD))              0.19 (0.06)             0.18 (0.07)            0.735        
+# Response.pfcount (median [IQR])           0.03 [0.02, 0.04]       0.02 [0.01, 0.04]      0.745 nonnorm
+# Misc.pfcount (median [IQR])               0.05 [0.02, 0.11]       0.04 [0.02, 0.11]      0.370 nonnorm
+# Navigation.pfcount (median [IQR])         0.21 [0.14, 0.30]       0.23 [0.16, 0.33]      0.184 nonnorm
+# Axial.pfcount (median [IQR])              0.28 [0.17, 0.40]       0.25 [0.15, 0.36]      0.491 nonnorm
+# Solution.pfcount (median [IQR])           0.01 [0.00, 0.03]       0.01 [0.00, 0.04]      0.752 nonnorm
+# Target.pfcount (median [IQR])             0.15 [0.10, 0.26]       0.15 [0.08, 0.23]      0.721 nonnorm
 
 
 # Binary Logistic Regression Function
-t3.ptime.model <- glm(formula = Accuracy ~ Question.pftime + Response.pftime + Misc.pftime + Navigation.pftime + Axial.pftime + Solution.pftime + Target.pftime,
-                      data = rq4c.data.ptime.t3,
+t3.pcount.model <- glm(formula = Accuracy ~ Question.pfcount + Response.pfcount + Misc.pfcount + Navigation.pfcount + Axial.pfcount + Solution.pfcount + Target.pfcount,
+                      data = rq4d.data.pcount.t3,
                       family = binomial("logit"))
-summary(object = t3.ptime.model)
+summary(object = t3.pcount.model)
 
 # get model fit, model significance, odds ratios
-odds.n.ends(mod = t3.ptime.model)
+odds.n.ends(mod = t3.pcount.model)
 
+
+# $`Logistic regression model significance`
 # Chi-squared        d.f.           p 
-# 5.837       7.000       0.559 
+# 3.942       7.000       0.786 
 # 
 # $`Contingency tables (model fit): frequency predicted`
 # Number observed
@@ -178,81 +181,79 @@ odds.n.ends(mod = t3.ptime.model)
 # [1] 0
 # 
 # $`Predictor odds ratios and 95% CI`
-#                     OR          2.5 %        97.5 %
-#   (Intercept)     5.751642e-25 1.459520e-213  2.215053e+91
-# Question.pftime   2.089605e+23  6.754567e-93 6.885405e+211
-# Response.pftime   1.460448e+25  2.537283e-91 7.101549e+213
-# Misc.pftime       2.104016e+25  1.106937e-90 6.515998e+213
-# Navigation.pftime 1.345995e+25  3.541988e-91 5.251884e+213
-# Axial.pftime      4.219690e+24  9.625030e-92 1.748112e+213
-# Solution.pftime   1.491921e+28  4.155071e-88 6.096953e+216
-# Target.pftime     7.852243e+24  2.279144e-91 3.030834e+213
-
+# OR         2.5 %        97.5 %
+#   (Intercept)        1.839178e+56  5.976881e-78 6.524734e+174
+# Question.pfcount   1.376165e-56 5.901152e-175  3.138294e+77
+# Response.pfcount   4.345516e-56 6.733136e-175  2.076603e+78
+# Misc.pfcount       3.032137e-56 1.828758e-174  5.231443e+77
+# Navigation.pfcount 9.658551e-56 2.716252e-174  3.079299e+78
+# Axial.pfcount      6.001809e-57 1.437432e-175  2.018871e+77
+# Solution.pfcount   2.128982e-53 5.170561e-172  8.936314e+80
+# Target.pfcount     6.183747e-57 1.693427e-175  1.896331e+77
 
 
 # Those that DO NOT include the value of 1 in the range:
 # All of them include the value of 1 in the range. Unclear interpretation.
 
-
 ## Assumption 1: Linearity
 ## Notes: For logistic regression, the linearity is tested for each continuous predictor but not the relationship. Instead, 
 # the log-odds of the predicted probability against the continuous predictors of the model.
-# Continuous predictor: Question.pftime,Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime 
+# Continuous predictor: Question.pfcount,Response.pfcount, Misc.pfcount, Navigation.pfcount, Axial.pfcount, Solution.pfcount, Target.pfcount 
 
 
 # Question AOI
-# Very close to linear, except from nelow 0.15
+# Not linear
 #make a variable of the log-odds of the predicted values
-logit.t3.ptime <- log(x = t3.ptime.model$fitted.values/(1-t3.ptime.model$fitted.values))
+logit.t3.pcount <- log(x = t3.pcount.model$fitted.values/(1-t3.pcount.model$fitted.values))
 
 # make a small data frame with the log-odds variable
-linearity.t3.ptime.question.data <- data.frame(logit.t3.ptime, Question.pftime = t3.ptime.model$model$Question.pftime)
+linearity.t3.pcount.question.data <- data.frame(logit.t3.pcount, Question.pfcount = t3.pcount.model$model$Question.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.question.data %>%
-  ggplot(aes(x = Question.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.question.data %>%
+  ggplot(aes(x = Question.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Question AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Question AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 # Response AOI
-# Very far from linear throughout the range of values
+# Not linear 
 
-# make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.response.data <- data.frame(logit.t3.ptime, Response.pftime = t3.ptime.model$model$Response.pftime)
+# make a small data frame with the log-odds variable and the predictor
+linearity.t3.pcount.response.data <- data.frame(logit.t3.pcount, Response.pfcount = t3.pcount.model$model$Response.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.response.data %>%
-  ggplot(aes(x = Response.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.response.data %>%
+  ggplot(aes(x = Response.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Response AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Response AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 
 # Misc AOI
-# Very far from linear 
+# Not linear  
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.misc.data <- data.frame(logit.t3.ptime, Misc.pftime = t3.ptime.model$model$Misc.pftime)
+linearity.t3.pcount.misc.data <- data.frame(logit.t3.pcount, Misc.pfcount = t3.pcount.model$model$Misc.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.misc.data %>%
-  ggplot(aes(x = Misc.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.misc.data %>%
+  ggplot(aes(x = Misc.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Misc AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Misc AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
@@ -260,133 +261,144 @@ linearity.t3.ptime.misc.data %>%
 
 
 # Navigation AOI
-# Close to linear, except below 0.1 aprox
+# Close to linear most of the range, except below 0.1 and above 0.5 
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.navigation.data <- data.frame(logit.t3.ptime, Navigation.pftime = t3.ptime.model$model$Navigation.pftime)
+linearity.t3.pcount.navigation.data <- data.frame(logit.t3.pcount, Navigation.pfcount = t3.pcount.model$model$Navigation.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.navigation.data %>%
-  ggplot(aes(x = Navigation.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.navigation.data %>%
+  ggplot(aes(x = Navigation.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Navigation AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Navigation AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 
 # Axial AOI
-# Very close to lienar except in a point around 0.3
+# Partially close to linear, above 0.4 amd between 0.1 and 0.2 
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.axial.data <- data.frame(logit.t3.ptime, Axial.pftime = t3.ptime.model$model$Axial.pftime)
+linearity.t3.pcount.axial.data <- data.frame(logit.t3.pcount, Axial.pfcount = t3.pcount.model$model$Axial.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.axial.data %>%
-  ggplot(aes(x = Axial.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.axial.data %>%
+  ggplot(aes(x = Axial.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Axial AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Axial AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 
 # Solution AOI
-# Far from linear, intersect at the middle only
+# Not linear 
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.solution.data <- data.frame(logit.t3.ptime, Solution.pftime = t3.ptime.model$model$Solution.pftime)
+linearity.t3.pcount.solution.data <- data.frame(logit.t3.pcount, Solution.pfcount = t3.pcount.model$model$Solution.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.solution.data %>%
-  ggplot(aes(x = Solution.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.solution.data %>%
+  ggplot(aes(x = Solution.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Solution AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Solution AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 # Target AOI
-# Close to linear, farther in between 0.05 and 1.7 approx.
+# Linear half of the range upto 0.2 
 
 # make a small data frame with the log-odds variable and the age predictor
-linearity.t3.ptime.target.data <- data.frame(logit.t3.ptime, Target.pftime = t3.ptime.model$model$Target.pftime)
+linearity.t3.pcount.target.data <- data.frame(logit.t3.pcount, Target.pfcount = t3.pcount.model$model$Target.pfcount)
 
 # create a plot (Figure 10.9)
-linearity.t3.ptime.target.data %>%
-  ggplot(aes(x = Target.pftime, y = logit.t3.ptime))+
+linearity.t3.pcount.target.data %>%
+  ggplot(aes(x = Target.pfcount, y = logit.t3.pcount))+
   geom_point(aes(size = "Observation"), color = "gray60", alpha = .6) +
   geom_smooth(se = FALSE, aes(color = "Loess curve")) +
   geom_smooth(method = lm, se = FALSE, aes(color = "linear")) +
   theme_minimal() +
-  labs(x = "Proportion Fixation Time on Target AOI", y = "Log-odds of accuracy predicted probability") +
+  labs(x = "Proportion Fixation Count on Target AOI", y = "Log-odds of accuracy predicted probability") +
   scale_color_manual(name="Type of fit line", values=c("dodgerblue2",
                                                        "deeppink")) +
   scale_size_manual(values = 1.5, name = "")
 
 
-# Summary of linearity findings: Question, Navigation, Axial, and Target appear to be linear. 
-# The problems are in Response, Solution, and Misc. 
+# Summary of linearity findings: Unclear when to consider them linear or not.
 
 # Assumption: Not clear if it is met or not.
 
 
 ## Assumption 2: No perfect multicollinearity
 # compute GVIF
-vif.ptime.t3 <- car::vif(mod = t3.ptime.model)
-vif.ptime.t3
+vif.pcount.t3 <- car::vif(mod = t3.pcount.model)
+vif.pcount.t3
 
-# Question.pftime   Response.pftime       Misc.pftime Navigation.pftime      Axial.pftime   Solution.pftime     Target.pftime 
-# 4255.955          2893.866          7243.217         16075.161         19731.154          1506.616         14818.956 
-
+# Question.pfcount   Response.pfcount       Misc.pfcount Navigation.pfcount      Axial.pfcount   Solution.pfcount     Target.pfcount 
+# 3187.3279           821.6742          4556.7529          8361.4356         12094.2156           505.6188          7297.8581 
+ 
+ 
 # Checking values of GVIF
-vif.ptime.t3[1]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[2]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[3]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[4]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[5]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[6]^(1/(2*t3.ptime.model$df.null))
-vif.ptime.t3[7]^(1/(2*t3.ptime.model$df.null))
+vif.pcount.t3[1]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[2]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[3]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[4]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[5]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[6]^(1/(2*t3.pcount.model$df.null))
+vif.pcount.t3[7]^(1/(2*t3.pcount.model$df.null))
 
 # The Df are 191 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
-# Question.pftime  1.022116  
-# Response.pftime  1.021084  
-# Misc.pftime  1.023539  
-# Navigation.pftime 1.025678  
-# Axial.pftime 1.026228  
-# Solution.pftime 1.019341  
-# Target.pftime  1.025459  
+# Question.pftime     1.021342 
+# Response.pftime     1.017724    
+# Misc.pftime         1.022298 
+# Navigation.pftime   1.023924  
+# Axial.pftime        1.024914 
+# Solution.pftime     1.016431 
+# Target.pftime       1.023559 
 # Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
 
 ##### Model diagnostics
 
 ## Finding outliers with residuals
-rq4c.data.ptime.t3.cleaned <- rq4c.data.ptime.t3 %>%
-  mutate(standarized = rstandard(model = t3.ptime.model))
+rq4d.data.pcount.t3.cleaned <- rq4d.data.pcount.t3 %>%
+  mutate(standarized = rstandard(model = t3.pcount.model))
 
 # check the residuals for large values > 2 or <-2
-rq4c.data.ptime.t3.cleaned %>%
+rq4d.data.pcount.t3.cleaned %>%
   #  drop_na(standarized) %>%
   filter(standarized >2 | standarized < -2)
 
-# There are 3 outliers.
-# Accuracy Fixation.Time Question.pftime Response.pftime Misc.pftime Navigation.pftime Axial.pftime Solution.pftime Target.pftime standarized
-# 1    False         52400          0.0944          0.0428      0.1853            0.3629       0.1002          0.0881        0.1263   -2.164065
-# 2    False        113759          0.1028          0.0361      0.0254            0.1238       0.4039          0.1183        0.1897   -2.040767
-# 3    False         42961          0.1968          0.0432      0.0370            0.2850       0.2293          0.0713        0.1425   -2.029518
+# There are 6 outliers.
+# Accuracy Fixation.Count Question.pfcount Response.pfcount Misc.pfcount Navigation.pfcount Axial.pfcount Solution.pfcount Target.pfcount
+# 1    False            180           0.1667           0.0278       0.2111             0.2944        0.1444           0.0556         0.1000
+# 2    False            439           0.1093           0.0114       0.1002             0.5057        0.1435           0.0114         0.1185
+# 3    False            256           0.2070           0.0156       0.1133             0.5039        0.1016           0.0000         0.0586
+# 4    False            154           0.1818           0.0195       0.1364             0.5260        0.0519           0.0000         0.0844
+# 5    False            345           0.1246           0.0174       0.0087             0.3014        0.1130           0.0870         0.3478
+# 6    False            474           0.1498           0.0127       0.0401             0.5000        0.1709           0.0148         0.1118
+# standarized
+# 1   -2.055735
+# 2   -2.036638
+# 3   -2.051433
+# 4   -2.088570
+# 5   -2.035858
+# 6   -2.008871
+
 
 ## Using df-betas for identifying influential values
 
-# Computing influencial observations
+# Computing influential observations
 influence.ptime.t3.mod <- influence.measures(model = t3.ptime.model)
 # summarize data frame with dfbetas, cooks, leverage
 summary(object = influence.ptime.t3.mod$infmat)
@@ -406,8 +418,8 @@ summary(object = influence.ptime.t3.mod$infmat)
 # Mean   : 0.04032   Mean   :1.0497   Mean   :0.0049585   Mean   :0.041667  
 # 3rd Qu.: 0.13328   3rd Qu.:1.0653   3rd Qu.:0.0046858   3rd Qu.:0.041155  
 # Max.   : 0.87479   Max.   :2.2713   Max.   :0.0777229   Max.   :0.552384  
- 
-  
+
+
 # Conclusion: Only cov.r has values above 2.0, it is not one of the predictors. How to interpret the result?
 
 # save the data frame
