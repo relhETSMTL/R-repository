@@ -128,81 +128,78 @@ shapiro.test(rq4b.data.pcount.t2$Target.pfcount)
 # Conclusions: None of the variables are normally distributed
 
 # Get a table of descriptive statistics
-table.desc.rq4a.time <- CreateTableOne(data = rq4a.data.ptime.t2,
+table.desc.rq4b.count <- CreateTableOne(data = rq4b.data.pcount.t2,
                                        strata="Accuracy")
-print(table.desc.rq4a.time,
-      nonnormal = c('Fixation.Time','Question.pftime','Response.pftime','Misc.pftime','Navigation.pftime',
-                    'Axial.pftime','Solution.pftime','Target.pftime'),
+print(table.desc.rq4b.count,
+      nonnormal = c('Fixation.Count','Question.pfcount','Response.pfcount','Misc.pfcount','Navigation.pfcount',
+                    'Axial.pfcount','Solution.pfcount','Target.pfcount'),
       showAllLevels = TRUE)
 
-#                                       level False                         True                          p      test   
-# n                                            17                           175                                    
-# Accuracy (%)                     False       17 (100.0)                     0 (  0.0)              <0.001        
-#                                 True         0 (  0.0)                   175 (100.0)                            
-# Fixation.Time (median [IQR])           47425.00 [35962.00, 61995.00] 31464.00 [23158.00, 46796.50]  0.009 nonnorm
-# Question.pftime (median [IQR])             0.17 [0.09, 0.21]             0.15 [0.10, 0.21]          0.895 nonnorm
-# Response.pftime (median [IQR])             0.06 [0.03, 0.10]             0.05 [0.03, 0.09]          0.810 nonnorm
-# Misc.pftime (median [IQR])                 0.02 [0.01, 0.02]             0.02 [0.01, 0.03]          0.353 nonnorm
-# Navigation.pftime (median [IQR])           0.19 [0.15, 0.22]             0.21 [0.12, 0.29]          0.375 nonnorm
-# Axial.pftime (median [IQR])                0.35 [0.29, 0.49]             0.24 [0.18, 0.35]          0.001 nonnorm
-# Solution.pftime (median [IQR])             0.05 [0.01, 0.09]             0.05 [0.02, 0.08]          0.600 nonnorm
-# Target.pftime (median [IQR])               0.06 [0.00, 0.16]             0.18 [0.12, 0.27]          0.001 nonnorm
-
+#                                     level False                   True                   p      test   
+# n                                           17                     175                               
+# Accuracy (%)                      False     17 (100.0)               0 (  0.0)         <0.001        
+#                                   True       0 (  0.0)             175 (100.0)                       
+# Fixation.Count (median [IQR])           143.00 [132.00, 212.00] 112.00 [86.50, 167.00]  0.011 nonnorm
+# Question.pfcount (median [IQR])           0.17 [0.12, 0.23]       0.18 [0.13, 0.24]     0.835 nonnorm
+# Response.pfcount (median [IQR])           0.04 [0.03, 0.06]       0.04 [0.02, 0.06]     0.555 nonnorm
+# Misc.pfcount (median [IQR])               0.02 [0.01, 0.03]       0.02 [0.01, 0.04]     0.298 nonnorm
+# Navigation.pfcount (median [IQR])         0.28 [0.19, 0.33]       0.24 [0.17, 0.31]     0.486 nonnorm
+# Axial.pfcount (median [IQR])              0.31 [0.29, 0.43]       0.28 [0.20, 0.37]     0.020 nonnorm
+# Solution.pfcount (median [IQR])           0.04 [0.02, 0.06]       0.03 [0.01, 0.06]     0.370 nonnorm
+# Target.pfcount (median [IQR])             0.07 [0.00, 0.10]       0.15 [0.08, 0.21]    <0.001 nonnorm
 
 
 # Binary Logistic Regression Function
-t2.ptime.model <- glm(formula = Accuracy ~ Question.pftime + Response.pftime + Misc.pftime + Navigation.pftime + Axial.pftime + Solution.pftime + Target.pftime,
-                      data = rq4a.data.ptime.t2,
-                      family = binomial("logit"))
-summary(object = t2.ptime.model)
-
-# get model fit, model significance, odds ratios
-odds.n.ends(mod = t2.ptime.model)
-
-
 t2.pcount.model <- glm(formula = Accuracy ~ Question.pfcount + Response.pfcount + Misc.pfcount + Navigation.pfcount + Axial.pfcount + Solution.pfcount + Target.pfcount,
-                       data = rq4b.data.pcount.t2,
-                       family = binomial("logit"))
+                      data = rq4b.data.pcount.t2,
+                      family = binomial("logit"))
 summary(object = t2.pcount.model)
 
 # get model fit, model significance, odds ratios
 odds.n.ends(mod = t2.pcount.model)
 
 
+# t2.pcount.model <- glm(formula = Accuracy ~ Question.pfcount + Response.pfcount + Misc.pfcount + Navigation.pfcount + Axial.pfcount + Solution.pfcount + Target.pfcount,
+#                        data = rq4b.data.pcount.t2,
+#                        family = binomial("logit"))
+# summary(object = t2.pcount.model)
+# 
+# # get model fit, model significance, odds ratios
+# odds.n.ends(mod = t2.pcount.model)
 
 # Chi-squared        d.f.           p 
-# 17.606       7.000       0.014 
+# 28.945           7       <.001 
 # 
 # $`Contingency tables (model fit): frequency predicted`
 # Number observed
 # Number predicted   1   0 Sum
-# 1   175  17 192
-# 0     0   0   0
+# 1   173  15 188
+# 0     2   2   4
 # Sum 175  17 192
 # 
 # $`Count R-squared (model fit): percent correctly predicted`
 # [1] 91.14583
 # 
 # $`Model sensitivity`
-# [1] 1
+# [1] 0.9885714
 # 
 # $`Model specificity`
-# [1] 0
+# [1] 0.1176471
 # 
 # $`Predictor odds ratios and 95% CI`
 # OR 2.5 % 97.5 %
-#   (Intercept)         0     0    Inf
-# Question.pftime   Inf     0    Inf
-# Response.pftime   Inf     0    Inf
-# Misc.pftime       Inf     0    Inf
-# Navigation.pftime Inf     0    Inf
-# Axial.pftime      Inf     0    Inf
-# Solution.pftime   Inf     0    Inf
-# Target.pftime     Inf     0    Inf
+#   (Intercept)        Inf   Inf    Inf
+# Question.pfcount     0     0      0
+# Response.pfcount     0     0      0
+# Misc.pfcount         0     0      0
+# Navigation.pfcount   0     0      0
+# Axial.pfcount        0     0      0
+# Solution.pfcount     0     0      0
+# Target.pfcount       0     0      0
 
 
 # Those that DO NOT include the value of 1 in the range:
-# All of them include it in the range, thus unclear interpretation.
+# All of them do NOT include it in the range, thus unclear interpretation.
 
 
 ## Assumption 1: Linearity
