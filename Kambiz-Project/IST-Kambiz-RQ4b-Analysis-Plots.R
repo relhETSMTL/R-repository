@@ -23,9 +23,9 @@ library(car)
 experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", 
                             header=TRUE)
 
-# Selects the columns for T=2, for proportion of time and proportion of count for the 7 AOIs and the aggregated total and Accuracy
-rq4a.data.ptime.t2 <- experiment.data %>% filter(T==2) %>% 
-  select(Accuracy,Fixation.Time, Question.pftime, Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime)
+# # Selects the columns for T=2, for proportion of time and proportion of count for the 7 AOIs and the aggregated total and Accuracy
+# rq4a.data.ptime.t2 <- experiment.data %>% filter(T==2) %>% 
+#   select(Accuracy,Fixation.Time, Question.pftime, Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime)
 
 rq4b.data.pcount.t2 <- experiment.data %>% filter(T==2) %>% 
   select(Accuracy,Fixation.Count,Question.pfcount, Response.pfcount, Misc.pfcount, Navigation.pfcount, Axial.pfcount, Solution.pfcount, Target.pfcount)
@@ -53,75 +53,76 @@ rq4b.data.pcount.t2 <- experiment.data %>% filter(T==2) %>%
 
 
 
-# Exploring normal distribution on Question.pftime
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Question.pftime)) +
+# Exploring normal distribution on Question.pfcount
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Question.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Question.pftime t=2")
+  labs(y = "Probability density", x = "Question.pfcount t=2")
 
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Response.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Response.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Response.pftime t=2")
+  labs(y = "Probability density", x = "Response.pfcount t=2")
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Misc.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Misc.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Misc.pftime t=2")
+  labs(y = "Probability density", x = "Misc.pfcount t=2")
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Navigation.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Navigation.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Navigation.pftime t=2")
+  labs(y = "Probability density", x = "Navigation.pfcount t=2")
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Axial.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Axial.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Axial.pftime t=2")
+  labs(y = "Probability density", x = "Axial.pfcount t=2")
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Solution.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Solution.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Solution.pftime t=2")
+  labs(y = "Probability density", x = "Solution.pfcount t=2")
 
-rq4a.data.ptime.t2 %>%
-  ggplot(aes(x = Target.pftime)) +
+rq4b.data.pcount.t2 %>%
+  ggplot(aes(x = Target.pfcount)) +
   geom_density(fill = "#7463AC", alpha = .6) +
   theme_minimal() +
-  labs(y = "Probability density", x = "Target.pftime t=2")
+  labs(y = "Probability density", x = "Target.pcount t=2")
 
 
-shapiro.test(rq4a.data.ptime.t2$Fixation.Time)
-# W = 0.81817, p-value = 3.269e-14
+shapiro.test(rq4b.data.pcount.t2$Fixation.Count)
+# W = 0.8104, p-value = 1.565e-14
 
-shapiro.test(rq4a.data.ptime.t2$Question.pftime)
-# W = 0.93728, p-value = 2.176e-07
+shapiro.test(rq4b.data.pcount.t2$Question.pfcount)
+# W = 0.95353, p-value = 6.376e-06
 
-shapiro.test(rq4a.data.ptime.t2$Response.pftime)
-# W = 0.74697, p-value < 2.2e-16
+shapiro.test(rq4b.data.pcount.t2$Response.pfcount)
+# W = 0.90723, p-value = 1.328e-09
 
-shapiro.test(rq4a.data.ptime.t2$Misc.pftime)
-# W = 0.85194, p-value = 1.071e-12
+shapiro.test(rq4b.data.pcount.t2$Misc.pfcount)
+# W = 0.85103, p-value = 9.674e-13
 
-shapiro.test(rq4a.data.ptime.t2$Navigation.pftime)
-# W = 0.94018, p-value = 3.825e-07
+shapiro.test(rq4b.data.pcount.t2$Navigation.pfcount)
+# W = 0.96328, p-value = 6.574e-05
 
-shapiro.test(rq4a.data.ptime.t2$Axial.pftime)
-# W = 0.953, p-value = 5.662e-06
+shapiro.test(rq4b.data.pcount.t2$Axial.pfcount)
+# W = 0.98186, p-value = 0.01377
 
-shapiro.test(rq4a.data.ptime.t2$Solution.pftime)
-# W = 0.92047, p-value = 1.084e-08
+shapiro.test(rq4b.data.pcount.t2$Solution.pfcount)
+# W = 0.92026, p-value = 1.046e-08
+ 
+shapiro.test(rq4b.data.pcount.t2$Target.pfcount)
+# W = 0.97127, p-value = 0.000557
 
-shapiro.test(rq4a.data.ptime.t2$Target.pftime)
-# W = 0.97868, p-value = 0.005001
-
+ 
 # Note: All p-values were below < 0.05 --> 
 # p-values < alpha value --> Reject H0 that values are normally distributed
 # Conclusions: None of the variables are normally distributed
