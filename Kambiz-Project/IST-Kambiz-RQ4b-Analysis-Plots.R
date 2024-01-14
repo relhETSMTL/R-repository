@@ -430,16 +430,16 @@ influence.pcount.t2 %>% filter(hat > 0.08333333 & cook.d > 4/n.pcount.t2)
 
 #Box 10.2
 # get odds ratio table from lib.model
-odds.ptime.t2.mod <- data.frame(odds.n.ends(mod = t2.ptime.model)[6])
+odds.pcount.t2.mod <- data.frame(odds.n.ends(mod = t2.pcount.model)[6])
 
 # make row names a variable
-odds.ptime.t2.mod$var <- row.names(x = odds.ptime.t2.mod)
+odds.pcount.t2.mod$var <- row.names(x = odds.pcount.t2.mod)
 
 # change variable names for easier use
-names(x = odds.ptime.t2.mod) <- c("OR", "lower", "upper", "variable")
+names(x = odds.pcount.t2.mod) <- c("OR", "lower", "upper", "variable")
 
 # forest plot of odds ratios from lib.model (Figure 10.15)
-odds.ptime.t2.mod %>%
+odds.pcount.t2.mod %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink",
@@ -450,20 +450,20 @@ odds.ptime.t2.mod %>%
 
 
 # clean variable names for graph
-odds.ptime.t2.mod.cleaned <- odds.ptime.t2.mod %>%
+odds.pcount.t2.mod.cleaned <- odds.pcount.t2.mod %>%
   mutate(variable = dplyr::recode(.x = variable,   # Function name class with function from car package
                                   "(Intercept)" = "Intercept",
-                                  "Axial.pftime" = "Axial AOI %FTime",
-                                  "Misc.pftime" = "Misc AOI %FTime",
-                                  "Navigation.pftime" = "Navigation AOI %FTime",
-                                  "Question.pftime" = "Question AOI %FTime",
-                                  "Response.pftime" = "Response AOI %FTime",
-                                  "Solution.pftime" = "Solution AOI %FTime",
-                                  "Target.pftime" = "Target AOI %FTime"))
+                                  "Axial.pfcount" = "Axial AOI %FCount",
+                                  "Misc.pfcount" = "Misc AOI %FCount",
+                                  "Navigation.pfcount" = "Navigation AOI %FCount",
+                                  "Question.pfcount" = "Question AOI %FCount",
+                                  "Response.pfcount" = "Response AOI %FCount",
+                                  "Solution.pfcount" = "Solution AOI %FCount",
+                                  "Target.pfcount" = "Target AOI %FCount"))
 
 
 # change scale of y-axis (flipped) to log scale for visualization
-odds.ptime.t2.mod.cleaned %>%
+odds.pcount.t2.mod.cleaned %>%
   ggplot(aes(x = variable, y = OR, ymin = lower, ymax = upper)) +
   geom_pointrange(color = "#7463AC") +
   geom_hline(yintercept = 1, lty = 2, color = "deeppink", size = 1) +
