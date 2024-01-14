@@ -350,90 +350,80 @@ linearity.t2.pcount.target.data %>%
 
 ## Assumption 2: No perfect multicollinearity
 # compute GVIF
-vif.ptime.t2 <- car::vif(mod = t2.ptime.model)
-vif.ptime.t2
+vif.pcount.t2 <- car::vif(mod = t2.pcount.model)
+vif.pcount.t2
 
-# Question.pftime   Response.pftime       Misc.pftime Navigation.pftime      Axial.pftime   Solution.pftime     Target.pftime 
-# 1426130.63        1058400.64          60762.87        2665642.08        4562653.57         352851.31        1368079.84 
+# Question.pfcount   Response.pfcount       Misc.pfcount Navigation.pfcount      Axial.pfcount   Solution.pfcount     Target.pfcount 
+# 2343002.9           315735.2           146961.6          4222629.0          5088624.7           414869.1          1206672.9 
 
 # Checking values of GVIF
-vif.ptime.t2[1]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[2]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[3]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[4]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[5]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[6]^(1/(2*t2.ptime.model$df.null))
-vif.ptime.t2[7]^(1/(2*t2.ptime.model$df.null))
+vif.pcount.t2[1]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[2]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[3]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[4]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[5]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[6]^(1/(2*t2.pcount.model$df.null))
+vif.pcount.t2[7]^(1/(2*t2.pcount.model$df.null))
 
 # The Df are 191 for all the factors, thus the thresholds for GVIF are GVIF^(1/(2*Df)), since all Df are one then GVIF^(1/2)
-# Question.pftime  1.037792 
-# Response.pftime  1.036982 
-# Misc.pftime  1.029254 
-# Navigation.pftime 1.039493 
-# Axial.pftime 1.040956 
-# Solution.pftime 1.034005 
-# Target.pftime  1.037679 
+# Question.pfcount   1.039142  
+# Response.pfcount   1.033704  
+# Misc.pfcount       1.031637  
+# Navigation.pfcount 1.040745  
+# Axial.pfcount      1.041254  
+# Solution.pfcount   1.034443  
+# Target.pfcount     1.037338  
 # Threshold values < 2.5 --> meets the non multicollinearity values ( > 2.5 fails the assumption)
 
 ##### Model diagnostics
 
 ## Finding outliers with residuals
-rq4a.data.ptime.t2.cleaned <- rq4a.data.ptime.t2 %>%
-  mutate(standarized = rstandard(model = t2.ptime.model))
+rq4b.data.pcount.t2.cleaned <- rq4b.data.pcount.t2 %>%
+  mutate(standarized = rstandard(model = t2.pcount.model))
 
 # check the residuals for large values > 2 or <-2
-rq4a.data.ptime.t2.cleaned %>%
+rq4b.data.pcount.t2.cleaned %>%
   #  drop_na(standarized) %>%
   filter(standarized >2 | standarized < -2)
 
-# There are eight outliers.
-# Accuracy Fixation.Time Question.pftime Response.pftime Misc.pftime Navigation.pftime Axial.pftime Solution.pftime Target.pftime
-# 1    False         30062          0.2603          0.0579      0.0519            0.1852       0.2923          0.0942        0.0582
-# 2    False         50516          0.0882          0.0225      0.0071            0.3509       0.2017          0.0096        0.3200
-# 3    False         40208          0.1701          0.0800      0.0860            0.2927       0.3486          0.0139        0.0087
-# 4    False         47544          0.0936          0.0487      0.0131            0.2192       0.3859          0.0100        0.2294
-# 5    False         44632          0.2588          0.0228      0.0104            0.0866       0.4197          0.0443        0.1574
-# 6    False         74966          0.2491          0.1253      0.0242            0.1753       0.3100          0.0000        0.1161
-# 7    False         35962          0.1624          0.0072      0.0172            0.2197       0.2693          0.1092        0.2151
-# 8    False        101820          0.0660          0.0318      0.0153            0.3623       0.2908          0.0019        0.2319
-# standarized
-# 1   -2.120111
-# 2   -2.941963
-# 3   -2.233403
-# 4   -2.376341
-# 5   -2.098842
-# 6   -2.068485
-# 7   -2.702816
-# 8   -2.663736
+# There are 7 outliers.
+# Accuracy Fixation.Count Question.pfcount Response.pfcount Misc.pfcount Navigation.pfcount Axial.pfcount Solution.pfcount Target.pfcount standarized
+# 1    False            115           0.3043           0.0261       0.0696             0.2000        0.2870           0.0435         0.0696   -2.073478
+# 2    False            209           0.1053           0.0287       0.0096             0.3828        0.1962           0.0096         0.2679   -2.654442
+# 3    False            136           0.1544           0.0294       0.1176             0.3824        0.2868           0.0221         0.0074   -2.156316
+# 4    False             63           0.1905           0.0635       0.0000             0.3651        0.2540           0.0317         0.0952   -2.005769
+# 5    False            134           0.2612           0.0149       0.0149             0.1567        0.4030           0.0448         0.1045   -2.466142
+# 6    False             64           0.4688           0.0625       0.0312             0.0938        0.2656           0.0312         0.0469   -2.225816
+# 7    False            143           0.1469           0.0070       0.0280             0.2797        0.3077           0.1119         0.1189   -2.080492
 
 ## Using df-betas for identifying influential values
 
 # Computing influences
-influence.ptime.t2.mod <- influence.measures(model = t2.ptime.model)
+influence.pcount.t2.mod <- influence.measures(model = t2.pcount.model)
 # summarize data frame with dfbetas, cooks, leverage
-summary(object = influence.t2.mod$infmat)
+summary(object = influence.pcount.t2.mod$infmat)
 # Conclusion: No df_beta values have a Maximum > 2, hence no influential observations
 
 # save the data frame
-influence.ptime.t2 <- data.frame(influence.ptime.t2.mod$infmat)
+influence.pcount.t2 <- data.frame(influence.pcount.t2.mod$infmat)
 
 # Filtering by Cook Distance, > 4/n where n is the number of observations
-n.ptime.t2 <- nrow(rq4a.data.ptime.t2.cleaned)
-influence.ptime.t2 %>% filter(cook.d > 4/n.ptime.t2) %>% nrow()
-# Conclusion: There are 16 observations above the threshold for Cook distance
+n.pcount.t2 <- nrow(rq4b.data.pcount.t2.cleaned)
+influence.pcount.t2 %>% filter(cook.d > 4/n.pcount.t2) %>% nrow()
+# Conclusion: There are 17 observations above the threshold for Cook distance
 
 
 # Leverage 2 * p / n,  p=number of parameters including intercept (=4, columns if dfb beta), n=number of observations
 # Since we are considering the 7 AOIs and Intercept
 # https://online.stat.psu.edu/stat501/lesson/11/11.2
 # Threshold value = 2 * 8 / 192
-p.ptime.t2 <- 8
-influence.ptime.t2 %>% filter(hat > 0.08333333) %>% nrow() # ((2*8)/192))
+p.pcount.t2 <- 8
+influence.pcount.t2 %>% filter(hat > 0.08333333) %>% nrow() # ((2*8)/192))
 # Conclusion: Based on this metric, 26 influential values were found
 
 # Finding influential values combining cook.d and hat metrics
-influence.ptime.t2 %>% filter(hat > 0.08333333 & cook.d > 4/n.ptime.t2)
-# There are 6 such influential values
+influence.pcount.t2 %>% filter(hat > 0.08333333 & cook.d > 4/n.pcount.t2)
+# There are 9 such influential values
 
 
 ### Forest plots
