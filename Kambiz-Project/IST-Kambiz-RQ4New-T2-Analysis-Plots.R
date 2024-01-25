@@ -18,10 +18,10 @@ experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experime
 
 # Selects the columns for T=2, for proportion of time and proportion of count for the 7 AOIs and the aggregated total and Accuracy
 rq4.data.ptime.t2 <- experiment.data %>% filter(T==2) %>% 
-  select(Accuracy,Fixation.Time, Question.pftime, Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime)
+  select(Question.pftime, Response.pftime, Misc.pftime, Navigation.pftime, Axial.pftime, Solution.pftime, Target.pftime)
 
 rq4.data.pcount.t2 <- experiment.data %>% filter(T==2) %>% 
-  select(Accuracy,Fixation.Count,Question.pfcount, Response.pfcount, Misc.pfcount, Navigation.pfcount, Axial.pfcount, Solution.pfcount, Target.pfcount)
+  select(Question.pfcount, Response.pfcount, Misc.pfcount, Navigation.pfcount, Axial.pfcount, Solution.pfcount, Target.pfcount)
 
 
 # Checking normality distribution of all the variables
@@ -51,6 +51,16 @@ shapiro.test(rq4.data.pcount.t2$Target.pfcount) # W = 0.97127, p-value = 0.00055
 
 
 
+correlation.ptime.t2 <- cor(rq4.data.ptime.t2, method="spearman")
 
 
+library(corrplot)
+corrplot(correlation.ptime.t2, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+
+# install.packages("Hmisc")
+library("Hmisc")
+t2.ptime <- rcorr(as.matrix(rq4.data.ptime.t2), type="spearman")
+t2.ptime
 
