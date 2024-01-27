@@ -106,7 +106,7 @@ t2.pcount
 # 
 # 
 # P
-# Question Response Misc   Navigation Axial  Solution Target
+# Question Response Misc   Navigation Axial   Solution Target
 # Question            0.0251   0.0011 0.0000     0.0532 0.3169   0.2280
 # Response   0.0251            0.0008 0.2074     0.0059 0.6795   0.1044
 # Misc       0.0011   0.0008          0.0072     0.1761 0.8724   0.0002
@@ -115,5 +115,13 @@ t2.pcount
 # Solution   0.3169   0.6795   0.8724 0.0000     0.2841          0.3665
 # Target     0.2280   0.1044   0.0002 0.6720     0.0000 0.3665         
 
+#### Graph to check in detail relationship between Target and Axial
+
+library(dplyr)
+
+rq4.data.pcount.t2 %>% 
+  ggplot(aes (x=Target,y=Axial)) +
+  geom_point(color="black")+
+  theme_minimal()
 
 

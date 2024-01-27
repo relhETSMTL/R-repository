@@ -62,7 +62,7 @@ corrplot(correlation.ptime.t3, type = "upper", order = "hclust", tl.col = "black
 t3.ptime <- rcorr(as.matrix(rq4.data.ptime.t3), type="spearman")
 t3.ptime
 
-# Question Response  Misc Navigation Axial Solution Target
+#             Question  Response  Misc Navigation Axial Solution Target
 # Question       1.00     0.37  0.07      -0.36  0.15     0.19  -0.29
 # Response       0.37     1.00 -0.20      -0.52  0.21     0.34  -0.21
 # Misc           0.07    -0.20  1.00       0.13 -0.37    -0.43  -0.09
@@ -93,7 +93,7 @@ t3.pcount <- rcorr(as.matrix(rq4.data.pcount.t3), type="spearman")
 t3.pcount
 
 
-# Question Response  Misc Navigation Axial Solution Target
+#             Question Response  Misc Navigation Axial Solution Target
 # Question       1.00     0.33  0.06      -0.46  0.08     0.20  -0.30
 # Response       0.33     1.00 -0.15      -0.41  0.23     0.34  -0.28
 # Misc           0.06    -0.15  1.00      -0.05 -0.47    -0.45   0.09
