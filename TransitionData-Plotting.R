@@ -143,7 +143,7 @@ tile3.sequence.p05 <- raw.df %>%
   geom_tile(aes(fill=IDAOI, width=0.7, height=0.7), size=3) + 
   theme_minimal() +
   labs(y = "Question number", x = "Fixation sequence", fill ="AOI") +
-  scale_fill_brewer(palette = "Set1") +
+  # scale_fill_brewer(palette = "Set1") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1)))
 tile3.sequence.p05
 
@@ -249,7 +249,7 @@ rect.plot2 <- raw.rectangle.df %>%
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
   theme_minimal() +
-  scale_fill_brewer(palette="Set1") +
+  # scale_fill_brewer(palette="Set1") +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 rect.plot2
