@@ -120,7 +120,31 @@ for (participant.id in participants.ids) {
 ## For all the questions
 
 
-
-# Some checks
+################################################################
+# Some sanity checks
 pq.data.p19.q24 <- all.participants.trans %>% filter(Participant==19 & QN==24)
 mt.p19.q24 <- compute.transitions(19,24,pq.data.p19.q24,factors.aois, "../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/")
+
+
+## Testing the procedure with only the data for AOIs FM, CTC, and Question
+# Filtering only the AOIs required
+pq.data.p19.q24.core <- all.participants.trans %>% 
+  filter(Participant==19 & QN==24 & (IDAOI=="Question" | IDAOI=="FM" | IDAOI=="CTC"))
+  
+# Compute the matrix with the same function.  
+mt.p19.q24 <- compute.transitions(19,24,pq.data.p19.q24.core,factors.aois, "../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/")
+
+# Removing the columns and rows not required
+new.mt.p19.q24 <- mt.p19.q24[,colnames(mt.p19.q24)!="Answer"] 
+new.mt.p19.q24 <- new.mt.p19.q24[,colnames(new.mt.p19.q24)!="Buttons"]
+new.mt.p19.q24 <- new.mt.p19.q24[,colnames(new.mt.p19.q24)!="Legend"]
+new.mt.p19.q24 <- new.mt.p19.q24[,colnames(new.mt.p19.q24)!="Window"]
+
+# M<-M[rownames(M)!="A",] --> note the , for the entire row
+new.mt.p19.q24 <- new.mt.p19.q24[rownames(new.mt.p19.q24)!="Answer",]
+new.mt.p19.q24 <- new.mt.p19.q24[rownames(new.mt.p19.q24)!="Buttons",]
+new.mt.p19.q24 <- new.mt.p19.q24[rownames(new.mt.p19.q24)!="Legend",]
+new.mt.p19.q24 <- new.mt.p19.q24[rownames(new.mt.p19.q24)!="Window",]
+
+
+## Exploring the use of chordiagrams to show the values of the matrices
