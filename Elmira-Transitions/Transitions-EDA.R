@@ -393,13 +393,16 @@ p8 <- ggplot(data = pairs,
 p9<- ggplot(data = pairs,
        aes(axis1 = AOI, axis2 = variable, y = value)) +
   geom_alluvium(aes(fill = AOI),curve_type = "sigmoid") +
-  geom_stratum() +  # aes(fill = variable) only colors the second axis
+  geom_stratum(width = 1/15) +  # aes(fill = variable) only colors the second axis
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum)),
             label.strata = FALSE) +
   # scale_x_discrete(limits = c("Survey", "Response"),
   #                 expand = c(0.15, 0.05)) +
-  theme_void() + theme(legend.position = "none")
+  #xlab("Q09") + 
+  theme_void() + 
+  theme(legend.position = "none",  axis.title.x = element_text(color="black", size=14, face="bold")) +
+  xlab("Q09")
 
 # https://stackoverflow.com/questions/27858123/how-to-pass-a-vector-of-ggplot-objects-to-grid-arrange-function
 # plotting <- function(d){
@@ -550,7 +553,7 @@ legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
 transition.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
 transition.plot
 
-
+# https://stackoverflow.com/questions/50720718/labelling-and-theme-of-ggalluvial-plot-in-r
 
 
 legend_b <- get_legend(p5[[1]] + theme(legend.position="bottom"))
