@@ -537,8 +537,25 @@ prow <- plot_grid(p5[[1]], p5[[2]], p5[[3]], p5[[4]],
                   p5[[17]], p5[[18]], p5[[19]], p5[[20]], 
                   p5[[21]], p5[[22]], p5[[23]], p5[[24]],
                   align = 'vh',
-                  hjust = -1,
+                  hjust = -1, legend_b,
                   nrow = 6) #2, ncol = 2)
+
+
+# Displays the 24 plots of participant 5. Correct Picture!!!
+prow <- plot_grid(plotlist=p5,
+                  align = 'vh',
+                  hjust = -1, 
+                  nrow = 6, ncol = 4)
+legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
+transition.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
+transition.plot
+
+
+
+
+legend_b <- get_legend(p5[[1]] + theme(legend.position="bottom"))
+# transition.plot <- plot_grid( prow, legend_b, ncol = 4, rel_heights = c(1, .2))
+transition.plot
 
 
 
