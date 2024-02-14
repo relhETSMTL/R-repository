@@ -325,8 +325,8 @@ p1 <- ggplot(data = vaccinations,
 
 # Default curve
 p2 <- ggplot(data = pairs,
-       aes(axis1 = X, axis2 = variable, y = value)) +
-  geom_alluvium(aes(fill = X)) +
+       aes(axis1 = AOI, axis2 = variable, y = value)) +
+  geom_alluvium(aes(fill = AOI)) +
   geom_stratum() +
   geom_text(stat = "stratum",
             aes(label = after_stat(stratum))) +
@@ -550,7 +550,7 @@ prow <- plot_grid(plotlist=p5,
                   align = 'vh',
                   hjust = -1, 
                   nrow = 6, ncol = 4)
-legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
+legend_b <- get_legend(p5[[1]] + theme(legend.position="bottom"))
 transition.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
 transition.plot
 
