@@ -446,7 +446,7 @@ library(reshape2)   # converting a matrix/dataframe to a list of pairs
 
 
 # Function that computes the transitions between FM, Question, CTC
-compute.transitions.alluvial.plot <- function (pid, qnum, input.dir) {
+compute.transitions.alluvial.plot <- function (pid, qnum, qlabel, input.dir) {
 
   # Input file with the transition data
   input.file <- paste(input.dir,"P",pid,"-Q",qnum,"-Transitions-Matrix.csv",sep="")
@@ -461,11 +461,12 @@ compute.transitions.alluvial.plot <- function (pid, qnum, input.dir) {
   # Computes the plots 
   plot<- ggplot(data = pairs, aes(axis1 = AOI, axis2 = variable, y = value)) +
     geom_alluvium(aes(fill = AOI),curve_type = "sigmoid") +
-    geom_stratum() +
+    geom_stratum(width = 1/15) +
     geom_text(stat = "stratum", aes(label = after_stat(stratum)),
               label.strata = FALSE) +
     theme_void()  + 
-    theme(legend.position = "none")
+    theme(legend.position = "none", axis.title.x = element_text(color="black", size=14, face="bold")) +
+    xlab(qlabel)   
   
   # Returns the plot
   return (plot)
@@ -482,34 +483,34 @@ compute.transitions.alluvial.plot <- function (pid, qnum, input.dir) {
 # Function that computes the transitions between FM, Question, CTC
 compute.alluvial.plots.participant <- function (pid, input.dir) {
   
-  q1 <- compute.transitions.alluvial.plot(pid,1,input.dir)
-  q2 <- compute.transitions.alluvial.plot(pid,2,input.dir)
-  q3 <- compute.transitions.alluvial.plot(pid,3,input.dir)
-  q4 <- compute.transitions.alluvial.plot(pid,4,input.dir)
-  q5 <- compute.transitions.alluvial.plot(pid,5,input.dir)
+  q1 <- compute.transitions.alluvial.plot(pid,1,"Q01",input.dir)
+  q2 <- compute.transitions.alluvial.plot(pid,2,"Q02",input.dir)
+  q3 <- compute.transitions.alluvial.plot(pid,3,"Q03",input.dir)
+  q4 <- compute.transitions.alluvial.plot(pid,4,"Q04",input.dir)
+  q5 <- compute.transitions.alluvial.plot(pid,5,"Q05",input.dir)
 
-  q6 <- compute.transitions.alluvial.plot(pid,6,input.dir)
-  q7 <- compute.transitions.alluvial.plot(pid,7,input.dir)
-  q8 <- compute.transitions.alluvial.plot(pid,8,input.dir)
-  q9 <- compute.transitions.alluvial.plot(pid,9,input.dir)
-  q10 <- compute.transitions.alluvial.plot(pid,10,input.dir)
+  q6 <- compute.transitions.alluvial.plot(pid,6,"Q06",input.dir)
+  q7 <- compute.transitions.alluvial.plot(pid,7,"Q07",input.dir)
+  q8 <- compute.transitions.alluvial.plot(pid,8,"Q08",input.dir)
+  q9 <- compute.transitions.alluvial.plot(pid,9,"Q09",input.dir)
+  q10 <- compute.transitions.alluvial.plot(pid,10,"Q10",input.dir)
 
-  q11 <- compute.transitions.alluvial.plot(pid,11,input.dir)
-  q12 <- compute.transitions.alluvial.plot(pid,12,input.dir)
-  q13 <- compute.transitions.alluvial.plot(pid,13,input.dir)
-  q14 <- compute.transitions.alluvial.plot(pid,14,input.dir)
-  q15 <- compute.transitions.alluvial.plot(pid,15,input.dir)
+  q11 <- compute.transitions.alluvial.plot(pid,11,"Q11",input.dir)
+  q12 <- compute.transitions.alluvial.plot(pid,12,"Q12",input.dir)
+  q13 <- compute.transitions.alluvial.plot(pid,13,"Q13",input.dir)
+  q14 <- compute.transitions.alluvial.plot(pid,14,"Q14",input.dir)
+  q15 <- compute.transitions.alluvial.plot(pid,15,"Q15",input.dir)
 
-  q16 <- compute.transitions.alluvial.plot(pid,16,input.dir)
-  q17 <- compute.transitions.alluvial.plot(pid,17,input.dir)
-  q18 <- compute.transitions.alluvial.plot(pid,18,input.dir)
-  q19 <- compute.transitions.alluvial.plot(pid,19,input.dir)
-  q20 <- compute.transitions.alluvial.plot(pid,20,input.dir)
+  q16 <- compute.transitions.alluvial.plot(pid,16,"Q16",input.dir)
+  q17 <- compute.transitions.alluvial.plot(pid,17,"Q17",input.dir)
+  q18 <- compute.transitions.alluvial.plot(pid,18,"Q18",input.dir)
+  q19 <- compute.transitions.alluvial.plot(pid,19,"Q19",input.dir)
+  q20 <- compute.transitions.alluvial.plot(pid,20,"Q20",input.dir)
 
-  q21 <- compute.transitions.alluvial.plot(pid,21,input.dir)
-  q22 <- compute.transitions.alluvial.plot(pid,22,input.dir)
-  q23 <- compute.transitions.alluvial.plot(pid,23,input.dir)
-  q24 <- compute.transitions.alluvial.plot(pid,24,input.dir)
+  q21 <- compute.transitions.alluvial.plot(pid,21,"Q21",input.dir)
+  q22 <- compute.transitions.alluvial.plot(pid,22,"Q22",input.dir)
+  q23 <- compute.transitions.alluvial.plot(pid,23,"Q23",input.dir)
+  q24 <- compute.transitions.alluvial.plot(pid,24,"Q24",input.dir)
 
   list.plots <- list(q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,
                      q13,q14,q15,q16,q17,q18,q19,q20,q21,q22,q23,q24)
