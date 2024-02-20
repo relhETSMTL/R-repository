@@ -563,14 +563,14 @@ transition.plot
 
 
 
-prow <- plot_grid(ctc.plot + theme(legend.position="none"),
-                  noctc.plot + theme(legend.position="none"),
-                  align = 'vh',
-                  # labels = c("CTC", "no CTC"),
-                  hjust = -1,
-                  nrow = 1)
+# prow <- plot_grid(ctc.plot + theme(legend.position="none"),
+#                   noctc.plot + theme(legend.position="none"),
+#                   align = 'vh',
+#                   # labels = c("CTC", "no CTC"),
+#                   hjust = -1,
+#                   nrow = 1)
 
-legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
+#legend_b <- get_legend(ctc.plot + theme(legend.position="bottom"))
 fixation.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
 fixation.plot
 
