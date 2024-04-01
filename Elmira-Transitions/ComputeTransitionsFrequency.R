@@ -26,8 +26,12 @@ input.dir <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Dat
 num.aois <- length(factors.aois)
 
 # TODO create the data frame for the output file
+collated.transitions.count.df <- data.frame(matrix(ncol = 5, nrow = 0))
+column.names <- c("ParticipantID", "QNumber", "From","To","FrequencyCount")
+colnames(collated.transitions.count.df) <- column.names
+
 #  define and initialize increment variable for each new entry
-row.counter <- 0
+row.counter <- 1
 
 
 # Loops for all the participants and all the questions, loading the matrix of transition frequencies
@@ -49,11 +53,41 @@ for (participant.id in participants.ids) {
       for (j in  seq(1:num.aois)){
         cat(i," ", j, " ", as.character(factors.aois[i]), " ", as.character(factors.aois[j]), " ")
         print("--")
+        
+        # adds the row, one extra index column because of column X with AOIs names 
+        collated.transitions.count.df[row.counter,"ParticipantID"]= participant.id
+        collated.transitions.count.df[row.counter,"QNumber"]= question.num
+        collated.transitions.count.df[row.counter,"From"] = as.character(factors.aois[i])
+        collated.transitions.count.df[row.counter,"To"] = as.character(factors.aois[j])
+        collated.transitions.count.df[row.counter,"FrequencyCount"] = matrix.participant.question[i,j+1]
+    
+
+        # increments the row counter
+        row.counter <- row.counter + 1
+
       } # for j
     } # for j
-    
-        
     
   } # all the questions
   
 } # all the participants
+
+
+# Loads the complete data set of interface data and eye tracker data to extract the NoF, NoC, and the correct
+# response that will be later used for joining the tables
+
+interface.transition.data <- read.csv(file = "../../../Experiment-Data/All-Participants-Curated-Data-Boolean.csv", 
+                                   header=TRUE)
+attach (interface.transition.data)
+
+# Selects the required columns 
+base.participant.data <- interface.transition.data %>%
+  select(ParticipantID, QNumber, NoF, NoC, Correct)
+
+
+# Performs the join based on ParticipantID and QNumber of the transition frequency and base data
+complete.joined.data <- full_join(collated.transitions.count.df,base.participant.data)
+
+# Saves the data file of the structure
+out.file.name <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/All-Participants-Transitions-Collated-Data.csv"
+write.csv(complete.joined.data, file = out.file.name, row.names = FALSE, quote = FALSE)
