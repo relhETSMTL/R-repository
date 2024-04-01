@@ -16,14 +16,19 @@ attach (all.participants.trans)
 # Computes a vector of participants and question numbers to iterate on
 participants.ids <-unique(all.participants.trans$Participant) 
 question.nums <-  unique(all.participants.trans$QN)
-# factors.aois <- as.factor(levels(as.factor(all.participants.trans$IDAOI)))
-factors.aois <- unique(all.participants.trans$IDAOI)
+factors.aois <- as.factor(levels(as.factor(all.participants.trans$IDAOI)))
+# factors.aois <- unique(all.participants.trans$IDAOI)
 
 # input directory
 input.dir <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/"
 
 # number of aois
 num.aois <- length(factors.aois)
+
+# TODO create the data frame for the output file
+#  define and initialize increment variable for each new entry
+row.counter <- 0
+
 
 # Loops for all the participants and all the questions, loading the matrix of transition frequencies
 for (participant.id in participants.ids) {
@@ -42,8 +47,8 @@ for (participant.id in participants.ids) {
     ## double loop from 1..7 of each AOI, index, get the value and the match in the AOIs
     for (i in  seq(1:num.aois)){
       for (j in  seq(1:num.aois)){
-        cat(i," ", j, " ", factors.aois[i], " ", factors.aois[j])
-        print(" ")
+        cat(i," ", j, " ", as.character(factors.aois[i]), " ", as.character(factors.aois[j]), " ")
+        print("--")
       } # for j
     } # for j
     
