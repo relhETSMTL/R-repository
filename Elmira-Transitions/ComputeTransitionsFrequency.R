@@ -103,17 +103,17 @@ questions.data <- questions.data %>% select(QN,QText,QRightAnswer)
 
 # number of features in each question, and adds the column
 num.features <- c(3,3,6,6,6,6,6,8,7,10, 6,5,6,6,6,6,7,7,7,6 ,6,6,8,6)
-questions.data$Features.In.Question <- num.features
+questions.data$FeaturesInQuestion <- num.features
 
 # Partial and "Full" configurations
 configuration.type <- factor(c("Partial","Partial","Partial","Full","Full","Partial","Full","Partial",
                              "Full","Partial","Partial","Partial","Partial","Partial","Partial","Full",
                              "Full","Partial","Full","Partial","Partial","Partial","Partial","Partial"))
-questions.data$Configuration.Type <- configuration.type
+questions.data$ConfigurationType <- configuration.type
 
 
 # keeps only the question number, the number of features in the question and the type of configuration
-questions.data <- questions.data %>% select(QN,Features.In.Question,Configuration.Type) %>%
+questions.data <- questions.data %>% select(QN,FeaturesInQuestion,ConfigurationType) %>%
   rename (QNumber=QN)
 
 # writes out the file with the information
