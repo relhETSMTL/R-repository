@@ -89,5 +89,43 @@ base.participant.data <- interface.transition.data %>%
 complete.joined.data <- full_join(collated.transitions.count.df,base.participant.data)
 
 # Saves the data file of the structure
+# out.file.name <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/All-Participants-Transitions-Collated-Data.csv"
+# write.csv(complete.joined.data, file = out.file.name, row.names = FALSE, quote = FALSE)
+
+##########################
+##########################
+
+# Loads the description of the questions of the experiment
+questions.data <- read.csv(file = "../../../Experiment-Data/experiment-questions.csv", header=TRUE)
+attach (questions.data)
+
+questions.data <- questions.data %>% select(QN,QText,QRightAnswer)
+
+# number of features in each question, and adds the column
+num.features <- c(3,3,6,6,6,6,6,8,7,10, 6,5,6,6,6,6,7,7,7,6 ,6,6,8,6)
+questions.data$Features.In.Question <- num.features
+
+# Partial and "Full" configurations
+configuration.type <- factor(c("Partial","Partial","Partial","Full","Full","Partial","Full","Partial",
+                             "Full","Partial","Partial","Partial","Partial","Partial","Partial","Full",
+                             "Full","Partial","Full","Partial","Partial","Partial","Partial","Partial"))
+questions.data$Configuration.Type <- configuration.type
+
+
+# keeps only the question number, the number of features in the question and the type of configuration
+questions.data <- questions.data %>% select(QN,Features.In.Question,Configuration.Type) %>%
+  rename (QNumber=QN)
+
+# writes out the file with the information
+write.csv(questions.data, file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Raw-Questions-Info.csv", 
+          row.names = FALSE, quote = FALSE)
+
+########################
+#######################
+
+## Merge of the joined data with the question data
+final.data <- full_join(complete.joined.data, questions.data)
+
+# Saves the data file of the structure
 out.file.name <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/All-Participants-Transitions-Collated-Data.csv"
-write.csv(complete.joined.data, file = out.file.name, row.names = FALSE, quote = FALSE)
+write.csv(final.data, file = out.file.name, row.names = FALSE, quote = FALSE)
