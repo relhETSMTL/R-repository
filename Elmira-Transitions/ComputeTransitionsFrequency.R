@@ -129,3 +129,7 @@ final.data <- full_join(complete.joined.data, questions.data)
 # Saves the data file of the structure
 out.file.name <- "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/All-Participants-Transitions-Collated-Data.csv"
 write.csv(final.data, file = out.file.name, row.names = FALSE, quote = FALSE)
+
+# loads all the data
+all.transitions.data <- read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/All-Participants-Transitions-Collated-Data.csv", header=TRUE)
+attach(all.transitions.data)
