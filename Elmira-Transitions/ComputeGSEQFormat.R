@@ -30,8 +30,6 @@ attach (all.participants.collated)
 # Answer Buttons/
   
 
-
-
 # Defines the output configuration file
 file.path <- 'config.txt'
 
