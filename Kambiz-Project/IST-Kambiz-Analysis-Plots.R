@@ -9,7 +9,7 @@ library(grid)
 
 
 # Loads the complete experiment data file
-experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", header=TRUE)
+experiment.data <- read.csv(file = "../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", header=TRUE)
 
 # Laptop@Office
 # experiment.data <- read.csv(file = "C:/Research/Projects/R-Kambiz-Elmira/Kambiz-Data/Complete-Experiment-Data.csv", header=TRUE)
@@ -135,75 +135,75 @@ summary(correct.question$count)
 
 # Plot grid of bars of Correct and Incorrect responses, y dimension t values, y dimensions 
 accuracy.df <- data.frame(matrix(nrow = 4 * 2, ncol = 4))
-columnNames <- c("T", "Visualization.Method", "Accuracy", "Number")
+columnNames <- c("T", "Visualization.Technique", "Accuracy", "Number")
 colnames(accuracy.df) <- columnNames
 
 # Bar for t=2 and Scattered Plot
-bars.t2.sp.data <- experiment.data  %>% filter (T==2 & Visualization.Method=="2D-SP") %>% select(Accuracy) %>% 
+bars.t2.sp.data <- experiment.data  %>% filter (T==2 & Visualization.Technique=="2D-SP") %>% select(Accuracy) %>% 
   group_by(Accuracy) %>% summarise(n=n())
 
 k <- 1
 accuracy.df$T[k] <- 2
-accuracy.df$Visualization.Method[k] <- "2D-SP"
+accuracy.df$Visualization.Technique[k] <- "2D-SP"
 accuracy.df$Accuracy[k] <- TRUE
 accuracy.df$Number[k] <- as.numeric(bars.t2.sp.data[2,2]) # number of TRUE values
 
 k <- k + 1
 accuracy.df$T[k] <- 2
-accuracy.df$Visualization.Method[k] <- "2D-SP"
+accuracy.df$Visualization.Technique[k] <- "2D-SP"
 accuracy.df$Accuracy[k] <- FALSE
 accuracy.df$Number[k] <- as.numeric(bars.t2.sp.data[1,2]) # number of FALSE values
 
 # Bar for t=2 and Parallel Dimensions
-bars.t2.pd.data <- experiment.data  %>% filter (T==2 & Visualization.Method=="2D-PD") %>% select(Accuracy) %>% 
+bars.t2.pd.data <- experiment.data  %>% filter (T==2 & Visualization.Technique=="2D-PD") %>% select(Accuracy) %>% 
   group_by(Accuracy) %>% summarise(n=n())
 
 k <- k + 1
 accuracy.df$T[k] <- 2
-accuracy.df$Visualization.Method[k] <- "2D-PD"
+accuracy.df$Visualization.Technique[k] <- "2D-PD"
 accuracy.df$Accuracy[k] <- TRUE
 accuracy.df$Number[k] <- as.numeric(bars.t2.pd.data[2,2]) # number of TRUE values
 
 k <- k + 1
 accuracy.df$T[k] <- 2
-accuracy.df$Visualization.Method[k] <- "2D-PD"
+accuracy.df$Visualization.Technique[k] <- "2D-PD"
 accuracy.df$Accuracy[k] <- FALSE
 accuracy.df$Number[k] <- as.numeric(bars.t2.pd.data[1,2]) # number of FALSE values
 
 # Bar for t=3 and Scattered Plot
-bars.t3.sp.data <- experiment.data  %>% filter (T==3 & Visualization.Method=="3D-SP") %>% select(Accuracy) %>% 
+bars.t3.sp.data <- experiment.data  %>% filter (T==3 & Visualization.Technique=="3D-SP") %>% select(Accuracy) %>% 
   group_by(Accuracy) %>% summarise(n=n())
 
 k <- k + 1
 accuracy.df$T[k] <- 3
-accuracy.df$Visualization.Method[k] <- "3D-SP"
+accuracy.df$Visualization.Technique[k] <- "3D-SP"
 accuracy.df$Accuracy[k] <- TRUE
 accuracy.df$Number[k] <- as.numeric(bars.t3.sp.data[2,2]) # number of TRUE values
 
 k <- k + 1
 accuracy.df$T[k] <- 3
-accuracy.df$Visualization.Method[k] <- "3D-SP"
+accuracy.df$Visualization.Technique[k] <- "3D-SP"
 accuracy.df$Accuracy[k] <- FALSE
 accuracy.df$Number[k] <- as.numeric(bars.t3.sp.data[1,2]) # number of FALSE values
 
 # Bar for t=3 and Parallel Dimensions
-bars.t3.pd.data <- experiment.data  %>% filter (T==3 & Visualization.Method=="3D-PD") %>% select(Accuracy) %>% 
+bars.t3.pd.data <- experiment.data  %>% filter (T==3 & Visualization.Technique=="3D-PD") %>% select(Accuracy) %>% 
   group_by(Accuracy) %>% summarise(n=n())
 
 k <- k + 1
 accuracy.df$T[k] <- 3
-accuracy.df$Visualization.Method[k] <- "3D-PD"
+accuracy.df$Visualization.Technique[k] <- "3D-PD"
 accuracy.df$Accuracy[k] <- TRUE
 accuracy.df$Number[k] <- as.numeric(bars.t3.pd.data[2,2]) # number of TRUE values
 
 k <- k + 1
 accuracy.df$T[k] <- 3
-accuracy.df$Visualization.Method[k] <- "3D-PD"
+accuracy.df$Visualization.Technique[k] <- "3D-PD"
 accuracy.df$Accuracy[k] <- FALSE
 accuracy.df$Number[k] <- as.numeric(bars.t3.pd.data[1,2]) # number of FALSE values
 
 # Bar t=2 2D-SP
-bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-SP") %>% 
+bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Technique=="2D-SP") %>% 
   ggplot(aes(x=Accuracy, weight = Number)) + 
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
@@ -217,7 +217,7 @@ bars.t2.sp <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-SP") %>%
 bars.t2.sp
 
 # Bar t=2 2D-PD
-bars.t2.pd <- accuracy.df %>% filter (T==2 & Visualization.Method=="2D-PD") %>% 
+bars.t2.pd <- accuracy.df %>% filter (T==2 & Visualization.Technique=="2D-PD") %>% 
   ggplot(aes(x=Accuracy, weight = Number)) + 
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
@@ -231,7 +231,7 @@ bars.t2.pd
 
 
 # Bar t=3 3D-SP
-bars.t3.sp <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-SP") %>% 
+bars.t3.sp <- accuracy.df %>% filter (T==3 & Visualization.Technique=="3D-SP") %>% 
   ggplot(aes(x=Accuracy, weight = Number)) + 
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
@@ -245,7 +245,7 @@ bars.t3.sp
 
 
 # Bar t=3 2D-PD
-bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Method=="3D-PD") %>% 
+bars.t3.pd <- accuracy.df %>% filter (T==3 & Visualization.Technique=="3D-PD") %>% 
   ggplot(aes(x=Accuracy, weight = Number)) + 
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_discrete(limits=seq(0, 100, 10)) +
@@ -626,7 +626,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # scatter plot, t=3,correct
   experiment.data %>% filter (Visualization.Technique=="3D-SP" & Accuracy=="True") %>% 
     select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
-  # Visualization.Method  Accuracy   Elapsed.Time   
+  # Visualization.Technique  Accuracy   Elapsed.Time   
   # 2D-PD: 0             False: 0   Min.   :  4484  
   # 2D-SP: 0             True :70   1st Qu.: 44999  
   # 3D-PD: 0                        Median : 82146  
@@ -637,7 +637,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # scatter plot, t=3, incorrect
   experiment.data %>% filter (Visualization.Technique=="3D-SP" & Accuracy=="False") %>% 
     select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
-  # Visualization.Method  Accuracy   Elapsed.Time   
+  # Visualization.Technique  Accuracy   Elapsed.Time   
   # 2D-PD: 0             False:26   Min.   : 24863  
   # 2D-SP: 0             True : 0   1st Qu.: 71948  
   # 3D-PD: 0                        Median : 80393  
@@ -649,7 +649,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # parallel coordinates plot, t=3,correct
   experiment.data %>% filter (Visualization.Technique=="3D-PD" & Accuracy=="True") %>% 
     select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
-  # Visualization.Method  Accuracy   Elapsed.Time   
+  # Visualization.Technique  Accuracy   Elapsed.Time   
   # 2D-PD: 0             False: 0   Min.   :  4256  
   # 2D-SP: 0             True :80   1st Qu.: 44976  
   # 3D-PD:80                        Median : 60800  
@@ -661,7 +661,7 @@ ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number
   # parallel coordinates plot, t=3,incorrect
   experiment.data %>% filter (Visualization.Technique=="3D-PD" & Accuracy=="False") %>% 
     select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
-  # Visualization.Method  Accuracy   Elapsed.Time   
+  # Visualization.Technique  Accuracy   Elapsed.Time   
   # 2D-PD: 0             False:16   Min.   : 16210  
   # 2D-SP: 0             True : 0   1st Qu.: 31740  
   # 3D-PD:16                        Median : 41414  
