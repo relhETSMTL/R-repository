@@ -14,3 +14,6 @@ task11.triplets <- c(514,748,1087,826,646,1059,513,629,698,803,652,694,1012,886,
                      522,657,691,445,449,596,912,676,661,756,466,302,422,596,435,517,389) #31, 20259
 task12.triplets <- c(455,320,319,308,352,319,235,245,235,234,235,245,173,193,210) #15, 4078
 
+
+number.lines.pd <- c(sum(task1.pairs),sum(task2.pairs),sum(task3.pairs),sum(task4.pairs),
+                     sum(task9.triplets),sum(task10.triplets),sum(task11.triplets),sum(task12.triplets))
