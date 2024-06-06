@@ -17,3 +17,10 @@ task12.triplets <- c(455,320,319,308,352,319,235,245,235,234,235,245,173,193,210
 
 number.lines.pd <- c(sum(task1.pairs),sum(task2.pairs),sum(task3.pairs),sum(task4.pairs),
                      sum(task9.triplets),sum(task10.triplets),sum(task11.triplets),sum(task12.triplets))
+
+
+# Computing the number of lines for GPL running example for parallel dimensions plot
+
+gpl.2d.pd <- c(79,92,80,89,136,104,102,106,90,91,104,91,105) # 13 1269
+gpl.3d.pd <- c(582,463,472,315,305,299,372,389,346,359,274,291,309,368,260,399,474,368,
+               474,358,299,257,307,396,360,242,305) # 27 9643
