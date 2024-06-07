@@ -386,7 +386,76 @@ accuracy.breakdown.plot
 
 
 
+####################################################################################
+# Figure 9 revised
+# Change the values FALSE TRUE to Inaccurate Accurate and colors of palet
 
+### RQ2 Time on task
+
+# Grid of Time on task per t value and visualization method
+
+# t2 and parallel dimensions
+bp.t2.pd.res <- experiment.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  filter (T==2 & Visualization.Technique=="2D-PD") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Parallel Dimensions Plot", y="T=2") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+
+bp.t2.pd.res
+
+
+# t2 and scatter plot
+bp.t2.sp.res <- experiment.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  filter (T==2 & Visualization.Technique=="2D-SP") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) + 
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) + 
+  geom_jitter() +
+  labs(x="Scatter Plot", y="T=2") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+
+bp.t2.sp.res
+
+
+# t3 and parallel dimensions
+bp.t3.pd.res <- experiment.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  filter (T==3 & Visualization.Technique=="3D-PD") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  scale_y_continuous(breaks=seq(0, 350, 50), limits = c(0, 350)) +
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Parallel Dimensions Plot", y="T=3") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+bp.t3.pd.res
+
+
+# t3 and scatter plot
+bp.t3.sp.res <- experiment.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  filter (T==3 & Visualization.Technique=="3D-SP") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Scatter Plot", y="T=3") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  ylim(0, 550)  +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+
+bp.t3.sp.res
+
+# Creates the grid for the stack bars
+grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
+                         bp.t2.sp.res,bp.t2.pd.res,
+                         ncol=2, nrow=2,
+                         bottom = textGrob("Visualization Techniques",gp=gpar(fontsize=15,font=3)),
+                         left = textGrob("Covering Array Strength - Time in secs", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 
