@@ -267,6 +267,131 @@ grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
                           left = textGrob("Covering Array Strength", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
+
+##############################################################################################################################
+# Figure 8 revised. Facet plots for accuracy distributed by t and number of pairs
+# Change of colors and substitution of FALSE and TRUE
+# Flip coordinates, add guides
+
+# Pairs 
+# t=2 value,  grouping by visualization technique, number of pairs, and accuracy with summarizing by counting
+t2.vm.ne.acc <- experiment.data %>% filter (T==2) %>% select(Visualization.Technique,Number.Elements,Accuracy) %>%
+  group_by(Visualization.Technique,Number.Elements,Accuracy) %>%
+  summarise(Count=n()) %>% as.data.frame() %>% 
+  # Completing the table with the values that are zero
+  add_row(Visualization.Technique="2D-PD", Number.Elements=136, Accuracy="False", Count=0) %>%
+  add_row(Visualization.Technique="2D-SP", Number.Elements=209, Accuracy="False", Count=0) %>%
+  add_row(Visualization.Technique="2D-SP", Number.Elements=440, Accuracy="False", Count=0)
+
+
+accuracy.t2.sp.npairs <- t2.vm.ne.acc %>% filter(Visualization.Technique=="2D-SP") %>%   
+  mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Count, fill=Accuracy)) + # , alpha=0.5
+  coord_cartesian(ylim = c(0, 24)) +
+  scale_y_discrete(limits=seq(0, 24, 1)) +
+  geom_bar(position="dodge",stat="identity") + # 
+  # geom_text(aes(label = ..count..), vjust = -0.1, size = 5) + # aes(label = ..count..), stat = "count", 
+  # geom_text(aes(label = count),  hjust= 1, vjust = -0.1, position = position_dodge(1), size = 5) +  
+  theme( panel.background = element_blank(), 
+        panel.grid.major.y = element_line(colour = "grey50")) + # , legend.position = "none"
+  ggtitle("Scatter Plots for Pairs (2D-SP)") +
+  labs(y="Count", x="Number of Pairs") +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+accuracy.t2.sp.npairs
+
+
+accuracy.t2.pd.npairs <- t2.vm.ne.acc %>% filter(Visualization.Technique=="2D-PD") %>%   
+  mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Count, fill=Accuracy)) + # , alpha=0.5
+  coord_cartesian(ylim = c(0, 24)) +
+  scale_y_discrete(limits=seq(0, 24, 1)) +
+  geom_bar(position="dodge",stat="identity") + # 
+  # geom_text(aes(label = ..count..), vjust = -0.1, size = 5) + # aes(label = ..count..), stat = "count", 
+  # geom_text(aes(label = count),  hjust= 1, vjust = -0.1, position = position_dodge(1), size = 5) +  
+  theme( panel.background = element_blank(), 
+         panel.grid.major.y = element_line(colour = "grey50"), legend.position = "none") +
+  ggtitle("Parallel Dimensions Plots for Pairs (2D-PD)") +
+  labs(y="Count", x="Number of Pairs") +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+accuracy.t2.pd.npairs
+
+
+# t=3 value,  grouping by visualization technique, number of pairs, and accuracy with summarizing by counting
+t3.vm.ne.acc <- experiment.data %>% filter (T==3) %>% select(Visualization.Technique,Number.Elements,Accuracy) %>%
+  group_by(Visualization.Technique,Number.Elements,Accuracy) %>%
+  summarise(Count=n()) %>% as.data.frame() %>% 
+  # Completing the table with the values that are zero
+  add_row(Visualization.Technique="3D-SP", Number.Elements=2491, Accuracy="False", Count=0)
+
+
+accuracy.t3.sp.ntriplets <- t3.vm.ne.acc %>% filter(Visualization.Technique=="3D-SP") %>%   
+  mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Count, fill=Accuracy)) + # , alpha=0.5
+  coord_cartesian(ylim = c(0, 24)) +
+  scale_y_discrete(limits=seq(0, 24, 1)) +
+  geom_bar(position="dodge",stat="identity") + # 
+  # geom_text(aes(label = ..count..), vjust = -0.1, size = 5) + # aes(label = ..count..), stat = "count", 
+  # geom_text(aes(label = count),  hjust= 1, vjust = -0.1, position = position_dodge(1), size = 5) +  
+  theme( panel.background = element_blank(), 
+         panel.grid.major.y = element_line(colour = "grey50"), legend.position = "none") +
+  ggtitle("Scatter Plots for Triplets (3D-SP)") +
+  labs(y="Count", x="Number of Triplets") +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+accuracy.t3.sp.ntriplets
+
+
+accuracy.t3.pd.ntriplets <- t3.vm.ne.acc %>% filter(Visualization.Technique=="3D-PD") %>%   
+  mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Count, fill=Accuracy)) + # , alpha=0.5
+  coord_cartesian(ylim = c(0, 24)) +
+  scale_y_discrete(limits=seq(0, 24, 1)) +
+  geom_bar(position="dodge",stat="identity") + # 
+  # geom_text(aes(label = ..count..), vjust = -0.1, size = 5) + # aes(label = ..count..), stat = "count", 
+  # geom_text(aes(label = count),  hjust= 1, vjust = -0.1, position = position_dodge(1), size = 5) +  
+  theme( panel.background = element_blank(), 
+         panel.grid.major.y = element_line(colour = "grey50"), legend.position = "none") +
+  ggtitle("Parallel Dimensions Plots for Triplets (3D-PD)") +
+  labs(y="Count", x="Number of Triplets") +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+accuracy.t3.pd.ntriplets
+
+
+# Test of merging the plots into a single figure
+# https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+library(cowplot)
+
+
+# Plot with the four combinations, pairs/triples & SP and PD plots
+prow4 <- plot_grid(accuracy.t3.sp.ntriplets + theme(legend.position="none"), 
+                   accuracy.t3.pd.ntriplets + theme(legend.position="none"),
+                   accuracy.t2.sp.npairs + theme(legend.position="none"),
+                   accuracy.t2.pd.npairs + theme(legend.position="none"),
+                   align = 'vh',
+                   hjust = -1,
+                   nrow = 2)
+
+
+# prow <- plot_grid(t3.sp.aois.plot + theme(legend.position="none"),
+#                   t3.pd.aois.plot + theme(legend.position="none"),
+#                   align = 'vh',
+#                   # labels = c("CTC", "no CTC"),
+#                   hjust = -1,
+#                   nrow = 1)
+
+legend_b <- get_legend(accuracy.t3.sp.ntriplets + theme(legend.position="bottom"))
+
+
+accuracy.breakdown.plot <- plot_grid( prow4, legend_b, ncol = 1, rel_heights = c(1, .1)) # rel_heights = c(1, .2)
+accuracy.breakdown.plot
+
+
+
+
+
+
+
+
+
 ################################################################################################################################
 ################################################################################################################################
 ################################################################################################################################
@@ -323,4 +448,84 @@ grid.data <- grid.arrange(bars.t3.sp,bars.t3.pd,
   # question.accuracy
 
 
+# ggplot(t3.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+#   geom_bar(position="dodge", stat="identity") + 
+#   geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+#   #  ggtitle("Accuracy results by Visualization Technique and Number of Triplets") +
+#   ggtitle("     Scatter Plot (3D-SP)     Parallel Dimensions (3D-PD)") +
+#   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+#   theme(legend.position="none") +
+#   scale_fill_manual(values=c("red", "green")) +
+#   xlab("Number of Triplets") +
+#   ylab("Count") + 
+#   guides(alpha=FALSE) +
+#   coord_flip() +
+#   theme(strip.text.x = element_text(angle = 0)) +
+#   scale_y_continuous(breaks=seq(0, 24, 1)) +
+#   theme_classic() -> accuracy.vm.ne.t3 
+# 
+# accuracy.vm.ne.t3
+
+# # Revised Figure 6a       
+# participant.accuracy <- experiment.data %>%   
+#   mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+#   ggplot(aes(x=Participant.ID, fill=Accuracy)) + # , alpha=0.5
+#   coord_cartesian(ylim = c(0, 16)) +
+#   scale_y_discrete(limits=seq(0, 16, 1)) +
+#   geom_bar(position="dodge") +
+#   theme(axis.text.x=element_blank(), panel.background = element_blank(), 
+#         panel.grid.major.y = element_line(colour = "grey50"), legend.position = "bottom") +
+#   labs(y="Frequency", x="Participant responses") +
+#   scale_fill_manual(values=c("#009E73","#0072B2"))
+# participant.accuracy
+
+# # ---- Original version
+# ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+#   geom_bar(position="dodge", stat="identity") + 
+#   geom_text(aes(label = count),  hjust= -0.4, position = position_dodge(1), size = 3.5) +   
+#   # hjust = -0.3, vjust= -0.5,
+#   # vjust = -0.2 , hjust = -0.1
+#   # scale_fill_viridis(discrete = T, option = "E") +
+#   # scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
+#   # ggtitle("Accuracy results by Visualization Technique and Number of Pairs") +
+#   ggtitle("     Scatter Plot (2D-SP)       Parallel Dimensions (2D-PD)") +
+#   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+#   theme(legend.position="none") +
+#   scale_fill_manual(values=c("red", "green")) +
+#   xlab("Number of Pairs") +
+#   ylab("Count") + 
+#   guides(alpha=FALSE) +
+#   coord_flip() +
+#   theme(strip.text.x = element_text(angle = 0)) +
+#   scale_y_continuous(breaks=seq(0, 24, 1)) +
+#   theme_classic() -> accuracy.vm.ne.t2
+# accuracy.vm.ne.t2
+# # ---- end of original version
+
+
+# # Revised version with changes made
+# ggplot(t2.vm.ne.acc, aes(fill = Accuracy, alpha=0.5, y=count, x=as.factor(Number.Elements))) + 
+#   geom_bar(position="dodge", stat="identity") + 
+#   geom_text(aes(label = count),  hjust= 1, vjust = -0.1, position = position_dodge(1), size = 5) +   
+#   # hjust = -0.3, vjust= -0.5,
+#   # vjust = -0.2 , hjust = -0.1
+#   # scale_fill_viridis(discrete = T, option = "E") +
+#   # scale_x_discrete(labels=setNames(data$condition, data$cond2)) +
+#   # ggtitle("Accuracy results by Visualization Technique and Number of Pairs") +
+#   ggtitle("     Scatter Plot (2D-SP)                   Parallel Dimensions (2D-PD)") +
+#   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+#   theme(legend.position="bottom") +
+#   scale_fill_manual(values=c("red", "green")) +
+#   xlab("Number of Pairs") +
+#   ylab("Count") + 
+#   # guides(alpha=FALSE) +
+#   guides(fill = FALSE, alpha=FALSE) + # panel.grid.major.y = element_line(colour = "grey50")
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "black")) -> accuracy.vm.ne.t2  # , panel.grid.major.y = element_line(colour = "grey50")
+#   # coord_flip() +
+#   # theme(strip.text.x = element_text(angle = 0)) +
+#   #  scale_x_continuous(breaks=seq(0, 24, 1)) +
+#   # theme_classic()  -> accuracy.vm.ne.t2
+# 
+# 
+# accuracy.vm.ne.t2
 
