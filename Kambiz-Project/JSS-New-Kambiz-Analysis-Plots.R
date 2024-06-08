@@ -462,9 +462,6 @@ grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
 # Figure 10 revised
 # Change the values FALSE TRUE to Inaccurate Accurate and colors of palette
 
-# ggplot(data, aes(x=variety, y=note, fill=treatment)) + 
-#   geom_boxplot()
-
 ### Summary of time-on-task based on values of t and visualization techniques
 
 ## For t=2
@@ -486,24 +483,6 @@ tot.t2.sp.breakdown <- t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-SP")
   scale_fill_manual(values=c("#009E73","#0072B2"))
 tot.t2.sp.breakdown
 
-# tot.t2.sp.breakdown <- t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-SP") %>%
-#   ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
-#   geom_boxplot(varwidth=T) +
-#   geom_jitter(width = 0.1) +
-#   theme(legend.position="bottom")
-# tot.t2.sp.breakdown
-# 
-# bp.t3.sp.res <- experiment.data %>% 
-#   mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
-#   filter (T==3 & Visualization.Technique=="3D-SP") %>%
-#   ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
-#   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
-#   geom_jitter() +
-#   labs(x="Scatter Plot", y="T=3") + 
-#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-#   ylim(0, 550)  +
-#   scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
-
 # Parallel dimensions plot task on time summary accurate/inaccurate for number of pairs 
 tot.t2.pd.breakdown <- t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-PD") %>%
   mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
@@ -518,6 +497,72 @@ tot.t2.pd.breakdown <- t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-PD")
   scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350)) +
   scale_fill_manual(values=c("#009E73","#0072B2"))
 tot.t2.pd.breakdown
+
+
+# For t=3 
+t3.vt.ne.tot <- experiment.data %>% filter (T==3) %>% 
+ select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
+
+# Scatter plot task on time summary accurate/inaccurate for number of triples 
+tot.t3.sp.breakdown <- t3.vt.ne.tot %>% filter(Visualization.Technique=="3D-SP") %>%
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
+  geom_boxplot(varwidth=T) +
+  geom_jitter(width = 0.1) +
+  facet_wrap(~Accuracy) + 
+  # theme(legend.position="bottom") +
+  theme(panel.background = element_blank(), legend.position="none", panel.grid.major.y = element_line(colour = "grey50")) +
+  ggtitle("Scatter Plots for Triplets (3D-SP)") +
+  labs(x="Number of Triplets", y="Time-on-task seconds") + 
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350)) +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+tot.t3.sp.breakdown
+
+# Parallel dimensions plot task on time summary accurate/inaccurate for number of triplets 
+tot.t3.pd.breakdown <- t3.vt.ne.tot %>% filter(Visualization.Technique=="3D-PD") %>%
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
+  geom_boxplot(varwidth=T) +
+  geom_jitter(width = 0.1) +
+  facet_wrap(~Accuracy) + 
+  # theme(legend.position="bottom") +
+  theme(panel.background = element_blank(), legend.position="none", panel.grid.major.y = element_line(colour = "grey50")) +
+  ggtitle("Parallel Dimensions Plots for Triplets (3D-PD)") +
+  labs(x="Number of Triplets", y="Time-on-task seconds") + 
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350)) +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+tot.t3.pd.breakdown
+ 
+# Time on task breakdown by accurate and inaccurate, triplets and pairs
+prow4.tot.breakdown <- plot_grid(tot.t3.sp.breakdown + theme(legend.position="none"), 
+                   tot.t3.pd.breakdown  + theme(legend.position="none"),
+                   tot.t2.sp.breakdown  + theme(legend.position="none"),
+                   tot.t2.pd.breakdown + theme(legend.position="none"),
+                   align = 'vh',
+                   hjust = -1,
+                   nrow = 2)
+prow4.tot.breakdown
+
+
+
+################################################################################################################################
+################################################################################################################################
+################################################################################################################################
+################################################################################################################################
+
+## Scratch code
+
+# ggplot(t3.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy)) +
+#   geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
+#   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
+#   theme(legend.position="none") +
+#   scale_color_manual(values = c("red","green")) +
+#   xlab("Number of Triplets") +
+#   ylab("Time-on-task seconds") +  
+#   guides(alpha=FALSE) +
+#   coord_flip() +
+#   theme(strip.text.x = element_text(angle = 0)) +
+#   theme_classic()
 
 
 # t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-PD") %>%
@@ -556,71 +601,25 @@ tot.t2.pd.breakdown
 # 
 # 
 
-# For t=3 
-t3.vt.ne.tot <- experiment.data %>% filter (T==3) %>% 
- select(Visualization.Technique,Number.Elements,Elapsed.Time,Accuracy)
-
-# Scatter plot task on time summary accurate/inaccurate for number of triples 
-tot.t3.sp.breakdown <- t3.vt.ne.tot %>% filter(Visualization.Technique=="3D-SP") %>%
-  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
-  ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
-  geom_boxplot(varwidth=T) +
-  geom_jitter(width = 0.1) +
-  facet_wrap(~Accuracy) + 
-  # theme(legend.position="bottom") +
-  theme(panel.background = element_blank(), legend.position="none", panel.grid.major.y = element_line(colour = "grey50")) +
-  ggtitle("Scatter Plots for Triplets (3D-SP)") +
-  labs(x="Number of Triplets", y="Time-on-task seconds") + 
-  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350)) +
-  scale_fill_manual(values=c("#009E73","#0072B2"))
-tot.t3.sp.breakdown
-
-
-# Parallel dimensions plot task on time summary accurate/inaccurate for number of triplets 
-tot.t3.pd.breakdown <- t3.vt.ne.tot %>% filter(Visualization.Technique=="3D-PD") %>%
-  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
-  ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
-  geom_boxplot(varwidth=T) +
-  geom_jitter(width = 0.1) +
-  facet_wrap(~Accuracy) + 
-  # theme(legend.position="bottom") +
-  theme(panel.background = element_blank(), legend.position="none", panel.grid.major.y = element_line(colour = "grey50")) +
-  ggtitle("Parallel Dimensions Plots for Triplets (3D-PD)") +
-  labs(x="Number of Triplets", y="Time-on-task seconds") + 
-  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350)) +
-  scale_fill_manual(values=c("#009E73","#0072B2"))
-tot.t3.pd.breakdown
- 
-# Time on task breakdown by accurate and inaccurate, triplets and pairs
-prow4.tot.breakdown <- plot_grid(tot.t3.sp.breakdown + theme(legend.position="none"), 
-                   tot.t3.pd.breakdown  + theme(legend.position="none"),
-                   tot.t2.sp.breakdown  + theme(legend.position="none"),
-                   tot.t2.pd.breakdown + theme(legend.position="none"),
-                   align = 'vh',
-                   hjust = -1,
-                   nrow = 2)
-prow4.tot.breakdown
+# tot.t2.sp.breakdown <- t2.vt.ne.tot %>% filter(Visualization.Technique=="2D-SP") %>%
+#   ggplot(aes(x=as.factor(Number.Elements), y=Elapsed.Time/1000, fill=Accuracy)) + 
+#   geom_boxplot(varwidth=T) +
+#   geom_jitter(width = 0.1) +
+#   theme(legend.position="bottom")
+# tot.t2.sp.breakdown
+# 
+# bp.t3.sp.res <- experiment.data %>% 
+#   mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+#   filter (T==3 & Visualization.Technique=="3D-SP") %>%
+#   ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+#   geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+#   geom_jitter() +
+#   labs(x="Scatter Plot", y="T=3") + 
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   ylim(0, 550)  +
+#   scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
 
 
-# ggplot(t3.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy)) +
-#   geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
-#   facet_grid(Visualization.Technique ~ . , scales = "free", space = "free") +  # vertical facets
-#   theme(legend.position="none") +
-#   scale_color_manual(values = c("red","green")) +
-#   xlab("Number of Triplets") +
-#   ylab("Time-on-task seconds") +  
-#   guides(alpha=FALSE) +
-#   coord_flip() +
-#   theme(strip.text.x = element_text(angle = 0)) +
-#   theme_classic()
-
-
-################################################################################################################################
-################################################################################################################################
-################################################################################################################################
-################################################################################################################################
-
-## Scratch code
 
 
 # # Previous model - with flip coords
