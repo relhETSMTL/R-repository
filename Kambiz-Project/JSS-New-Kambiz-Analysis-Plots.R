@@ -544,6 +544,340 @@ prow4.tot.breakdown <- plot_grid(tot.t3.sp.breakdown + theme(legend.position="no
 prow4.tot.breakdown
 
 
+###################################################################################
+# Figure 13 revised
+# Change the plots to percentage bars with labels at the bottom
+
+# TODO adjust plot to be bars, change to percentage, change palette to make it colour friendly
+
+#####################################################################################
+# Data for t=2, Visualization Technique scatter plots
+t2.sp.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-SP") 
+
+
+t2.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t2.sp.df) <- columnNamesAOIs
+
+t2.sp.df[1,1] <- 'count'
+t2.sp.df[1,2] <- 'Axial'
+t2.sp.df[1,3] <- mean (t2.sp.data$Axial.pfcount)
+
+t2.sp.df[2,1] <- 'count'
+t2.sp.df[2,2] <- 'Misc'
+t2.sp.df[2,3] <- mean(t2.sp.data$Misc.pfcount)
+
+t2.sp.df[3,1] <- 'count'
+t2.sp.df[3,2] <- 'Navigation'
+t2.sp.df[3,3] <- mean(t2.sp.data$Navigation.pfcount)
+
+t2.sp.df[4,1] <- 'count'
+t2.sp.df[4,2] <- 'Question'
+t2.sp.df[4,3] <- mean (t2.sp.data$Question.pfcount)
+
+t2.sp.df[5,1] <- 'count'
+t2.sp.df[5,2] <- 'Response'
+t2.sp.df[5,3] <- mean(t2.sp.data$Response.pfcount)
+
+t2.sp.df[6,1] <- 'count'
+t2.sp.df[6,2] <- 'Solution'
+t2.sp.df[6,3] <- mean(t2.sp.data$Solution.pfcount)
+
+t2.sp.df[7,1] <- 'count'
+t2.sp.df[7,2] <- 'Target'
+t2.sp.df[7,3] <- mean (t2.sp.data$Target.pfcount)
+
+t2.sp.df[8,1] <- 'time'
+t2.sp.df[8,2] <- 'Axial'
+t2.sp.df[8,3] <- mean (t2.sp.data$Axial.pftime)
+
+t2.sp.df[9,1] <- 'time'
+t2.sp.df[9,2] <- 'Misc'
+t2.sp.df[9,3] <- mean(t2.sp.data$Misc.pftime)
+
+t2.sp.df[10,1] <- 'time'
+t2.sp.df[10,2] <- 'Navigation'
+t2.sp.df[10,3] <- mean(t2.sp.data$Navigation.pftime)
+
+t2.sp.df[11,1] <- 'time'
+t2.sp.df[11,2] <- 'Question'
+t2.sp.df[11,3] <- mean (t2.sp.data$Question.pftime)
+
+t2.sp.df[12,1] <- 'time'
+t2.sp.df[12,2] <- 'Response'
+t2.sp.df[12,3] <- mean(t2.sp.data$Response.pftime)
+
+t2.sp.df[13,1] <- 'time'
+t2.sp.df[13,2] <- 'Solution'
+t2.sp.df[13,3] <- mean(t2.sp.data$Solution.pftime)
+
+t2.sp.df[14,1] <- 'time'
+t2.sp.df[14,2] <- 'Target'
+t2.sp.df[14,3] <- mean (t2.sp.data$Target.pftime)
+
+# makes Measure factor values instead of characters
+t2.sp.df$Measure <- factor(t2.sp.df$Measure, levels = c('time', 'count'))
+
+t2.sp.aois.plot <- t2.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  labs(x="t=2 and scatter plot", y="") 
+t2.sp.aois.plot
+
+
+### Data for t=2, Visualization Technique parallel dimensions plots
+t2.pd.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-PD") 
+
+
+t2.pd.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t2.pd.df) <- columnNamesAOIs
+
+t2.pd.df[1,1] <- 'count'
+t2.pd.df[1,2] <- 'Axial'
+t2.pd.df[1,3] <- mean (t2.pd.data$Axial.pfcount)
+
+t2.pd.df[2,1] <- 'count'
+t2.pd.df[2,2] <- 'Misc'
+t2.pd.df[2,3] <- mean(t2.pd.data$Misc.pfcount)
+
+t2.pd.df[3,1] <- 'count'
+t2.pd.df[3,2] <- 'Navigation'
+t2.pd.df[3,3] <- mean(t2.pd.data$Navigation.pfcount)
+
+t2.pd.df[4,1] <- 'count'
+t2.pd.df[4,2] <- 'Question'
+t2.pd.df[4,3] <- mean (t2.pd.data$Question.pfcount)
+
+t2.pd.df[5,1] <- 'count'
+t2.pd.df[5,2] <- 'Response'
+t2.pd.df[5,3] <- mean(t2.pd.data$Response.pfcount)
+
+t2.pd.df[6,1] <- 'count'
+t2.pd.df[6,2] <- 'Solution'
+t2.pd.df[6,3] <- mean(t2.pd.data$Solution.pfcount)
+
+t2.pd.df[7,1] <- 'count'
+t2.pd.df[7,2] <- 'Target'
+t2.pd.df[7,3] <- mean (t2.pd.data$Target.pfcount)
+
+t2.pd.df[8,1] <- 'time'
+t2.pd.df[8,2] <- 'Axial'
+t2.pd.df[8,3] <- mean (t2.pd.data$Axial.pftime)
+
+t2.pd.df[9,1] <- 'time'
+t2.pd.df[9,2] <- 'Misc'
+t2.pd.df[9,3] <- mean(t2.pd.data$Misc.pftime)
+
+t2.pd.df[10,1] <- 'time'
+t2.pd.df[10,2] <- 'Navigation'
+t2.pd.df[10,3] <- mean(t2.pd.data$Navigation.pftime)
+
+t2.pd.df[11,1] <- 'time'
+t2.pd.df[11,2] <- 'Question'
+t2.pd.df[11,3] <- mean (t2.pd.data$Question.pftime)
+
+t2.pd.df[12,1] <- 'time'
+t2.pd.df[12,2] <- 'Response'
+t2.pd.df[12,3] <- mean(t2.pd.data$Response.pftime)
+
+t2.pd.df[13,1] <- 'time'
+t2.pd.df[13,2] <- 'Solution'
+t2.pd.df[13,3] <- mean(t2.pd.data$Solution.pftime)
+
+t2.pd.df[14,1] <- 'time'
+t2.pd.df[14,2] <- 'Target'
+t2.pd.df[14,3] <- mean (t2.pd.data$Target.pftime)
+
+# makes Measure factor values instead of characters
+t2.pd.df$Measure <- factor(t2.pd.df$Measure, levels = c('time', 'count'))
+
+t2.pd.aois.plot <- t2.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  labs(x="t=2 and parallel dimensions plot", y="") 
+t2.pd.aois.plot
+
+
+#####################################################################################
+# Data for t=3, Visualization Technique scatter plots
+t3.sp.data <- experiment.data %>% filter(T==3 & Visualization.Technique=="3D-SP") 
+
+
+t3.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t3.sp.df) <- columnNamesAOIs
+
+t3.sp.df[1,1] <- 'count'
+t3.sp.df[1,2] <- 'Axial'
+t3.sp.df[1,3] <- mean (t3.sp.data$Axial.pfcount)
+
+t3.sp.df[2,1] <- 'count'
+t3.sp.df[2,2] <- 'Misc'
+t3.sp.df[2,3] <- mean(t3.sp.data$Misc.pfcount)
+
+t3.sp.df[3,1] <- 'count'
+t3.sp.df[3,2] <- 'Navigation'
+t3.sp.df[3,3] <- mean(t3.sp.data$Navigation.pfcount)
+
+t3.sp.df[4,1] <- 'count'
+t3.sp.df[4,2] <- 'Question'
+t3.sp.df[4,3] <- mean (t3.sp.data$Question.pfcount)
+
+t3.sp.df[5,1] <- 'count'
+t3.sp.df[5,2] <- 'Response'
+t3.sp.df[5,3] <- mean(t3.sp.data$Response.pfcount)
+
+t3.sp.df[6,1] <- 'count'
+t3.sp.df[6,2] <- 'Solution'
+t3.sp.df[6,3] <- mean(t3.sp.data$Solution.pfcount)
+
+t3.sp.df[7,1] <- 'count'
+t3.sp.df[7,2] <- 'Target'
+t3.sp.df[7,3] <- mean (t3.sp.data$Target.pfcount)
+
+t3.sp.df[8,1] <- 'time'
+t3.sp.df[8,2] <- 'Axial'
+t3.sp.df[8,3] <- mean (t3.sp.data$Axial.pftime)
+
+t3.sp.df[9,1] <- 'time'
+t3.sp.df[9,2] <- 'Misc'
+t3.sp.df[9,3] <- mean(t3.sp.data$Misc.pftime)
+
+t3.sp.df[10,1] <- 'time'
+t3.sp.df[10,2] <- 'Navigation'
+t3.sp.df[10,3] <- mean(t3.sp.data$Navigation.pftime)
+
+t3.sp.df[11,1] <- 'time'
+t3.sp.df[11,2] <- 'Question'
+t3.sp.df[11,3] <- mean (t3.sp.data$Question.pftime)
+
+t3.sp.df[12,1] <- 'time'
+t3.sp.df[12,2] <- 'Response'
+t3.sp.df[12,3] <- mean(t3.sp.data$Response.pftime)
+
+t3.sp.df[13,1] <- 'time'
+t3.sp.df[13,2] <- 'Solution'
+t3.sp.df[13,3] <- mean(t3.sp.data$Solution.pftime)
+
+t3.sp.df[14,1] <- 'time'
+t3.sp.df[14,2] <- 'Target'
+t3.sp.df[14,3] <- mean (t3.sp.data$Target.pftime)
+
+# makes Measure factor values instead of characters
+t3.sp.df$Measure <- factor(t3.sp.df$Measure, levels = c('time', 'count'))
+
+t3.sp.aois.plot <- t3.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  labs(x="t=3 and scatter plot", y="") 
+t3.sp.aois.plot
+
+
+### Data for t=3, Visualization Technique parallel dimensions plots
+t3.pd.data <- experiment.data %>% filter(T==3 & Visualization.Technique=="3D-PD") 
+
+
+t3.pd.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t3.pd.df) <- columnNamesAOIs
+
+t3.pd.df[1,1] <- 'count'
+t3.pd.df[1,2] <- 'Axial'
+t3.pd.df[1,3] <- mean (t3.pd.data$Axial.pfcount)
+
+t3.pd.df[2,1] <- 'count'
+t3.pd.df[2,2] <- 'Misc'
+t3.pd.df[2,3] <- mean(t3.pd.data$Misc.pfcount)
+
+t3.pd.df[3,1] <- 'count'
+t3.pd.df[3,2] <- 'Navigation'
+t3.pd.df[3,3] <- mean(t3.pd.data$Navigation.pfcount)
+
+t3.pd.df[4,1] <- 'count'
+t3.pd.df[4,2] <- 'Question'
+t3.pd.df[4,3] <- mean (t3.pd.data$Question.pfcount)
+
+t3.pd.df[5,1] <- 'count'
+t3.pd.df[5,2] <- 'Response'
+t3.pd.df[5,3] <- mean(t3.pd.data$Response.pfcount)
+
+t3.pd.df[6,1] <- 'count'
+t3.pd.df[6,2] <- 'Solution'
+t3.pd.df[6,3] <- mean(t3.pd.data$Solution.pfcount)
+
+t3.pd.df[7,1] <- 'count'
+t3.pd.df[7,2] <- 'Target'
+t3.pd.df[7,3] <- mean (t3.pd.data$Target.pfcount)
+
+t3.pd.df[8,1] <- 'time'
+t3.pd.df[8,2] <- 'Axial'
+t3.pd.df[8,3] <- mean (t3.pd.data$Axial.pftime)
+
+t3.pd.df[9,1] <- 'time'
+t3.pd.df[9,2] <- 'Misc'
+t3.pd.df[9,3] <- mean(t3.pd.data$Misc.pftime)
+
+t3.pd.df[10,1] <- 'time'
+t3.pd.df[10,2] <- 'Navigation'
+t3.pd.df[10,3] <- mean(t3.pd.data$Navigation.pftime)
+
+t3.pd.df[11,1] <- 'time'
+t3.pd.df[11,2] <- 'Question'
+t3.pd.df[11,3] <- mean (t3.pd.data$Question.pftime)
+
+t3.pd.df[12,1] <- 'time'
+t3.pd.df[12,2] <- 'Response'
+t3.pd.df[12,3] <- mean(t3.pd.data$Response.pftime)
+
+t3.pd.df[13,1] <- 'time'
+t3.pd.df[13,2] <- 'Solution'
+t3.pd.df[13,3] <- mean(t3.pd.data$Solution.pftime)
+
+t3.pd.df[14,1] <- 'time'
+t3.pd.df[14,2] <- 'Target'
+t3.pd.df[14,3] <- mean (t3.pd.data$Target.pftime)
+
+# makes Measure factor values instead of characters
+t3.pd.df$Measure <- factor(t3.pd.df$Measure, levels = c('time', 'count'))
+
+t3.pd.aois.plot <- t3.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+  geom_bar(position="fill", stat="identity", alpha=0.7) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  labs(x="t=3 and parallel dimensions plot", y="") 
+t3.pd.aois.plot
+
+
+## Computing the average percentages per question  
+
+# Test of merging the plots into a single figure
+# https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+library(cowplot)
+prow <- plot_grid(t3.sp.aois.plot + theme(legend.position="none"),
+                  t3.pd.aois.plot + theme(legend.position="none"),
+                  align = 'vh',
+                  # labels = c("CTC", "no CTC"),
+                  hjust = -1,
+                  nrow = 1)
+
+legend_b <- get_legend(t3.pd.aois.plot + theme(legend.position="bottom"))
+aois.plot <- plot_grid( prow, legend_b, ncol = 1, rel_heights = c(1, .2))
+aois.plot
+
+
+# Plot with the four combinations, mean percentage of fixation time and fixation count
+prow4 <- plot_grid(t3.sp.aois.plot + theme(legend.position="none"),
+                   t3.pd.aois.plot + theme(legend.position="none"),
+                   t2.sp.aois.plot + theme(legend.position="none"),
+                   t2.pd.aois.plot + theme(legend.position="none"),
+                   align = 'vh',
+                   hjust = -1,
+                   nrow = 2)
+legend_b4 <- get_legend(t3.pd.aois.plot + theme(legend.position="bottom"))
+aois.plot4 <- plot_grid( prow4, legend_b4, ncol = 1, rel_heights = c(1, .2))
+aois.plot4
+
+
 
 ################################################################################################################################
 ################################################################################################################################
