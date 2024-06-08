@@ -617,13 +617,42 @@ t2.sp.df[14,3] <- mean (t2.sp.data$Target.pftime)
 
 # makes Measure factor values instead of characters
 t2.sp.df$Measure <- factor(t2.sp.df$Measure, levels = c('time', 'count'))
+t2.sp.df$AOI <- as.factor(t2.sp.df$AOI)
 
-t2.sp.aois.plot <- t2.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity", alpha=0.7) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-  labs(x="t=2 and scatter plot", y="") 
-t2.sp.aois.plot
+# Mutates the names of the AOIs, solution and misc
+t2.sp.df.renamed <- t2.sp.df %>%
+  mutate(AOI = case_when(AOI == "Misc" ~ "Stimulus", AOI == "Response" ~ "Answer", TRUE ~ AOI)) %>%
+  mutate(AOI=fct_relevel(AOI,c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus")))
 
+#orders the names of the AOI in terms of description order in the paper
+ordered(t2.sp.df.renamed$AOI, levels=c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus"))
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="time") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+labs(y="Proportion of Fixation Time") +
+ggtitle("Scatter Plots for Pairs (2D-SP)") +
+scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+scale_fill_manual(values=cbPalette)  
+proportion.time.t2.sp
+
+proportion.count.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="count") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Count") +
+  ggtitle("Scatter Plots for Pairs (2D-SP)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.count.t2.sp
 
 ### Data for t=2, Visualization Technique parallel dimensions plots
 t2.pd.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-PD") 
@@ -691,12 +720,45 @@ t2.pd.df[14,3] <- mean (t2.pd.data$Target.pftime)
 
 # makes Measure factor values instead of characters
 t2.pd.df$Measure <- factor(t2.pd.df$Measure, levels = c('time', 'count'))
+t2.pd.df$AOI <- as.factor(t2.pd.df$AOI)
 
-t2.pd.aois.plot <- t2.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity", alpha=0.7) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-  labs(x="t=2 and parallel dimensions plot", y="") 
-t2.pd.aois.plot
+
+# # makes Measure factor values instead of characters
+# t2.sp.df$Measure <- factor(t2.sp.df$Measure, levels = c('time', 'count'))
+# t2.sp.df$AOI <- as.factor(t2.sp.df$AOI)
+
+# Mutates the names of the AOIs, solution and misc
+t2.pd.df.renamed <- t2.pd.df %>%
+  mutate(AOI = case_when(AOI == "Misc" ~ "Stimulus", AOI == "Response" ~ "Answer", TRUE ~ AOI)) %>%
+  mutate(AOI=fct_relevel(AOI,c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus")))
+
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+# cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.t2.pd <-  t2.pd.df.renamed %>% filter(Measure=="time") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(),axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time") +
+  ggtitle("Parallel Dimensions Plots for Pairs (2D-PD)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.t2.pd
+
+proportion.count.t2.pd <-  t2.pd.df.renamed %>% filter(Measure=="count") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(),axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Count") +
+  ggtitle("Parallel Dimensions Plots for Pairs (2D-PD)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.count.t2.pd
 
 
 #####################################################################################
@@ -766,12 +828,39 @@ t3.sp.df[14,3] <- mean (t3.sp.data$Target.pftime)
 
 # makes Measure factor values instead of characters
 t3.sp.df$Measure <- factor(t3.sp.df$Measure, levels = c('time', 'count'))
+t3.sp.df$AOI <- as.factor(t3.sp.df$AOI)
 
-t3.sp.aois.plot <- t3.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity", alpha=0.7) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-  labs(x="t=3 and scatter plot", y="") 
-t3.sp.aois.plot
+# Mutates the names of the AOIs, solution and misc
+t3.sp.df.renamed <- t3.sp.df %>%
+  mutate(AOI = case_when(AOI == "Misc" ~ "Stimulus", AOI == "Response" ~ "Answer", TRUE ~ AOI)) %>%
+  mutate(AOI=fct_relevel(AOI,c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus")))
+
+# # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+# cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.t3.sp <-  t3.sp.df.renamed %>% filter(Measure=="time") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time") +
+  ggtitle("Scatter Plots for Triplets (3D-SP)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.t3.sp
+
+proportion.count.t3.sp <-  t3.sp.df.renamed %>% filter(Measure=="count") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Count") +
+  ggtitle("Scatter Plots for Triplets (3D-SP)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.count.t3.sp
 
 
 ### Data for t=3, Visualization Technique parallel dimensions plots
@@ -840,12 +929,71 @@ t3.pd.df[14,3] <- mean (t3.pd.data$Target.pftime)
 
 # makes Measure factor values instead of characters
 t3.pd.df$Measure <- factor(t3.pd.df$Measure, levels = c('time', 'count'))
+t3.pd.df$AOI <- as.factor(t3.pd.df$AOI)
 
-t3.pd.aois.plot <- t3.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
-  geom_bar(position="fill", stat="identity", alpha=0.7) +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
-  labs(x="t=3 and parallel dimensions plot", y="") 
-t3.pd.aois.plot
+# Mutates the names of the AOIs, solution and misc
+t3.pd.df.renamed <- t3.pd.df %>%
+  mutate(AOI = case_when(AOI == "Misc" ~ "Stimulus", AOI == "Response" ~ "Answer", TRUE ~ AOI)) %>%
+  mutate(AOI=fct_relevel(AOI,c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus")))
+
+
+proportion.time.t3.pd <-  t3.pd.df.renamed %>% filter(Measure=="time") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time") +
+  ggtitle("Parallel Dimensions for Triplets (3D-PD)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.t3.pd
+
+proportion.count.t3.pd <-  t3.pd.df.renamed %>% filter(Measure=="count") %>%
+  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Count") +
+  ggtitle("Parallel Dimensions for Triplets (3D-PD)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.count.t3.pd
+
+###################################################################################
+### Constructing the two figures for Proportions of Fixation Time and Proportions of Fixation Count 
+library(cowplot)
+
+# Summary of proportion of count
+prow4.aoi.prop.count <- plot_grid(proportion.count.t3.sp + theme(legend.position="none"), 
+                                 proportion.count.t3.pd  + theme(legend.position="none"),
+                                 proportion.count.t2.sp + theme(legend.position="none"),
+                                 proportion.count.t2.pd + theme(legend.position="none"),
+                                 align = 'vh',
+                                 hjust = -1,
+                                 nrow = 2)
+prow4.aoi.prop.count
+
+prop.count.legend <- get_legend(proportion.count.t3.sp + theme(legend.position="bottom"))
+aoi.prop.count.plot <- plot_grid( prow4.aoi.prop.count, prop.count.legend, ncol = 1, rel_heights = c(1, .1))
+aoi.prop.count.plot
+
+
+# Summary of proportion of time
+prow4.aoi.prop.time <- plot_grid(proportion.time.t3.sp + theme(legend.position="none"), 
+                                  proportion.time.t3.pd  + theme(legend.position="none"),
+                                  proportion.time.t2.sp + theme(legend.position="none"),
+                                  proportion.time.t2.pd + theme(legend.position="none"),
+                                  align = 'vh',
+                                  hjust = -1,
+                                  nrow = 2)
+prow4.aoi.prop.time
+
+prop.time.legend <- get_legend(proportion.time.t3.sp + theme(legend.position="bottom"))
+aoi.prop.time.plot <- plot_grid( prow4.aoi.prop.time, prop.time.legend, ncol = 1, rel_heights = c(1, .1))
+aoi.prop.time.plot
+
 
 
 ## Computing the average percentages per question  
@@ -877,14 +1025,54 @@ legend_b4 <- get_legend(t3.pd.aois.plot + theme(legend.position="bottom"))
 aois.plot4 <- plot_grid( prow4, legend_b4, ncol = 1, rel_heights = c(1, .2))
 aois.plot4
 
-
-
 ################################################################################################################################
 ################################################################################################################################
 ################################################################################################################################
 ################################################################################################################################
 
 ## Scratch code
+
+# # Deprecated Figure 13
+# t3.pd.aois.plot <- t3.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+#   geom_bar(position="fill", stat="identity", alpha=0.7) +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   labs(x="t=3 and parallel dimensions plot", y="") 
+# t3.pd.aois.plot
+
+# Old figure 13
+# t3.sp.aois.plot <- t3.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+#   geom_bar(position="fill", stat="identity", alpha=0.7) +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   labs(x="t=3 and scatter plot", y="") 
+# t3.sp.aois.plot
+
+# Deprecated
+# t2.pd.aois.plot <- t2.pd.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+#   geom_bar(position="fill", stat="identity", alpha=0.7) +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   labs(x="t=2 and parallel dimensions plot", y="") 
+# t2.pd.aois.plot
+
+# # Copied example of barplots for accuracy results
+# question.accuracy <- experiment.data %>% 
+#   mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate")) %>%
+#   ggplot(aes(x=Question.Number, fill=Accuracy)) +
+#   coord_cartesian(ylim = c(0, 24)) +
+#   scale_y_discrete(limits=seq(0, 24, 1)) +
+#   scale_x_discrete(limits=seq(1, 16, 1)) +
+#   geom_bar(position="dodge") +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+#         legend.position = "bottom") + 
+#   labs(x="Question Number", y="Frequency")  +
+#   scale_fill_manual(values=c("#009E73","#0072B2"))  
+# question.accuracy
+
+# deprecated all rainbow graph Figure 13
+# t2.sp.aois.plot <- t2.sp.df %>% ggplot(aes(fill=AOI, y=Percentage, x=Measure)) + 
+#   geom_bar(position="fill", stat="identity", alpha=0.7) +
+#   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+#   labs(x="t=2 and scatter plot", y="") 
+# t2.sp.aois.plot
 
 # ggplot(t3.vt.ne.tot, aes(alpha=0.5, y=Elapsed.Time/1000, x=as.factor(Number.Elements), colour=Accuracy)) +
 #   geom_point(size=5, alpha=0.5, shape=21, stroke=1) +
