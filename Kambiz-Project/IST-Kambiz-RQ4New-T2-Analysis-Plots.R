@@ -57,7 +57,7 @@ library("Hmisc")
 # changing the names of the columns
 colnames(rq4.data.ptime.t2) <- c("Question", "Response","Misc","Navigation","Axial","Solution","Target") 
 correlation.ptime.t2 <- cor(rq4.data.ptime.t2, method="spearman")
-corrplot(correlation.ptime.t2, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
+corrplot(correlation.ptime.t2, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45, addCoef.col = "black")
 
 t2.ptime <- rcorr(as.matrix(rq4.data.ptime.t2), type="spearman")
 t2.ptime
