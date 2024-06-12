@@ -123,6 +123,7 @@ summary(correct.participant$count)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 8.00   13.00   14.00   13.54   15.25   16.00 
 
+
 # Correct responses per question
 correct.question <- experiment.data %>% filter (Accuracy=="True") %>% 
   group_by(Question.Number) %>%

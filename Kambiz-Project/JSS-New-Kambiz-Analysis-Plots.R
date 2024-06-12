@@ -74,6 +74,11 @@ accuracy.general
 # 1    False    59
 # 2     True   325
 
+# Percentage inaccurate
+accuracy.general[1,2]/nrow(experiment.data)
+# Percentage accurate
+accuracy.general[2,2]/nrow(experiment.data)
+
 # Accuracy incorrect and correct responses for all the participants
 general.accuracy.false <- accuracy.general$count[1]
 general.accuracy.true <- accuracy.general$count[2]
@@ -87,9 +92,110 @@ general.accuracy.true / (general.accuracy.false + general.accuracy.true)
 
 
 # Note: palette.colors(), the default is a color-friendly palette
+# experiment.data %>% 
+#   mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate"))
+# 
+# # Data for the Accuracy table
+# 
+# experiment.data %>% 
+#   mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate"))
 
-experiment.data %>% 
-  mutate(Accuracy = case_when(Accuracy == "True" ~ "Accurate", Accuracy == "False" ~ "Inacurate"))
+
+## Correct responses per participant
+correct.participant <- experiment.data %>% filter (Accuracy=="True") %>% 
+  group_by(Participant.ID) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+summary(correct.participant$count)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 8.00   13.00   14.00   13.54   15.25   16.00 
+
+sd(correct.participant$count)
+# 2.283764
+
+# Correct responses per question
+correct.question <- experiment.data %>% filter (Accuracy=="True") %>% 
+  group_by(Question.Number) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+summary(correct.question$count)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 10.00   17.75   23.00   20.31   23.25   24.00 
+
+sd(correct.question$count)
+# 4.316152
+
+
+## Correct responses by t value
+correct.participant.t <- experiment.data %>% filter (Accuracy=="True") %>% 
+  select(Participant.ID,T) %>%
+  group_by(Participant.ID,T) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+accurate.t2 <- correct.participant.t %>% filter (T==2)
+accurate.t2
+sd(accurate.t2$count)
+
+# t=2
+correct.participant.t %>% filter (T==2) %>% summary()
+# Participant.ID       T         count      
+# P03    : 1     Min.   :2   Min.   :4.000  
+# P04    : 1     1st Qu.:2   1st Qu.:7.000  
+# P05    : 1     Median :2   Median :8.000  
+# P06    : 1     Mean   :2   Mean   :7.292  
+# P07    : 1     3rd Qu.:2   3rd Qu.:8.000  
+# P08    : 1     Max.   :2   Max.   :8.000  
+
+
+
+# t=3
+correct.participant.t %>% filter (T==3) %>% summary()
+# Participant.ID       T         count     
+# P03    : 1     Min.   :3   Min.   :3.00  
+# P04    : 1     1st Qu.:3   1st Qu.:6.00  
+# P05    : 1     Median :3   Median :6.00  
+# P06    : 1     Mean   :3   Mean   :6.25  
+# P07    : 1     3rd Qu.:3   3rd Qu.:8.00  
+# P08    : 1     Max.   :3   Max.   :8.00  
+
+
+accurate.t3 <- correct.participant.t %>% filter (T==3)
+accurate.t3
+sd(accurate.t3$count)
+
+
+
+## Correct responses by visualization method
+correct.participant.vm  <- experiment.data %>% filter (Accuracy=="True") %>% 
+  select(Participant.ID,Visualization.Technique) %>%
+  group_by(Participant.ID,Visualization.Technique) %>%
+  summarise(count=n()) %>% as.data.frame()
+
+# Scattered Plot 2D-SP or 3D-SP
+correct.participant.vm.sp <- correct.participant.vm %>% 
+  filter (Visualization.Technique=="2D-SP" | Visualization.Technique=="3D-SP") %>% 
+  select(Participant.ID,count) %>%
+  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
+
+summary(correct.participant.vm.sp$total)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 5.000   6.000   7.000   6.833   8.000   8.000   
+
+sd(correct.participant.vm.sp$total)
+
+# Parallel dimensions Plot 2D-PD or 3D-PD
+correct.participant.vm.pd <- correct.participant.vm %>% 
+  filter (Visualization.Technique=="2D-PD" | Visualization.Technique=="3D-PD") %>% 
+  select(Participant.ID,count) %>%
+  group_by(Participant.ID) %>% summarise(total=sum(count)) %>% as.data.frame()
+
+summary(correct.participant.vm.pd$total)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 3.000   5.750   7.000   6.708   8.000   8.000
+
+sd(correct.participant.vm.pd$total)
+
+
 
 # Sanity check, the values are correctly transformed to Accurate and Inaccurate
 accuracy.general.revised <- experiment.data  %>%  
@@ -123,7 +229,7 @@ question.accuracy <- experiment.data %>%
   geom_bar(position="dodge") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         legend.position = "bottom") + 
-  labs(x="Question Number", y="Frequency")  +
+  labs(x="Task Number", y="Frequency")  +
   scale_fill_manual(values=c("#009E73","#0072B2"))  
   
 question.accuracy
