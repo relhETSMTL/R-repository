@@ -564,6 +564,235 @@ grid.res <- grid.arrange(bp.t3.sp.res,bp.t3.pd.res,
                          left = textGrob("Covering Array Strength - Time in secs", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
+############# Time-on-task descriptive statistics
+
+### Note: Elapsed.Time is the time taken by the web interface, this is the one used for reporting the results
+# For research question Q2 time-on-task
+
+## Total Elapsed time by participants (incorrect and correct answers)
+elapsed.time.participant <- experiment.data %>%
+  select(Participant.ID, Elapsed.Time) %>%
+  group_by(Participant.ID) %>%
+  summarise(total=sum(Elapsed.Time)/1000)  # Total time in minutes per participant
+
+
+summary(elapsed.time.participant$total)
+# Values in seconds
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 367.5   815.9  1010.2  1047.4  1326.2  1497.6 
+
+# Values in minutes
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 6.125  13.598  16.836  17.457  22.103  24.960 
+
+sd(elapsed.time.participant$total)
+
+# Seconds
+# 304.4128
+
+# Minutes
+# [1] 5.073546
+
+# Total Elapsed time for correct answers, in general --> not by participant
+elapsed.time.participant.correct <- experiment.data %>% filter (Accuracy=="True")  %>% 
+  select(Elapsed.Time) # %>%
+# group_by(Participant.ID) %>%
+# summarise(total=sum(Elapsed.Time)/1000/60)  # Total time in minutes
+
+
+summary(elapsed.time.participant.correct$Elapsed.Time/1000)
+# In seconds
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 4.256  34.208  47.712  64.303  78.943 465.551 
+
+
+sd(elapsed.time.participant.correct$Elapsed.Time/1000)
+# 51.03093
+
+
+# Total Elapsed time for incorrect answers, in general --> not by participant
+elapsed.time.participant.incorrect <- experiment.data %>% filter (Accuracy=="False")  %>% 
+  select(Elapsed.Time) 
+
+
+summary(elapsed.time.participant.incorrect$Elapsed.Time/1000)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 16.21   43.92   70.27   71.86   90.38  161.98 
+
+sd(elapsed.time.participant.incorrect$Elapsed.Time/1000)
+# 37.72342
+
+
+# Time on task based on the value of T, pairs vs triplets
+
+# t=2
+t2.et <- experiment.data %>% filter (T==2)  %>% 
+  select(Elapsed.Time)
+summary(t2.et)
+# Elapsed.Time   
+# Min.   :  7985  
+# 1st Qu.: 28907  
+# Median : 41128  
+# Mean   : 49383  
+# 3rd Qu.: 58108  
+# Max.   :208219  
+
+
+sd(t2.et$Elapsed.Time)
+# [1] 31466.61
+
+# t=3
+t3.et <- experiment.data %>% filter (T==3)  %>% 
+  select(Elapsed.Time)
+summary(t3.et)
+# Min.   :  4256  
+# 1st Qu.: 44360  
+# Median : 71400  
+# Mean   : 81544  
+# 3rd Qu.: 99999  
+# Max.   :465551   
+
+sd(t3.et$Elapsed.Time)
+# 57918.63 
+
+
+# Time on task based on the visualization techniques
+
+## Response time over visualization methods
+# vm = scatter plot
+sp.res <- experiment.data %>% filter (Visualization.Technique=="2D-SP" | Visualization.Technique=="3D-SP")  %>% 
+  select(Elapsed.Time)
+summary(sp.res)
+# Elapsed.Time   
+# Min.   :  4484  
+# 1st Qu.: 31458  
+# Median : 49425  
+# Mean   : 69844  
+# 3rd Qu.: 90270  
+# Max.   :465551  
+
+sd(sp.res$Elapsed.Time)
+# [1] 59741.97
+
+
+# vm = parallel dimensions plot
+pd.res <- experiment.data %>% filter (Visualization.Technique=="2D-PD" | Visualization.Technique=="3D-PD")  %>% 
+  select(Elapsed.Time)
+summary(pd.res)
+# Elapsed.Time   
+# Min.   :  4256  
+# 1st Qu.: 36179  
+# Median : 49968  
+# Mean   : 61084  
+# 3rd Qu.: 75968  
+# Max.   :199136  
+
+sd(pd.res$Elapsed.Time)
+# [1] 35452.81
+
+
+
+## Cross factors results
+
+# scatter plot, t=2,incorrect
+experiment.data %>% filter (Visualization.Technique=="2D-SP" & Accuracy=="False") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy  Elapsed.Time  
+# 2D-PD:0                 False:2   Min.   :81855  
+# 2D-SP:2                 True :0   1st Qu.:83239  
+# 3D-PD:0                           Median :84624  
+# 3D-SP:0                           Mean   :84624  
+# 3rd Qu.:86008  
+# Max.   :87392  
+
+# scatter plot, t=2,correct
+experiment.data %>% filter (Visualization.Technique=="2D-SP" & Accuracy=="True") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD: 0                False: 0   Min.   :  7985  
+# 2D-SP:94                True :94   1st Qu.: 24300  
+# 3D-PD: 0                           Median : 37016  
+# 3D-SP: 0                           Mean   : 41830  
+# 3rd Qu.: 50696  
+# Max.   :208219   
+
+
+# parallel coordinates plot, t=2,incorrect
+experiment.data %>% filter (Visualization.Technique=="2D-PD" & Accuracy=="False") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD:15                False:15   Min.   : 23247  
+# 2D-SP: 0                True : 0   1st Qu.: 47327  
+# 3D-PD: 0                           Median : 54143  
+# 3D-SP: 0                           Mean   : 65858  
+# 3rd Qu.: 76224  
+# Max.   :156703  
+
+
+
+# parallel coordinates plot, t=2,correct
+experiment.data %>% filter (Visualization.Technique=="2D-PD" & Accuracy=="True") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD:81                False: 0   Min.   : 15776  
+# 2D-SP: 0                True :81   1st Qu.: 33791  
+# 3D-PD: 0                           Median : 46223  
+# 3D-SP: 0                           Mean   : 54228  
+# 3rd Qu.: 64956  
+# Max.   :156559 
+
+
+# scatter plot, t=3,correct
+experiment.data %>% filter (Visualization.Technique=="3D-SP" & Accuracy=="True") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False: 0   Min.   :  4484  
+# 2D-SP: 0             True :70   1st Qu.: 44999  
+# 3D-PD: 0                        Median : 82146  
+# 3D-SP:70                        Mean   :100418  
+# 3rd Qu.:129488  
+# Max.   :465551  
+
+# scatter plot, t=3, incorrect
+experiment.data %>% filter (Visualization.Technique=="3D-SP" & Accuracy=="False") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False:26   Min.   : 24863  
+# 2D-SP: 0             True : 0   1st Qu.: 71948  
+# 3D-PD: 0                        Median : 80393  
+# 3D-SP:26                        Mean   : 87670  
+# 3rd Qu.:111337  
+# Max.   :161983 
+
+
+# parallel coordinates plot, t=3,correct
+experiment.data %>% filter (Visualization.Technique=="3D-PD" & Accuracy=="True") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False: 0   Min.   :  4256  
+# 2D-SP: 0             True :80   1st Qu.: 44976  
+# 3D-PD:80                        Median : 60800  
+# 3D-SP: 0                        Mean   : 69309  
+# 3rd Qu.: 84808  
+# Max.   :199136  
+
+
+# parallel coordinates plot, t=3,incorrect
+experiment.data %>% filter (Visualization.Technique=="3D-PD" & Accuracy=="False") %>% 
+  select(Visualization.Technique, Accuracy, Elapsed.Time) %>% summary()
+# Visualization.Technique  Accuracy   Elapsed.Time   
+# 2D-PD: 0             False:16   Min.   : 16210  
+# 2D-SP: 0             True : 0   1st Qu.: 31740  
+# 3D-PD:16                        Median : 41414  
+# 3D-SP: 0                        Mean   : 50191  
+# 3rd Qu.: 53058  
+# Max.   :133983  
+
+
+
+
+
+
 ###################################################################################
 # Figure 10 revised
 # Change the values FALSE TRUE to Inaccurate Accurate and colors of palette
@@ -648,6 +877,51 @@ prow4.tot.breakdown <- plot_grid(tot.t3.sp.breakdown + theme(legend.position="no
                    hjust = -1,
                    nrow = 2)
 prow4.tot.breakdown
+
+
+
+##################################################################################
+## RQ3
+
+## Difficulty assessment 
+his.difficulty <- ggplot(experiment.data, aes(x=Difficulty.Level)) + 
+  geom_histogram(binwidth=1, stat="count", fill="blue") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  scale_x_continuous(breaks=seq(0, 20, 1)) +
+  scale_y_continuous(breaks=seq(0, 380, 20)) + 
+  xlab("Difficulty Assessment, Very easy=0 ... Very difficult=20") +
+  theme_classic()
+
+his.difficulty
+
+experiment.data %>% select(Difficulty.Level) %>% summary()
+# Difficulty.Level
+# Min.   : 1.000  
+# 1st Qu.: 1.000  
+# Median : 1.000  
+# Mean   : 1.237  
+# 3rd Qu.: 1.000  
+# Max.   :20.000  
+
+## Certainty assessment
+his.certainty <- ggplot(experiment.data, aes(x=Certainty.Assessment)) + 
+  geom_histogram(binwidth=1, stat="count", fill="blue") +
+  stat_count(binwidth = 1, geom = 'text', color = 'black', aes(label = ..count..), vjust= -0.4,) +
+  scale_x_continuous(breaks=seq(0, 20, 1)) +
+  scale_y_continuous(breaks=seq(0, 120, 10)) + 
+  xlab("Certainty Assessment, Perfect=0 (completely sure) ... Failure=20 (completely unsure)") +
+  theme_classic()
+
+his.certainty
+
+experiment.data %>% select(Certainty.Assessment) %>% summary()
+# Certainty.Assessment
+# Min.   : 1.00       
+# 1st Qu.: 2.00       
+# Median : 3.00       
+# Mean   : 4.37       
+# 3rd Qu.: 5.00       
+# Max.   :20.00  
 
 
 ###################################################################################
