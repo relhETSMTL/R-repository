@@ -924,6 +924,72 @@ experiment.data %>% select(Certainty.Assessment) %>% summary()
 # Max.   :20.00  
 
 
+###################
+########### RQ4
+
+# Figure 12 and Descriptive statistics
+
+#####################################################################################
+# Box plots of time and count per combination
+
+summary(experiment.data$Fixation.Time)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 3651   28204   40637   53161   66064  408149 
+
+# Box plots of fixation time per visualizaton technique  
+bp.fixation.time <- experiment.data %>% 
+  ggplot(aes(x=Visualization.Technique, group=Visualization.Technique,Fixation.Time/1000)) +  
+  geom_boxplot(aes(fill=Fixation.Time/1000), varwidth=T, fill=c("turquoise", "magenta","blue","yellow"), alpha=0.5) +  # fill=c("red", "green"),
+  geom_jitter() +
+  labs(x="Visualization Technique", y="Fixation Time (secs)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
+  scale_y_continuous(breaks=seq(0, 450, 50),limits = c(0, 450)) + 
+  xlim("2D-SP","2D-PD","3D-SP","3D-PD") # reorders the values
+
+bp.fixation.time 
+
+summary(experiment.data$Fixation.Count)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 9.00   97.75  136.00  178.73  219.00  987.00  
+
+# Box plots of fixation count per visualizaton technique  
+bp.fixation.count <- experiment.data %>% 
+  ggplot(aes(x=Visualization.Technique, group=Visualization.Technique,Fixation.Count)) +  
+  geom_boxplot(aes(fill=Fixation.Count), varwidth=T, fill=c("turquoise", "magenta","blue","yellow"), alpha=0.5) +  # fill=c("red", "green"),
+  geom_jitter() +
+  labs(x="Visualization Technique", y="Fixation Count") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))  +
+  scale_y_continuous(breaks=seq(0, 1000, 100),limits = c(0, 1000)) + 
+  xlim("2D-SP","2D-PD","3D-SP","3D-PD") # reorders the values 
+
+bp.fixation.count 
+
+
+### Fixation time and fixation count summaries
+
+experiment.data %>% select(Fixation.Count, Visualization.Technique) %>% group_by(Visualization.Technique) %>%
+  summarise(median = median (Fixation.Count), avg = mean(Fixation.Count), std = sd(Fixation.Count), 
+            min = min(Fixation.Count), max = max(Fixation.Count)) %>% as.data.frame()
+
+# Visualization.Technique median      avg       std min max
+# 1                   2D-PD  122.0 142.8021  76.43485  48 459
+# 2                   2D-SP  113.0 131.6250  85.58003  24 596
+# 3                   3D-PD  146.5 174.1354  97.68032   9 535
+# 4                   3D-SP  232.5 266.3438 172.83353  31 987
+
+
+
+experiment.data %>% select(Fixation.Time, Visualization.Technique) %>% group_by(Visualization.Technique) %>%
+  summarise(median = median (Fixation.Time), avg = mean(Fixation.Time/1000), std = sd(Fixation.Time/1000), 
+            min = min(Fixation.Time/1000), max = max(Fixation.Time/1000)) %>% as.data.frame()
+
+# Visualization.Technique median      avg      std    min     max
+# 1                   2D-PD  36736 45.09638 25.93038 13.022 133.775
+# 2                   2D-SP  28921 34.15934 23.11749  8.376 171.443
+# 3                   3D-PD  43140 53.50670 30.60615  3.651 169.558
+# 4                   3D-SP  66875 79.88126 61.83897  8.926 408.149
+
+
 ###################################################################################
 # Figure 13 revised
 # Change the plots to percentage bars with labels at the bottom
