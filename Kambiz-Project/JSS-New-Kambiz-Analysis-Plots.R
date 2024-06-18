@@ -1077,7 +1077,8 @@ ordered(t2.sp.df.renamed$AOI, levels=c("Question","Answer","Axial","Target","Sol
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
 
 proportion.time.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="time") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+#  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
@@ -1089,7 +1090,7 @@ scale_fill_manual(values=cbPalette)
 proportion.time.t2.sp
 
 proportion.count.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="count") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
@@ -1183,7 +1184,7 @@ t2.pd.df.renamed <- t2.pd.df %>%
 # cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
 
 proportion.time.t2.pd <-  t2.pd.df.renamed %>% filter(Measure=="time") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(),axis.text.x=element_blank(),
@@ -1195,7 +1196,7 @@ proportion.time.t2.pd <-  t2.pd.df.renamed %>% filter(Measure=="time") %>%
 proportion.time.t2.pd
 
 proportion.count.t2.pd <-  t2.pd.df.renamed %>% filter(Measure=="count") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(),axis.text.x=element_blank(),
@@ -1285,7 +1286,7 @@ t3.sp.df.renamed <- t3.sp.df %>%
 # cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
 
 proportion.time.t3.sp <-  t3.sp.df.renamed %>% filter(Measure=="time") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
@@ -1297,7 +1298,7 @@ proportion.time.t3.sp <-  t3.sp.df.renamed %>% filter(Measure=="time") %>%
 proportion.time.t3.sp
 
 proportion.count.t3.sp <-  t3.sp.df.renamed %>% filter(Measure=="count") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
@@ -1384,7 +1385,7 @@ t3.pd.df.renamed <- t3.pd.df %>%
 
 
 proportion.time.t3.pd <-  t3.pd.df.renamed %>% filter(Measure=="time") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
@@ -1396,7 +1397,7 @@ proportion.time.t3.pd <-  t3.pd.df.renamed %>% filter(Measure=="time") %>%
 proportion.time.t3.pd
 
 proportion.count.t3.pd <-  t3.pd.df.renamed %>% filter(Measure=="count") %>%
-  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         axis.title.x = element_blank(), axis.text.x=element_blank(),
