@@ -73,9 +73,9 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
       
     } # end of for all the data
     
-    
-    
   } else { # computes the duration for the scarf plot per question
+    
+    # TODO complete here the code for the generation per question
     
   }  # of the computation per question
   
@@ -135,7 +135,10 @@ attach (all.participants.trans)
 
 # Computes a vector of participants and question numbers to iterate on
 participants.ids <-unique(all.participants.trans$Participant) 
-question.nums <-  unique(all.participants.trans$QN)
+
+
+# initializes the data frame to empty
+rect.transitions.data <- data.frame()
 
 
 # input directory
@@ -144,27 +147,56 @@ input.dir <- "../../../Experiment-Data/Eye-tracking-data-samples/"
 # Loops for all the participants and all the questions, loading the matrix of transition frequencies
 for (participant.id in participants.ids) {
   
-  # # Computes the complete path name of the file to load from
-  # in.file.name <- paste(input.dir,"PartP",leadingZeros(participant.id),"/P",leadingZeros(participant.id),"-Transitions-Data.csv",sep="")
-  # print(in.file.name)
-  # 
-  # # Loads the Transitions-Data.csv file for the corresponding participant's transitions
-  # participant.transitions <- read.csv(file = in.file.name, header=TRUE)
-  # attach(participant.transitions)
-
+  print(participant.id)
   
+  # Filters the transition data for the given participant
+  participant.transitions <- all.participants.trans %>% filter(Participant==participant.id)
+  
+  # Computes the rect plot data frame for a given participant
+  transitions.rect.plot <- computeRectangleCoordinates(participant.transitions,TRUE)
     
-  for (question.num in question.nums) {
-    cat("[",participant.id,"-",question.num,"]\n") 
-    
-  } # for all the questions
+  # Appends the rows of the data frame to the accumulating data frame
+  rect.transitions.data <- rbind(rect.transitions.data, transitions.rect.plot)
+
 } # for all the participants
 
+# Writes out the transitions data for the rectangle plots of all the participants
+write.csv(rect.transitions.data, 
+    file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Data.csv",
+    row.names = FALSE)
 
 ################################################################################
-# Function that creates a file for each question
+
+# TODO
+
+# Loads the entire set of curated transitions
+all.participants.trans <- read.csv(file = "../../../Experiment-Data/All-Participants-Transitions-Curated-Data.csv", 
+                                   header=TRUE)
+attach (all.participants.trans)
 
 
+# Gets the number of questions to iterate over
+question.nums <-  unique(all.participants.trans$QN)
+
+# initializes the data frame to empty
+rect.transitions.data <- data.frame()
+
+
+# Loops for all the participants and all the questions, loading the matrix of transition frequencies
+for (question.id in question.nums) {
+  
+  print(question.id)
+  
+  # Filters the transition data for the given participant
+  participant.transitions <- all.participants.trans %>% filter(QN==question.id)
+  
+  # Computes the rect plot data frame for a given participant
+  transitions.rect.plot <- computeRectangleCoordinates(participant.transitions,FALSE)
+  
+  # Appends the rows of the data frame to the accumulating data frame
+  rect.transitions.data <- rbind(rect.transitions.data, transitions.rect.plot)
+  
+} # for all the participants
 
 
 ################################################################################
