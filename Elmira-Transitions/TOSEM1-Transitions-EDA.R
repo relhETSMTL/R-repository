@@ -98,8 +98,8 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
       # TODO we need to do a mapping between the participant number and the position in the participants list
       # Checks if it has reached a new participant
       # If a new participant number is found, set current question and reset fixation counter to 1
-      if (row.data$QN != current.qn) {
-        current.participant.id <- row.data$QN           # sets the new current participant for comparison
+      if (row.data$Participant != current.participant.id) {
+        current.participant.id <- row.data$Participant # sets the new current participant for comparison
         x.accum <- 0                        # resets x coordinate to zero
         y.accum <- y.accum + 1              # increments to the next question
       } #
@@ -116,15 +116,6 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
                raw.rectangle.df[i,]$Ymin, raw.rectangle.df[i,]$Ymax))
       
     } # end of for all the data
-    
-    
-    
-    
-    
-    
-    
-    
-    
         
   }  # of the computation per question
   
@@ -211,7 +202,7 @@ for (participant.id in participants.ids) {
 
 # Writes out the transitions data for the rectangle plots of all the participants
 write.csv(rect.transitions.data, 
-    file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Data.csv",
+    file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
     row.names = FALSE)
 
 ################################################################################
@@ -247,6 +238,11 @@ for (question.id in question.nums) {
   
 } # for all the participants
 
+
+# Writes out the transitions data for the rectangle plots of all the participants
+write.csv(rect.transitions.data, 
+          file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
+          row.names = FALSE)
 
 ################################################################################
 # 
