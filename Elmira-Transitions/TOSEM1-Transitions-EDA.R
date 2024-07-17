@@ -254,10 +254,22 @@ scarfplots.data.participants <-
   header=TRUE)
 attach(scarfplots.data.participants)
 
+# Changes the names of AOIs to factors
+scarfplots.data.participants$IDAOI <- as.factor(scarfplots.data.participants$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.participants <-
+  scarfplots.data.participants %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
+       
 # Load the file for question
 
 # Test of plots for participant
 # Original taken from TransitionData-Plotting file
+
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
 
 # Example of a plot for a participant
 scarfplot.data <- scarfplots.data.participants %>% filter(Participant==8)
@@ -265,13 +277,14 @@ scarfplot.participant <- scarfplot.data %>%
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
   theme_minimal() +
-  scale_fill_brewer(palette="Set1") +
+  # scale_fill_brewer(palette="Set1") + 
+  scale_fill_manual(values=cbPalette) +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 scarfplot.participant
 ggsave("plot.png") # Saves the plot to a file
 
-# for the plot: add participant label, tranform time to secs, remove legend to put in a single place,
+# for the plot: add participant label, transform time to secs, remove legend to put in a single place,
 # find out about adding a check or a cross for accurate or innacurate
 
 # Test of plot for question
