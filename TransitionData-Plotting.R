@@ -249,7 +249,7 @@ rect.plot2 <- raw.rectangle.df %>%
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
   theme_minimal() +
-  # scale_fill_brewer(palette="Set1") +
+  scale_fill_brewer(palette="Set1") +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 rect.plot2

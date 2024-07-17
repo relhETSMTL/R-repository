@@ -245,8 +245,41 @@ write.csv(rect.transitions.data,
           row.names = FALSE)
 
 ################################################################################
-# 
 
-# for all the participants
+# TODO
+# Load the file for participant
 
-# for all the questions
+scarfplots.data.participants <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
+  header=TRUE)
+attach(scarfplots.data.participants)
+
+# Load the file for question
+
+# Test of plots for participant
+# Original taken from TransitionData-Plotting file
+
+# Example of a plot for a participant
+scarfplot.data <- scarfplots.data.participants %>% filter(Participant==8)
+scarfplot.participant <- scarfplot.data %>% 
+  ggplot() + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
+  theme_minimal() +
+  scale_fill_brewer(palette="Set1") +
+  labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
+  scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
+scarfplot.participant
+ggsave("plot.png") # Saves the plot to a file
+
+# for the plot: add participant label, tranform time to secs, remove legend to put in a single place,
+# find out about adding a check or a cross for accurate or innacurate
+
+# Test of plot for question
+
+# Make a function that computes the selected plot for participant
+
+# Make a function that computes the selected plot for question
+
+# Find out how to programatically generate the image files
+
+# Find out
