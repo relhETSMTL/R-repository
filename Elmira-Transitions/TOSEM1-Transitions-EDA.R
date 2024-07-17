@@ -74,9 +74,58 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
     } # end of for all the data
     
   } else { # computes the duration for the scarf plot per question
+
     
-    # TODO complete here the code for the generation per question
+    # TODO revision of      
+    # Assumption that all the fixations of a question are sequentially put together 
+    # per participant starting at the first
+  
+    # Gets the list of the participants to iterate over
+    participants.ids <-unique(raw.rectangle.df$Participant) 
     
+    # Set current row for the first participant, we assume that the frame has the same order of participants
+    # for a given question
+    current.participant.id <- raw.rectangle.df$Participant[1]
+    
+    # # Initializes the counters for the rectangle x, y coordinates
+    x.accum <- 0
+    y.accum <- 1
+    
+    # Loop for all the data of the question
+    for (i in 1:nrow(raw.rectangle.df)) {
+      row.data <- raw.rectangle.df [i,]
+      
+      # TODO we need to do a mapping between the participant number and the position in the participants list
+      # Checks if it has reached a new participant
+      # If a new participant number is found, set current question and reset fixation counter to 1
+      if (row.data$QN != current.qn) {
+        current.participant.id <- row.data$QN           # sets the new current participant for comparison
+        x.accum <- 0                        # resets x coordinate to zero
+        y.accum <- y.accum + 1              # increments to the next question
+      } #
+      
+      # Assigns coordinates to the new rectangle 
+      raw.rectangle.df[i,]$Xmin <- x.accum                  # starting x accumulated
+      x.accum <- x.accum + raw.rectangle.df[i,]$Duration    # increments x coordinate by width of duration
+      raw.rectangle.df[i,]$Xmax <- x.accum                  # maximum is the new accumulated
+      raw.rectangle.df[i,]$Ymin <- y.accum                  # starts from the current question
+      raw.rectangle.df[i,]$Ymax <- y.accum + 1              # sets the maximum, one point higher
+      
+      print (c(i, 
+               raw.rectangle.df[i,]$Xmin, raw.rectangle.df[i,]$Xmax, 
+               raw.rectangle.df[i,]$Ymin, raw.rectangle.df[i,]$Ymax))
+      
+    } # end of for all the data
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
   }  # of the computation per question
   
   # returns the data frame with the computed rectangle plot coordinates
