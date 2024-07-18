@@ -272,20 +272,37 @@ scarfplots.data.participants <-
 cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
 
 # Example of a plot for a participant
-scarfplot.data <- scarfplots.data.participants %>% filter(Participant==8)
+scarfplot.data <- scarfplots.data.participants %>% filter(Participant==8) 
+
 scarfplot.participant <- scarfplot.data %>% 
   ggplot() + 
-  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) +
-  theme_minimal() +
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+  theme(panel.background = element_blank(), 
+        panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+        panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+        axis.title.x = element_blank(),   # clears the label of the axis 
+        axis.text.x=element_blank(),      # clears the text of the x axis
+        legend.position = "bottom") +
+  # theme_minimal(legend.position = "bottom") +
   # scale_fill_brewer(palette="Set1") + 
   scale_fill_manual(values=cbPalette) +
+  scale_x_continuous(breaks=seq(0,60000,10000)) +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 scarfplot.participant
 ggsave("plot.png") # Saves the plot to a file
 
-# for the plot: add participant label, transform time to secs, remove legend to put in a single place,
+
+# Example of adjusting tick levels
+# http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels
+
+# for the plot: add participant label, , remove legend to put in a single place,
 # find out about adding a check or a cross for accurate or innacurate
+
+# Transformation to seconds instead of msecs
+# Just adding a division wont work because of the pixels
+# Wrong: %>% mutate(Xmin=Xmin/1000) %>% mutate(Xmax=Xmax/100)
+
 
 # Test of plot for question
 
