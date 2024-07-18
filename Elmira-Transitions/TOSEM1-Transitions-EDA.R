@@ -293,8 +293,22 @@ scarfplot.participant
 ggsave("plot.png") # Saves the plot to a file
 
 
+# Maximum value depicted
+layer_scales(scarfplot.participant)$x$range$range
+
+# scarfplot.participant$coordinates$limits
+
+# https://stackoverflow.com/questions/56940147/how-to-round-integer-by-intervals-of-500-in-r
+
+library(plyr)
+round_any(as.numeric(58304), 10000, f = ceiling)
+
+
 # Example of adjusting tick levels
 # http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels
+# https://stackoverflow.com/questions/37950511/set-tick-mark-intervals
+# g + scale_x_continuous(breaks = seq(10, 60, by = 10))
+# + scale_y_continuous(breaks = seq(0, 10, len = 5))
 
 # for the plot: add participant label, , remove legend to put in a single place,
 # find out about adding a check or a cross for accurate or innacurate
