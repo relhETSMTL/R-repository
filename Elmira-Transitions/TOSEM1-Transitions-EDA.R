@@ -290,8 +290,6 @@ scarfPlotParticipant <- function (scarfplot.data, participantNumber) {
 
 #################
 ## Testing function that generates participants scarfplots
-
-
 scarfplots.data.participants <-
   read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
            header=TRUE)
@@ -305,18 +303,22 @@ scarfplots.data.participants <-
   scarfplots.data.participants %>%
   mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
 
-
-# TODO how to accumulate the scarf plot objects into a frame? or a vector? or list?
-list.scarfplots.participants <- data.frame()
-participants.ids <-unique(scarfplots.data.participants$Participant) 
+# Accumulates the scarf plot objects into a list
+list.scarfplots.participants <- list()
+participants.ids <-unique(scarfplots.data.participants$Participant)
+plots.index <-1 
 for (participant.id in participants.ids) {
   print(paste("Plotting participant ",participant.id,sep=""))
   
   scarfplot.part <- scarfPlotParticipant(scarfplots.data.participants %>% filter(Participant==participant.id),
                                          participant.id) 
   scarfplot.part
-  list.scarfplots.participants <- append(list.scarfplots.participants, scarfplot.part)
+  list.scarfplots.participants[[plots.index]] <- scarfplot.part  
+  plots.index <- plots.index + 1
 }
+
+
+
 
 # Testing for participant 8
 scarfplot.p8 <- scarfPlotParticipant(scarfplots.data.participants %>% filter(Participant==8),8) 
