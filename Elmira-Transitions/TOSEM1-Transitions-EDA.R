@@ -246,9 +246,83 @@ write.csv(rect.transitions.data,
 
 ################################################################################
 
+library(plyr) # rounding functions
 
-library(plyr)
+# Function that creates the scarfplots for the transitions of a single participant with 24 questions
+# Input: 
+# * scarfplot.data, data frame with the rect plot information for a given participant 24 questions
+#        it must have the required order of AOIs factor
+# * participantNumber, is the number of participant to be used for creating the title of the plot
 
+scarfPlotParticipant <- function (scarfplot.data, participantNumber) {
+
+  msec2secs <- 1000     # constant for transformation to secs
+  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+  xmax.value <- max(scarfplot.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+  
+  scarfplot.title <- paste("Participant ",participantNumber,sep="")
+  
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+  
+  scarfplot.participant <- scarfplot.data %>% 
+    ggplot() + 
+    geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+    theme(panel.background = element_blank(),
+          plot.title = element_text(hjust = 0.5,size = 20),
+          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+          axis.title.x = element_blank(),   # clears the label of the axis 
+          legend.position = "bottom") +
+    scale_fill_manual(values=cbPalette) +
+    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
+    labs(y = "Question number", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
+    ggtitle(scarfplot.title) + # Title
+    scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
+  
+  # Returns the constructed plot
+  return(scarfplot.participant)
+  
+}  # end of function 
+
+#################
+## Testing function that generates participants scarfplots
+
+
+scarfplots.data.participants <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
+           header=TRUE)
+attach(scarfplots.data.participants)
+
+# Changes the names of AOIs to factors
+scarfplots.data.participants$IDAOI <- as.factor(scarfplots.data.participants$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.participants <-
+  scarfplots.data.participants %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
+
+
+# TODO how to accumulate the scarf plot objects into a frame? or a vector? or list?
+list.scarfplots.participants <- data.frame()
+participants.ids <-unique(scarfplots.data.participants$Participant) 
+for (participant.id in participants.ids) {
+  print(paste("Plotting participant ",participant.id,sep=""))
+  
+  scarfplot.part <- scarfPlotParticipant(scarfplots.data.participants %>% filter(Participant==participant.id),
+                                         participant.id) 
+  scarfplot.part
+  list.scarfplots.participants <- append(list.scarfplots.participants, scarfplot.part)
+}
+
+# Testing for participant 8
+scarfplot.p8 <- scarfPlotParticipant(scarfplots.data.participants %>% filter(Participant==8),8) 
+
+
+###################
 
 # Test for function that computes the labels on the way axis
 msec2secs <- 1000
