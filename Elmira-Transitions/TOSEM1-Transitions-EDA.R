@@ -246,6 +246,18 @@ write.csv(rect.transitions.data,
 
 ################################################################################
 
+
+library(plyr)
+
+
+# Test for function that computes the labels on the way axis
+msec2secs <- 1000
+tenseconds <- 10 * msec2secs
+xmax.value <- max(scarfplots.data.participants$Xmax)  # computes the maximum value of the Xmax cordinates
+upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+tensecs.labels.x <- as.character(sequence.numbers.labels.x)
+  
 # TODO
 # Load the file for participant
 
@@ -277,21 +289,26 @@ scarfplot.data <- scarfplots.data.participants %>% filter(Participant==8)
 scarfplot.participant <- scarfplot.data %>% 
   ggplot() + 
   geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
-  theme(panel.background = element_blank(), 
+  theme(panel.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,size = 20),
         panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
         panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
         axis.title.x = element_blank(),   # clears the label of the axis 
-        axis.text.x=element_blank(),      # clears the text of the x axis
+        # axis.text.x=element_blank(),      # clears the text of the x axis
         legend.position = "bottom") +
   # theme_minimal(legend.position = "bottom") +
   # scale_fill_brewer(palette="Set1") + 
   scale_fill_manual(values=cbPalette) +
-  scale_x_continuous(breaks=seq(0,60000,10000)) +
+  scale_x_continuous(breaks=seq(0,60000,10000), labels=c("0","10","20","30","40","50","60")) +
   labs(y = "Question number", x = "Fixations sequence and duration (msec)", fill ="AOI") +
+  ggtitle("Participant 8") + # Title
   scale_y_discrete(limits=as.factor(seq(1, 24, 1))) 
 scarfplot.participant
 ggsave("plot.png") # Saves the plot to a file
 
+
+scarfplot.participant + theme(legend.position="none") # shows the scarfplots without the legend
+scarfplot.participant + theme(plot.title = element_blank()) # removes the title of the participant names
 
 # Maximum value depicted
 layer_scales(scarfplot.participant)$x$range$range
@@ -302,6 +319,11 @@ layer_scales(scarfplot.participant)$x$range$range
 
 library(plyr)
 round_any(as.numeric(58304), 10000, f = ceiling)
+
+
+# Details for the title
+# https://r-charts.com/ggplot2/titles/#google_vignette
+# https://rpubs.com/Mentors_Ubiqum/ggplot_remove_elements
 
 
 # Example of adjusting tick levels
