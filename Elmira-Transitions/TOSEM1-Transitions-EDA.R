@@ -206,9 +206,6 @@ write.csv(rect.transitions.data,
     row.names = FALSE)
 
 ################################################################################
-
-# TODO
-
 # Loads the entire set of curated transitions
 all.participants.trans <- read.csv(file = "../../../Experiment-Data/All-Participants-Transitions-Curated-Data.csv", 
                                    header=TRUE)
@@ -317,14 +314,11 @@ for (participant.id in participants.ids) {
   plots.index <- plots.index + 1
 }
 
-
-
+###################
+# Testing participants plots - scratch code
 
 # Testing for participant 8
 scarfplot.p8 <- scarfPlotParticipant(scarfplots.data.participants %>% filter(Participant==8),8) 
-
-
-###################
 
 # Test for function that computes the labels on the way axis
 msec2secs <- 1000
@@ -334,9 +328,7 @@ upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # ro
 sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
 tensecs.labels.x <- as.character(sequence.numbers.labels.x)
   
-# TODO
 # Load the file for participant
-
 scarfplots.data.participants <-
   read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
   header=TRUE)
@@ -393,9 +385,8 @@ layer_scales(scarfplot.participant)$x$range$range
 
 # https://stackoverflow.com/questions/56940147/how-to-round-integer-by-intervals-of-500-in-r
 
-library(plyr)
-round_any(as.numeric(58304), 10000, f = ceiling)
-
+# library(plyr)
+# round_any(as.numeric(58304), 10000, f = ceiling)
 
 # Details for the title
 # https://r-charts.com/ggplot2/titles/#google_vignette
@@ -415,13 +406,131 @@ round_any(as.numeric(58304), 10000, f = ceiling)
 # Just adding a division wont work because of the pixels
 # Wrong: %>% mutate(Xmin=Xmin/1000) %>% mutate(Xmax=Xmax/100)
 
+##############################################################################################
+# Function that creates the scarfplots for the transitions of a single question with 17 participant
+# Input: 
+# * scarfplot.question.data, data frame with the rect plot information for a given question for 17 participants
+#        it must have the required order of AOIs factor
+# * questionNumber, is the number of question to be used for creating the title of the plot
 
-# Test of plot for question
+scarfPlotQuestion <- function (scarfplot.question.data, questionNumber) {
+  msec2secs <- 1000     # constant for transformation to secs
+  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+  xmax.value <- max(scarfplot.question.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+  
+  scarfplot.title <- paste("Question ",questionNumber,sep="")
+  
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+  
+  scarfplot.question <- scarfplot.question.data %>% 
+    ggplot() + 
+    geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+    theme(panel.background = element_blank(),
+          plot.title = element_text(hjust = 0.5,size = 20),
+          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+          axis.title.x = element_blank(),   # clears the label of the axis 
+          legend.position = "bottom") +
+    scale_fill_manual(values=cbPalette, drop=FALSE) +
+    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
+    labs(y = "Participant", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
+    ggtitle(scarfplot.title) + # Title
+    scale_y_discrete(limits=as.factor(seq(1, 17, 1))) 
+  
+  # Returns the constructed plot
+  return(scarfplot.question)
+  
+}  # end of function scarfPlotQuestion
 
-# Make a function that computes the selected plot for participant
+##############################################################################################
+# Creates the array of scarfplots for questions
+
+scarfplots.data.questions <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
+           header=TRUE)
+attach(scarfplots.data.questions)
+
+# Changes the names of AOIs to factors
+scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.questions <-
+  scarfplots.data.questions %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
+
+
+# Iterates over all question numbers
+# Accumulates the scarf plot objects into a list
+list.scarfplots.questions <- list()
+questions.ids <-unique(scarfplots.data.questions$QN)
+
+plots.index <-1 
+for (question.id in questions.ids) {
+  print(paste("Plotting question ",question.id,sep=""))
+  
+  scarfplot.part <- scarfPlotQuestion(scarfplots.data.questions %>% filter(QN==question.id),
+                                         question.id) 
+  scarfplot.part
+  list.scarfplots.questions[[plots.index]] <- scarfplot.part  
+  plots.index <- plots.index + 1
+}
+
+##############################################################################################
+# Test of scarfplot for question
+# Load the file for questions
+scarfplots.data.questions <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
+           header=TRUE)
+attach(scarfplots.data.questions)
+
+# Changes the names of AOIs to factors
+scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.questions <-
+  scarfplots.data.questions %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
+
+# Example of a plot for a participant
+questionNumber <- 2
+scarfplot.question.data <- scarfplots.data.questions %>% filter(QN==questionNumber) 
+
+
+msec2secs <- 1000     # constant for transformation to secs
+tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+xmax.value <- max(scarfplot.question.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+
+scarfplot.title <- paste("Question ",questionNumber,sep="")
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+
+scarfplot.question <- scarfplot.question.data %>% 
+  ggplot() + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+  theme(panel.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,size = 20),
+        panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+        panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+        axis.title.x = element_blank(),   # clears the label of the axis 
+        legend.position = "bottom") +
+  scale_fill_manual(values=cbPalette, drop=FALSE) +
+  scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
+  labs(y = "Participant", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
+  ggtitle(scarfplot.title) + # Title
+  scale_y_discrete(limits=as.factor(seq(1, 17, 1))) 
+
+
+##############################################################################################
 
 # Make a function that computes the selected plot for question
 
 # Find out how to programatically generate the image files
 
-# Find out
