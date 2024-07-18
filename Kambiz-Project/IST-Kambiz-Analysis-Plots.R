@@ -7,9 +7,12 @@ library(hrbrthemes)
 library(gridExtra)
 library(grid)
 
+# Sets the dir to the current place
+library(rstudioapi)
+setwd(dirname(getActiveDocumentContext()$path))
 
 # Loads the complete experiment data file
-experiment.data <- read.csv(file = "../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", header=TRUE)
+experiment.data <- read.csv(file = "../../../Eye-Tracking-Visualization/Experiment-Data/Curated-Data/Complete-Experiment-Data.csv", header=TRUE)
 
 # Laptop@Office
 # experiment.data <- read.csv(file = "C:/Research/Projects/R-Kambiz-Elmira/Kambiz-Data/Complete-Experiment-Data.csv", header=TRUE)
