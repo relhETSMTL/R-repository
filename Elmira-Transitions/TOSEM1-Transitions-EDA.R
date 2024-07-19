@@ -534,3 +534,4 @@ scarfplot.question <- scarfplot.question.data %>%
 
 # Find out how to programatically generate the image files
 
+ 
