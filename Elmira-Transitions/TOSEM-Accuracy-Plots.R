@@ -5,21 +5,20 @@ library(ggplot2)
 library(tidyverse)
 library(hrbrthemes) 
 
-
-
+# Sets the dir to the current place
+library(rstudioapi)
+setwd(dirname(getActiveDocumentContext()$path))
 
 ############################################
 # Bar plots with distribution of accurate and inaccurate over NoF and NoC
 
 ####################################################################################################
 # Reads the participants data
-experiment.complete.data <- read.csv(file = "../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv", 
+experiment.complete.data <- read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv", 
                                      header=TRUE)
 attach(experiment.complete.data)
 
 
-##############################################################################################
-##############################################################################################
 ##############################################################################################
 # Descriptive Statistics
 
@@ -66,3 +65,82 @@ summary(experiment.complete.data %>% filter(Correct=="1") %>% select(ElapsedTime
 # Mean   : 52968  
 # 3rd Qu.: 67066  
 # Max.   :283369  
+
+##############################################################################################
+##############################################################################################
+
+# Plot: Correct and Incorrect Responses per NoF and NoC
+
+responses.data <- experiment.complete.data
+
+# Creates the data frame with the information, 4 NoF, 3 NoC, correct, incorrect, Number
+correct.incorrect.df <- data.frame(matrix(nrow = 4 * 3 * 2, ncol = 4))
+columnNames <- c("NoF", "NoC", "Accuracy", "Number")
+colnames(correct.incorrect.df) <- columnNames
+
+k <-1
+# Values for NoF 1..4
+for (i in seq(1,4,1)) {
+  # Values for NoC 1..3
+  for (j in seq(1,3,1)) {
+    
+    print(c(i,j,k))
+    
+    # obtains the information for the table entry i, j
+    data.point <- responses.data  %>% filter (NoF==i & NoC==j) %>% select(Correct) %>% 
+      group_by(Correct) %>% summarise(n=n())
+    
+    # counts the number of correct and incorrect responses in entry i,j
+    ncorrect <- as.numeric(data.point[2,2])
+    nincorrect <- as.numeric(data.point[1,2])
+    
+    print(c(ncorrect, nincorrect))
+    
+    # Number of correct responses
+    correct.incorrect.df$NoF[k]<- i
+    correct.incorrect.df$NoC[k]<- j
+    correct.incorrect.df$Accuracy[k] <- 'Correct'
+    correct.incorrect.df$Number[k] <- ncorrect 
+    k <- k + 1
+    
+    # Number of incorrect responses
+    correct.incorrect.df$NoF[k]<- i
+    correct.incorrect.df$NoC[k]<- j
+    correct.incorrect.df$Accuracy[k] <- 'Incorrect'
+    correct.incorrect.df$Number[k] <- nincorrect 
+    k <- k + 1
+    
+  } # j loop
+} # i loop
+
+
+# Creating the bars
+
+# Changing Correct for Accurate and Incorrect for Inaccurate
+
+########## -- From SPLC22-Artifact-Evaluation.R, changed colors and added number of tap
+## NoC = 1
+bars.1.1 <- correct.incorrect.df %>% filter (NoF==1 & NoC==1) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 8) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.t2.sp <- accuracy.df.revised %>% filter (T==2 & Visualization.Technique=="2D-SP") %>% 
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_discrete(limits=seq(0, 100, 10)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.1, size = 5) + 
+  # geom_text(aes(label = ..count..), stat = "count", vjust = -1.0, size = 5) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="Scatter Plot",y="T=2") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+bars.t2.sp

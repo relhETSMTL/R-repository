@@ -8,7 +8,7 @@ library(tidyverse)
 library(hrbrthemes)
 
 # install.packages("treemapify")
-library(treemapify)
+# library(treemapify)
 
 ####################################################################################################
 # Reads the participants data
