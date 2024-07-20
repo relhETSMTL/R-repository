@@ -115,7 +115,7 @@ for (i in seq(1,4,1)) {
 
 
 # Creating the bars
-
+ 
 # Changing Correct for Accurate and Incorrect for Inaccurate
 
 ########## -- From SPLC22-Artifact-Evaluation.R, changed colors and added number of tap
