@@ -117,6 +117,9 @@ for (i in seq(1,4,1)) {
 # Creating the bars
  
 # Changing Correct for Accurate and Incorrect for Inaccurate
+correct.incorrect.df <- correct.incorrect.df %>%
+  mutate(Accuracy = case_when(Accuracy == "Correct" ~ "Accurate", Accuracy == "Incorrect" ~ "Inaccurate"))
+  
 
 ########## -- From SPLC22-Artifact-Evaluation.R, changed colors and added number of tap
 ## NoC = 1
@@ -125,12 +128,163 @@ bars.1.1 <- correct.incorrect.df %>% filter (NoF==1 & NoC==1) %>%
   coord_cartesian(ylim = c(0, 30)) +
   scale_y_discrete(limits=seq(0, 30, 5)) +
   geom_bar(aes(fill=Accuracy, alpha=0.5)) +
-  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 8) + 
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))
+
+
+bars.2.1 <- correct.incorrect.df %>% filter (NoF==2 & NoC==1) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
   scale_fill_manual(values=c("#009E73","#0072B2")) +
   labs(x="",y="") +
   guides(fill = FALSE, alpha=FALSE) +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
 
+
+bars.3.1 <- correct.incorrect.df %>% filter (NoF==3 & NoC==1) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.4.1 <- correct.incorrect.df %>% filter (NoF==4 & NoC==1) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+### NoC = 2
+bars.1.2 <- correct.incorrect.df %>% filter (NoF==1 & NoC==2) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+bars.2.2 <- correct.incorrect.df %>% filter (NoF==2 & NoC==2) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.0, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.3.2 <- correct.incorrect.df %>% filter (NoF==3 & NoC==2) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.0, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.4.2 <- correct.incorrect.df %>% filter (NoF==4 & NoC==2) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+### NoC = 3
+bars.1.3 <- correct.incorrect.df %>% filter (NoF==1 & NoC==3) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+bars.2.3 <- correct.incorrect.df %>% filter (NoF==2 & NoC==3) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.3.3 <- correct.incorrect.df %>% filter (NoF==3 & NoC==3) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) +
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+bars.4.3 <- correct.incorrect.df %>% filter (NoF==4 & NoC==3) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) 
+
+
+# Creating the grid for the bars
+
+library(gridExtra)
+library(grid)
+
+# Creates the grid for the tables
+grid.data <- grid.arrange(
+  bars.1.3, bars.2.3, bars.3.3, bars.4.3,
+  bars.1.2, bars.2.2, bars.3.2, bars.4.2,
+  bars.1.1, bars.2.1, bars.3.1, bars.4.1,
+  ncol=4, nrow=3,
+  bottom = textGrob("NoF Ranges (1)..(4)",gp=gpar(fontsize=15,font=3)),
+  left = textGrob("NoC Ranges (1)..(3)", rot=90, gp=gpar(fontsize=15,font=3)))
+
+
+# TODO
+# 0. Mutate Correct=Accurate, Incorrect=Inaccurate
+# 1. Make all the other 11 bar plots with the same patters
 
 bars.t2.sp <- accuracy.df.revised %>% filter (T==2 & Visualization.Technique=="2D-SP") %>% 
   ggplot(aes(x=Accuracy, weight = Number)) + 
