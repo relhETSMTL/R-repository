@@ -282,6 +282,39 @@ grid.data <- grid.arrange(
   left = textGrob("NoC Ranges (1)..(3)", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
+#################################################################################
+# Plot for the distribution of accuracy by participant and by task
+accuracy.data <- experiment.complete.data %>%
+  mutate(Correct = case_when(Correct == 1 ~ "Inaccurate", Correct == 2 ~ "Accurate")) %>%
+  rename(Accuracy="Correct")
+accuracy.data$Accuracy = as.factor(accuracy.data$Accuracy)
+
+participant.accuracy <- accuracy.data %>%   
+  ggplot(aes(x=as.factor(ParticipantID), fill=Accuracy)) +  # using factor eliminates missing participants 1 and 15
+  coord_cartesian(ylim = c(0, 24)) +
+  scale_y_discrete(limits=seq(0, 24, 1)) +
+  geom_bar(position="dodge") +
+  theme(axis.text.x=element_blank(), panel.background = element_blank(), 
+        panel.grid.major.y = element_line(colour = "grey50"), legend.position = "bottom") +
+  labs(y="Frequency", x="Participant responses") +
+  scale_fill_manual(values=c("#009E73","#0072B2"))
+participant.accuracy
+
+
+question.accuracy <- accuracy.data %>% 
+  ggplot(aes(x=QNumber, fill=Accuracy)) +
+  coord_cartesian(ylim = c(0, 17)) +
+  scale_y_discrete(limits=seq(0, 17, 1)) +
+  scale_x_discrete(limits=seq(1, 24, 1)) +
+  geom_bar(position="dodge") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        legend.position = "bottom") + 
+  labs(x="Task Number", y="Frequency")  +
+  scale_fill_manual(values=c("#009E73","#0072B2"))  
+question.accuracy
+
+#################################################################################
+
 # TODO
 # 0. Mutate Correct=Accurate, Incorrect=Inaccurate
 # 1. Make all the other 11 bar plots with the same patters
