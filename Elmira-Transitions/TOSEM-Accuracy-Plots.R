@@ -4,6 +4,8 @@
 library(ggplot2)
 library(tidyverse)
 library(hrbrthemes) 
+library(gridExtra)
+library(grid)
 
 # Sets the dir to the current place
 library(rstudioapi)
@@ -313,7 +315,211 @@ question.accuracy <- accuracy.data %>%
   scale_fill_manual(values=c("#009E73","#0072B2"))  
 question.accuracy
 
+
 #################################################################################
+# Box plots for the response times, shown by range of NoF and Noc
+response.time.data <- experiment.complete.data %>%
+  mutate(Correct = case_when(Correct == 1 ~ "Inaccurate", Correct == 2 ~ "Accurate")) %>%
+  rename(Accuracy="Correct")
+response.time.data$Accuracy = as.factor(accuracy.data$Accuracy)
+
+
+##########
+## NoC = 1
+bp.response.time.1.1 <- response.time.data %>% 
+  filter (NoC==1 & NoF==1) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (1)", y="Range (1)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.1.1
+
+
+bp.response.time.1.2 <- response.time.data %>% 
+  filter (NoC==1 & NoF==2) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (2)", y="Range (1)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.1.2
+
+
+bp.response.time.1.3 <- response.time.data %>% 
+  filter (NoC==1 & NoF==3) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (3)", y="Range (1)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.1.3
+
+
+bp.response.time.1.4 <- response.time.data %>% 
+  filter (NoC==1 & NoF==4) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (4)", y="Range (1)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.1.4
+
+
+## NoC = 2
+bp.response.time.2.1 <- response.time.data %>% 
+  filter (NoC==2 & NoF==1) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (1)", y="Range (2)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.2.1
+
+
+bp.response.time.2.2 <- response.time.data %>% 
+  filter (NoC==2 & NoF==2) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (2)", y="Range (2)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.2.2
+
+
+bp.response.time.2.3 <- response.time.data %>% 
+  filter (NoC==2 & NoF==3) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (3)", y="Range (2)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.2.3
+
+
+bp.response.time.2.4 <- response.time.data %>% 
+  filter (NoC==2 & NoF==4) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (4)", y="Range (2)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.2.4
+
+
+## NoC = 3
+bp.response.time.3.1 <- response.time.data %>% 
+  filter (NoC==3 & NoF==1) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (1)", y="Range (3)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.3.1
+
+
+bp.response.time.3.2 <- response.time.data %>% 
+  filter (NoC==3 & NoF==2) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (2)", y="Range (3)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.3.2
+
+
+bp.response.time.3.3 <- response.time.data %>% 
+  filter (NoC==3 & NoF==3) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) +  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (3)", y="Range (3)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.3.3
+
+
+bp.response.time.3.4 <- response.time.data %>% 
+  filter (NoC==3 & NoF==4) %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,ElapsedTime/1000)) + # , fill=Accuracy  
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Range (4)", y="Range (3)") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 300, 50),limits = c(0, 300))
+bp.response.time.3.4
+
+
+
+# Creates the grid for boxplots
+# Works but: Reduce maximum range to 300 secs, Leave Range (N) for the axis of each boxplot, 
+# Remove the Accurate and Inaccurate labels
+grid.response.time <- 
+    grid.arrange(bp.response.time.3.1,
+                 bp.response.time.3.2,
+                 bp.response.time.3.3,bp.response.time.3.4,
+                 bp.response.time.2.1,bp.response.time.2.2,bp.response.time.2.3,bp.response.time.2.4,
+                 bp.response.time.1.1,bp.response.time.1.2,bp.response.time.1.3,bp.response.time.1.4,
+                 ncol=4, nrow=3,
+                 bottom = textGrob("NoF Ranges",gp=gpar(fontsize=15,font=3)),
+                 left = textGrob("NoC Ranges - time in seconds", rot=90, gp=gpar(fontsize=15,font=3)))
+
+
+
+########## -- From SPLC22-Artifact-Evaluation.R, NoC boxplots for correct responses - From A
+boxplot.1 <- experiment.complete.data %>% filter(Correct=="2" & NoC==1) %>% 
+  ggplot(aes(x=NoF, group=NoF, ElapsedTime/1000)) +
+  geom_boxplot(aes(fill=ElapsedTime/1000), varwidth=T, fill="lightblue", alpha=0.8) +
+  labs(x="", y="") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"),
+        axis.text.x=element_blank()) +
+  coord_cartesian(ylim = c(0, 120)) +
+  scale_y_continuous(breaks=seq(0, 120, 60))
+boxplot.1
+
+
+## -- From SPLC22-Artifact-Evaluation.R, changed colors and added number of tap
+## NoC = 1
+bars.1.1 <- correct.incorrect.df %>% filter (NoF==1 & NoC==1) %>%
+  ggplot(aes(x=Accuracy, weight = Number)) + 
+  coord_cartesian(ylim = c(0, 30)) +
+  scale_y_discrete(limits=seq(0, 30, 5)) +
+  geom_bar(aes(fill=Accuracy, alpha=0.5)) +
+  geom_text(aes(label = ..count..), stat = "count", vjust = -0.2, size = 4) + 
+  scale_fill_manual(values=c("#009E73","#0072B2")) +
+  labs(x="",y="") +
+  guides(fill = FALSE, alpha=FALSE) +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"))
+
+
+## Example from t2 and parallel dimensions - From jSS-New-Kambiz-Analysis-Plots.R
+bp.t2.pd.res <- experiment.data %>% 
+  mutate(Accuracy = case_when(Accuracy == 'True' ~ "Accurate", Accuracy == 'False' ~ "Inaccurate")) %>%
+  filter (T==2 & Visualization.Technique=="2D-PD") %>%
+  ggplot(aes(x=Accuracy, group=Accuracy,Elapsed.Time/1000)) +  
+  geom_boxplot(aes(fill=Elapsed.Time/1000), varwidth=T,  fill=c("#009E73","#0072B2"), alpha=0.5) +  
+  geom_jitter() +
+  labs(x="Parallel Dimensions Plot", y="T=2") + 
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50")) +
+  scale_y_continuous(breaks=seq(0, 350, 50),limits = c(0, 350))
+
+bp.t2.pd.res
+
+
+#################################################################################
+#################################################################################
+#################################################################################
+ 
 
 # TODO
 # 0. Mutate Correct=Accurate, Incorrect=Inaccurate
