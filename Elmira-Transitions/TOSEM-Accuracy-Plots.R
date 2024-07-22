@@ -321,7 +321,7 @@ question.accuracy
 response.time.data <- experiment.complete.data %>%
   mutate(Correct = case_when(Correct == 1 ~ "Inaccurate", Correct == 2 ~ "Accurate")) %>%
   rename(Accuracy="Correct")
-response.time.data$Accuracy = as.factor(accuracy.data$Accuracy)
+response.time.data$Accuracy = as.factor(response.time.data$Accuracy)
 
 
 ##########
@@ -475,6 +475,109 @@ grid.response.time <-
                  left = textGrob("NoC Ranges - time in seconds", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
+#################################################################################
+# Bar plots for the AOIs proportion of fixation time and fixation count across the ranges
+
+# TODO
+# 1. Function that computes a data frame with the average of proportions for each NoF, NoC range
+# 2.
+
+# Function that computes the bar plots in descending order by the  
+# Ino
+computeProportionFixationTime(aoi.data) <- function() {
+  
+  
+}
+
+# For loop that iterates over NoC and NoF
+
+for (noc in seq(1,3,1)) {
+  
+  for (nof in seq(1,4,1)) {
+    print(paste(noc," ",nof," ",sep=""))
+  
+  } # for all NoF
+
+} # for all NoC
+
+test.accumulation <- experiment.complete.data %>% filter(NoC==1 & NoF==1 & ParticipantID==3 & QNumber==1)
+
+test.accumulation$perc.fixations.Answer + test.accumulation$perc.fixations.Buttons + 
+  test.accumulation$perc.fixations.CTC + test.accumulation$perc.fixations.FM +
+  test.accumulation$perc.fixations.Legend + test.accumulation$perc.fixations.Question +
+  test.accumulation$perc.fixations.Navigating
+
+
+test.accumulation$perc.time.Answer + test.accumulation$perc.time.Buttons + 
+  test.accumulation$perc.time.CTC + test.accumulation$perc.time.FM +
+  test.accumulation$perc.time.Legend + test.accumulation$perc.time.Question +
+  test.accumulation$perc.time.Navigating
+
+test.accumulation$perc.time.Containing # must not should be included, study how it relates to navigating
+# and window in the generation of the data for each participant with the r-code-PN.R scripts
+
+
+  # test.accumulation$perc.fixations.Containing --> goes over the limit
+
+
+t2.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t2.sp.df) <- columnNamesAOIs
+
+t2.sp.df[1,1] <- 'count'
+t2.sp.df[1,2] <- 'Axial'
+t2.sp.df[1,3] <- mean (t2.sp.data$Axial.pfcount)
+
+t2.sp.df[2,1] <- 'count'
+t2.sp.df[2,2] <- 'Misc'
+t2.sp.df[2,3] <- mean(t2.sp.data$Misc.pfcount)
+
+t2.sp.df[3,1] <- 'count'
+t2.sp.df[3,2] <- 'Navigation'
+t2.sp.df[3,3] <- mean(t2.sp.data$Navigation.pfcount)
+
+t2.sp.df[4,1] <- 'count'
+t2.sp.df[4,2] <- 'Question'
+t2.sp.df[4,3] <- mean (t2.sp.data$Question.pfcount)
+
+t2.sp.df[5,1] <- 'count'
+t2.sp.df[5,2] <- 'Response'
+t2.sp.df[5,3] <- mean(t2.sp.data$Response.pfcount)
+
+t2.sp.df[6,1] <- 'count'
+t2.sp.df[6,2] <- 'Solution'
+t2.sp.df[6,3] <- mean(t2.sp.data$Solution.pfcount)
+
+t2.sp.df[7,1] <- 'count'
+t2.sp.df[7,2] <- 'Target'
+t2.sp.df[7,3] <- mean (t2.sp.data$Target.pfcount)
+
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="time") %>%
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time") +
+  ggtitle("Scatter Plots for Pairs (2D-SP)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.t2.sp
+
+
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
+
+# Test code for the boxplots of ranges
 
 ########## -- From SPLC22-Artifact-Evaluation.R, NoC boxplots for correct responses - From A
 boxplot.1 <- experiment.complete.data %>% filter(Correct=="2" & NoC==1) %>% 
