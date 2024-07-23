@@ -491,16 +491,35 @@ computeProportionFixationTime(aoi.data) <- function() {
 
 # For loop that iterates over NoC and NoF
 
-for (noc in seq(1,3,1)) {
+
+
+for (noc in unique(experiment.complete.data$ParticipantID)) {
   
-  for (nof in seq(1,4,1)) {
-    print(paste(noc," ",nof," ",sep=""))
-  
+  for (qn in seq(1,24,1)) {
+      print(paste("<",noc,",",nof,",",qn,">",sep=""))
+
   } # for all NoF
 
 } # for all NoC
 
-test.accumulation <- experiment.complete.data %>% filter(NoC==1 & NoF==1 & ParticipantID==3 & QNumber==1)
+# Verification of the proposotions computations of the questions
+
+
+sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==8) %>%
+  mutate(sumFixationCounts=fixations.Question + fixations.Answer + fixations.Legend + fixations.CTC + 
+           fixations.FM + fixations.Navigating + fixations.CTC) %>%
+  mutate(correctFixationCounts= sumFixationCounts==totalFixations)
+sanity.checks.data %>% select(sumFixationCounts, totalFixations, correctFixationCounts, fixations.Navigating)
+
+
+
+sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==8) %>%
+  mutate(sumFixationTimes=time.Question + time.Answer + time.Legend + time.CTC + 
+           time.FM + time.Navigating + time.CTC) %>%
+  mutate(correctFixationTimes= sumFixationTimes==totalFixationTime)
+sanity.checks.data %>% select(sumFixationTimes, totalFixationTime, correctFixationTimes, time.Navigating)
+
+test.accumulation <- experiment.complete.data %>% filter(NoC==1 & NoF==1 & ParticipantID==10 & QNumber==1)
 
 test.accumulation$perc.fixations.Answer + test.accumulation$perc.fixations.Buttons + 
   test.accumulation$perc.fixations.CTC + test.accumulation$perc.fixations.FM +
@@ -513,11 +532,18 @@ test.accumulation$perc.time.Answer + test.accumulation$perc.time.Buttons +
   test.accumulation$perc.time.Legend + test.accumulation$perc.time.Question +
   test.accumulation$perc.time.Navigating
 
+
+
+
 test.accumulation$perc.time.Containing # must not should be included, study how it relates to navigating
 # and window in the generation of the data for each participant with the r-code-PN.R scripts
 
 
-  # test.accumulation$perc.fixations.Containing --> goes over the limit
+
+
+
+
+# test.accumulation$perc.fixations.Containing --> goes over the limit
 
 
 t2.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
