@@ -1,4 +1,4 @@
-# Reads the computed data for the 18 participants, put them together in a single data frame, and joins the data
+# Reads the computed data for the 17 participants, put them together in a single data frame, and joins the data
 # with the Java interface data
 
 library(ggplot2)

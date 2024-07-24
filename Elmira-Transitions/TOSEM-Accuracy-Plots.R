@@ -505,18 +505,18 @@ for (noc in unique(experiment.complete.data$ParticipantID)) {
 # Verification of the proposotions computations of the questions
 
 
-sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==8) %>%
+sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==2) %>%
   mutate(sumFixationCounts=fixations.Question + fixations.Answer + fixations.Legend + fixations.CTC + 
            fixations.FM + fixations.Navigating + fixations.CTC) %>%
-  mutate(correctFixationCounts= sumFixationCounts==totalFixations)
+  mutate(correctFixationCounts= totalFixations-sumFixationCounts)
 sanity.checks.data %>% select(sumFixationCounts, totalFixations, correctFixationCounts, fixations.Navigating)
 
 
 
-sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==8) %>%
+sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==2) %>%
   mutate(sumFixationTimes=time.Question + time.Answer + time.Legend + time.CTC + 
            time.FM + time.Navigating + time.CTC) %>%
-  mutate(correctFixationTimes= sumFixationTimes==totalFixationTime)
+  mutate(correctFixationTimes= totalFixationTime-sumFixationTimes)
 sanity.checks.data %>% select(sumFixationTimes, totalFixationTime, correctFixationTimes, time.Navigating)
 
 test.accumulation <- experiment.complete.data %>% filter(NoC==1 & NoF==1 & ParticipantID==10 & QNumber==1)
