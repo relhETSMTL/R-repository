@@ -138,9 +138,7 @@ revised.P19 <- computeWindowAOIFixations ("../../Experiment-Data/Eye-tracking-da
                                           "../../Experiment-Data/Eye-tracking-data-samples/PartP19/P19-Transitions-Data.csv")
 
 
-# "../../Experiment-Data/Eye-tracking-data-samples/PartP02/P02-Transitions-Data.csv"
-
-# TODO
+# Done
 # 1. Create a function that receives an original PN-Transitions-Data.csv file and computes the value s of AOI Window
 # 2. Call the function for all the 17 participants to generate the PN-Transitions-Curated-Data.csv files
 # 3. Manually test any differences of the newly generated Transitions Curated files with the previous versions
