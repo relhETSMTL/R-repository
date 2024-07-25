@@ -20,6 +20,8 @@ computeTransitionsParticipant <- function(inputFile, outputFile) {
   participant.data <- read.csv(file =inputFile, header=TRUE)
   attach (participant.data)
   
+  print(paste("Processing participant transitions ",inputFile, sep=""))
+  
   # For all the participant data, create a row with the form:
   # Participant, QN, 1..6 AOI ID, FN fixation number, Duration
   
@@ -79,10 +81,10 @@ computeTransitionsParticipant <- function(inputFile, outputFile) {
       aoi.fixation <- "Window"
     }
     
-    # Error checking
-    if (row.data$Window != "1") {
-      stop("Error in data")
-    } 
+    # Error checking - deprecated error, after adjusting Window=1 only when background Window AOI hit
+    # if (row.data$Window != "1") {
+    #   stop("Error in data")
+    # } 
     
     # Adds the new row to the 
     raw.df[i,] = c(row.data$Participant,row.data$QN,aoi.fixation,fixation.counter, row.data$Duration)
