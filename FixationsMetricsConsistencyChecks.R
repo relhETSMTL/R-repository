@@ -22,3 +22,25 @@ check.fixations.metrics <- all.participants.data %>%
            perc.time.Answer - perc.time.Buttons - perc.time.Legend - perc.time.FM - perc.time.CTC - perc.time.Window)
 
 # Note: all the consistency checks of fixations pass correctly, the percentages add up to E+/-15 o E+/-16 which is good enogh for our purposes
+
+###################################################################################
+
+# Text the data generate for the transitions and how to change the Window
+
+p02.transitions <- read.csv(file ="../../Experiment-Data/Eye-tracking-data-samples/PartP02/P02-Transitions-Data.csv", 
+                            header=TRUE,
+                            fileEncoding="latin1")
+attach(p02.transitions)
+
+p02.transitions.count <- p02.transitions %>%
+  mutate(hits = Answer + Buttons + CTC + FM + Legend + Question + Window)
+
+# 185 entries with only Window hit, 
+
+# Recomputing the Window hits to those without any other AOI hit
+p02.transitions.revised <- p02.transitions %>%
+  mutate(Window = 1 - (Answer + Buttons + CTC + FM + Legend + Question))
+
+p02.transitions.revised %>% filter(Window==1)
+
+
