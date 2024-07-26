@@ -659,15 +659,6 @@ prop.plot.time.noc.3.nof.4 <- computeAOIProportionsPlot (data.noc.3.nof.4.df, "t
 
 ## Creating the aggregate plots
 
-# Overloaded captions
-grid.proportions.count <- 
-  grid.arrange(prop.plot.count.noc.3.nof.1, prop.plot.count.noc.3.nof.2, prop.plot.count.noc.3.nof.3, prop.plot.count.noc.3.nof.4,
-               prop.plot.count.noc.2.nof.1, prop.plot.count.noc.2.nof.2, prop.plot.count.noc.2.nof.3, prop.plot.count.noc.2.nof.4,
-               prop.plot.count.noc.1.nof.1, prop.plot.count.noc.1.nof.2, prop.plot.count.noc.1.nof.3, prop.plot.count.noc.1.nof.4,
-               ncol=4, nrow=3,
-               bottom = textGrob("NoF Ranges",gp=gpar(fontsize=15,font=3)),
-#               title = "Proportions of fixation count", # does not work
-               left = textGrob("NoC Ranges", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 # Test of merging the plots into a single figure
@@ -695,12 +686,40 @@ cowplot.proportions.count.grid <-
 # computes the common legend
 legend_b <- get_legend(prop.plot.count.noc.1.nof.4 + theme(legend.position="bottom"))
 
+# References for adding the labels
+# https://stackoverflow.com/questions/49577461/adding-x-and-y-laxis-label-to-ggplot-grid-build-with-cowplot
 
 cowplot.proportions.count <- plot_grid( cowplot.proportions.count.grid, 
                                         legend_b, 
-                                        ncol = 1, rel_heights = c(1, .1)) # rel_heights = c(1, .2)
-cowplot.proportions.count 
+                                        ncol = 1, rel_heights = c(1, .1),
+                                        scale = 0.95) + # rel_heights = c(1, .2)
+                              draw_label("NoF Ranges", x=0.5, y=  0, vjust=-5.0, angle= 0) + 
+                              draw_label("Noc Ranges", x=  0, y= 0.5, vjust= 1.5, angle=90)
+cowplot.proportions.count
 
+
+
+
+### Scract
+# Overloaded captions
+grid.proportions.count <- 
+  grid.arrange(prop.plot.count.noc.3.nof.1 + theme(legend.position="none"), 
+               prop.plot.count.noc.3.nof.2 + theme(legend.position="none"), 
+               prop.plot.count.noc.3.nof.3 + theme(legend.position="none"), 
+               prop.plot.count.noc.3.nof.4 + theme(legend.position="none"),
+               prop.plot.count.noc.2.nof.1 + theme(legend.position="none"), 
+               prop.plot.count.noc.2.nof.2 + theme(legend.position="none"),
+               prop.plot.count.noc.2.nof.3 + theme(legend.position="none"),
+               prop.plot.count.noc.2.nof.4 + theme(legend.position="none"),
+               prop.plot.count.noc.1.nof.1 + theme(legend.position="none"), 
+               prop.plot.count.noc.1.nof.2 + theme(legend.position="none"), 
+               prop.plot.count.noc.1.nof.3 + theme(legend.position="none"), 
+               prop.plot.count.noc.1.nof.4 + theme(legend.position="none"),
+               #               legend_b,  # does not work correctly
+               ncol=4, nrow=3,
+               bottom = textGrob("NoF Ranges",gp=gpar(fontsize=15,font=3)),
+               #               title = "Proportions of fixation count", # does not work
+               left = textGrob("NoC Ranges", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
 
