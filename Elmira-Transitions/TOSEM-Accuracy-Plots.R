@@ -566,23 +566,116 @@ computeAOIAverageProportions <- function(combination.noc.nof) {
 } # computeAOIAverageProportions
 
 
-# Data for NoC=1 and NoF=1
+################################################################################
+# Function that computes a proportion plot for time or count for a combination
+# of NoC and NoF data
+# Input: 
+#   proportions.df - data frame of proportions produced by computeAOIAverageProportions
+#   measure.name - either "time" or "count" 
+#   label.x - title to put on the x label (i.e. Range of NoF)
+#   label.y - title to put on the y label (i.e. Range of NoC)
+# Returns the plot for the given measure and combination of NoC and NoF proportions
+computeAOIProportionsPlot <- function(proportions.df, measure.name, label.x, label.y) {
+  
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+  
+  proportions.plot <-  proportions.df %>% filter(Measure==measure.name) %>%
+    ggplot(aes(x=reorder(AOI, -Proportion), y=Proportion, fill=AOI)) +
+    geom_bar(stat="identity") +
+    theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+          # axis.title.x = element_blank(), 
+          axis.text.x=element_blank(),
+          legend.position = "bottom") +
+    labs(y=label.y, x=label.x) +
+    # ggtitle("NoC=1 NoF=1") +
+    scale_y_continuous(limits=c(0, 0.60), breaks=seq(0, 0.60, 0.05)) +
+    scale_fill_manual(values=cbPalette)  
+  
+  # returns the plot
+  return(proportions.plot)
+  
+} # of computeAOIProportionsPlot
+
+
+################################################################################
+################################################################################
+################################################################################
+
+# Data for all combinatios of NoC and NoF
+# NoC=1
 data.noc.1.nof.1.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==1 & NoF==1))
+data.noc.1.nof.2.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==1 & NoF==2))
+data.noc.1.nof.3.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==1 & NoF==3))
+data.noc.1.nof.4.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==1 & NoF==4))
+
+# NoC=2
+data.noc.2.nof.1.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==2 & NoF==1))
+data.noc.2.nof.2.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==2 & NoF==2))
+data.noc.2.nof.3.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==2 & NoF==3))
+data.noc.2.nof.4.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==2 & NoF==4))
+
+# NoC=3
+data.noc.3.nof.1.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==3 & NoF==1))
+data.noc.3.nof.2.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==3 & NoF==2))
+data.noc.3.nof.3.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==3 & NoF==3))
+data.noc.3.nof.4.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==3 & NoF==4))
 
 
+## Creation of the proportions box plots for combinations of NoC and NoF
+# Plots for count measures
+# Noc=1
+prop.plot.count.noc.1.nof.1 <- computeAOIProportionsPlot (data.noc.1.nof.1.df, "count", "Range (1)", "Range (1)")
+prop.plot.count.noc.1.nof.2 <- computeAOIProportionsPlot (data.noc.1.nof.2.df, "count", "Range (2)", "Range (1)")
+prop.plot.count.noc.1.nof.3 <- computeAOIProportionsPlot (data.noc.1.nof.3.df, "count", "Range (3)", "Range (1)")
+prop.plot.count.noc.1.nof.4 <- computeAOIProportionsPlot (data.noc.1.nof.4.df, "count", "Range (4)", "Range (1)")
+# Noc=2
+prop.plot.count.noc.2.nof.1 <- computeAOIProportionsPlot (data.noc.2.nof.1.df, "count", "Range (1)", "Range (2)")
+prop.plot.count.noc.2.nof.2 <- computeAOIProportionsPlot (data.noc.2.nof.2.df, "count", "Range (2)", "Range (2)")
+prop.plot.count.noc.2.nof.3 <- computeAOIProportionsPlot (data.noc.2.nof.3.df, "count", "Range (3)", "Range (2)")
+prop.plot.count.noc.2.nof.4 <- computeAOIProportionsPlot (data.noc.2.nof.4.df, "count", "Range (4)", "Range (2)")
+# Noc=3
+prop.plot.count.noc.3.nof.1 <- computeAOIProportionsPlot (data.noc.3.nof.1.df, "count", "Range (1)", "Range (3)")
+prop.plot.count.noc.3.nof.2 <- computeAOIProportionsPlot (data.noc.3.nof.2.df, "count", "Range (2)", "Range (3)")
+prop.plot.count.noc.3.nof.3 <- computeAOIProportionsPlot (data.noc.3.nof.3.df, "count", "Range (3)", "Range (3)")
+prop.plot.count.noc.3.nof.4 <- computeAOIProportionsPlot (data.noc.3.nof.4.df, "count", "Range (4)", "Range (3)")
+
+# Plots for time measures
+# Noc=1
+prop.plot.time.noc.1.nof.1 <- computeAOIProportionsPlot (data.noc.1.nof.1.df, "time", "Range (1)", "Range (1)")
+prop.plot.time.noc.1.nof.2 <- computeAOIProportionsPlot (data.noc.1.nof.2.df, "time", "Range (2)", "Range (1)")
+prop.plot.time.noc.1.nof.3 <- computeAOIProportionsPlot (data.noc.1.nof.3.df, "time", "Range (3)", "Range (1)")
+prop.plot.time.noc.1.nof.4 <- computeAOIProportionsPlot (data.noc.1.nof.4.df, "time", "Range (4)", "Range (1)")
+# Noc=2
+prop.plot.time.noc.2.nof.1 <- computeAOIProportionsPlot (data.noc.2.nof.1.df, "time", "Range (1)", "Range (2)")
+prop.plot.time.noc.2.nof.2 <- computeAOIProportionsPlot (data.noc.2.nof.2.df, "time", "Range (2)", "Range (2)")
+prop.plot.time.noc.2.nof.3 <- computeAOIProportionsPlot (data.noc.2.nof.3.df, "time", "Range (3)", "Range (2)")
+prop.plot.time.noc.2.nof.4 <- computeAOIProportionsPlot (data.noc.2.nof.4.df, "time", "Range (4)", "Range (2)")
+# Noc=3
+prop.plot.time.noc.3.nof.1 <- computeAOIProportionsPlot (data.noc.3.nof.1.df, "time", "Range (1)", "Range (3)")
+prop.plot.time.noc.3.nof.2 <- computeAOIProportionsPlot (data.noc.3.nof.2.df, "time", "Range (2)", "Range (3)")
+prop.plot.time.noc.3.nof.3 <- computeAOIProportionsPlot (data.noc.3.nof.3.df, "time", "Range (3)", "Range (3)")
+prop.plot.time.noc.3.nof.4 <- computeAOIProportionsPlot (data.noc.3.nof.4.df, "time", "Range (4)", "Range (3)")
+
+
+
+
+
+
+################################################################################
 # Test for the bar chart ordered by proportion of AOI
 # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
 
-proportion.time.noc.1.nof.1 <-  data.noc.1.nof.1.df %>% filter(Measure=="time") %>%
+proportion.time.noc.1.nof.1 <-  data.noc.3.nof.4.df %>% filter(Measure=="time") %>%
   ggplot(aes(x=reorder(AOI, -Proportion), y=Proportion, fill=AOI)) +
   geom_bar(stat="identity") +
   theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
         # axis.title.x = element_blank(), 
         axis.text.x=element_blank(),
         legend.position = "bottom") +
-  labs(y="Proportion of Fixation Time", x="Range (1)") +
-  ggtitle("NoC=1 NoF=1") +
+  labs(y="Range (1)", x="Range (1)") +
+  # ggtitle("NoC=1 NoF=1") +
   scale_y_continuous(limits=c(0, 0.60), breaks=seq(0, 0.60, 0.05)) +
   scale_fill_manual(values=cbPalette)  
 proportion.time.noc.1.nof.1
