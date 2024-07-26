@@ -475,7 +475,216 @@ grid.response.time <-
                  left = textGrob("NoC Ranges - time in seconds", rot=90, gp=gpar(fontsize=15,font=3)))
 
 
-#################################################################################
+
+
+################################################################################
+################################################################################
+################################################################################
+
+
+################################################################################
+# Function that computes the means of the AOIs: 
+# Question, Answer, Legend, Buttons, FM, Window, CTC
+# Input: A dataframe from the complete experiment file for a combination of
+#       NoC and NoF
+# Return: the data frame with the means of each AOI for fixations and time
+computeAOIAverageProportions <- function(combination.noc.nof) {
+  
+  result.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+  columnNamesAOIs <- c("Measure", "AOI", "Proportion")
+  colnames(result.df) <- columnNamesAOIs
+  
+  # proportions of count
+  result.df[1,1] <- 'count'
+  result.df[1,2] <- 'Question'
+  result.df[1,3] <- mean (combination.noc.nof$perc.fixations.Question)
+  
+  result.df[2,1] <- 'count'
+  result.df[2,2] <- 'Answer'
+  result.df[2,3] <- mean(combination.noc.nof$perc.fixations.Answer)
+  
+  result.df[3,1] <- 'count'
+  result.df[3,2] <- 'Legend'
+  result.df[3,3] <- mean(combination.noc.nof$perc.fixations.Legend)
+  
+  result.df[4,1] <- 'count'
+  result.df[4,2] <- 'Buttons'
+  result.df[4,3] <- mean (combination.noc.nof$perc.fixations.Buttons)
+  
+  result.df[5,1] <- 'count'
+  result.df[5,2] <- 'FM'
+  result.df[5,3] <- mean(combination.noc.nof$perc.fixations.FM)
+  
+  result.df[6,1] <- 'count'
+  result.df[6,2] <- 'Window'
+  result.df[6,3] <- mean(combination.noc.nof$perc.fixations.Window)
+  
+  result.df[7,1] <- 'count'
+  result.df[7,2] <- 'CTC'
+  result.df[7,3] <- mean(combination.noc.nof$perc.fixations.CTC)
+  
+  # Proportions of time
+  result.df[8,1] <- 'time'
+  result.df[8,2] <- 'Question'
+  result.df[8,3] <- mean (combination.noc.nof$perc.time.Question)
+  
+  result.df[9,1] <- 'time'
+  result.df[9,2] <- 'Answer'
+  result.df[9,3] <- mean(combination.noc.nof$perc.time.Answer)
+  
+  result.df[10,1] <- 'time'
+  result.df[10,2] <- 'Legend'
+  result.df[10,3] <- mean(combination.noc.nof$perc.time.Legend)
+  
+  result.df[11,1] <- 'time'
+  result.df[11,2] <- 'Buttons'
+  result.df[11,3] <- mean (combination.noc.nof$perc.time.Buttons)
+  
+  result.df[12,1] <- 'time'
+  result.df[12,2] <- 'FM'
+  result.df[12,3] <- mean(combination.noc.nof$perc.time.FM)
+  
+  result.df[13,1] <- 'time'
+  result.df[13,2] <- 'Window'
+  result.df[13,3] <- mean(combination.noc.nof$perc.time.Window)
+  
+  result.df[14,1] <- 'time'
+  result.df[14,2] <- 'CTC'
+  result.df[14,3] <- mean (combination.noc.nof$perc.time.CTC)
+  
+  # makes Measure factor values instead of characters
+  result.df$Measure <- factor(result.df$Measure, levels = c('time', 'count'))
+  result.df$AOI <- as.factor(result.df$AOI)
+  
+  # Reorders the factor names of the AOIS for a more meaningful color order
+  result.df <- result.df %>% 
+    mutate(AOI=fct_relevel(AOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+  
+  # returns the produced data frame
+  return (result.df)
+  
+} # computeAOIAverageProportions
+
+
+# Data for NoC=1 and NoF=1
+data.noc.1.nof.1.df <- computeAOIAverageProportions(experiment.complete.data %>% filter(NoC==1 & NoF==1))
+
+
+# Test for the bar chart ordered by proportion of AOI
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.noc.1.nof.1 <-  data.noc.1.nof.1.df %>% filter(Measure=="time") %>%
+  ggplot(aes(x=reorder(AOI, -Proportion), y=Proportion, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        # axis.title.x = element_blank(), 
+        axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time", x="Range (1)") +
+  ggtitle("NoC=1 NoF=1") +
+  scale_y_continuous(limits=c(0, 0.60), breaks=seq(0, 0.60, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.noc.1.nof.1
+
+
+#####################################################################################
+# scratch 
+# Data for t=2, Visualization Technique scatter plots
+t2.sp.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-SP") 
+
+
+t2.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
+columnNamesAOIs <- c("Measure", "AOI", "Percentage")
+colnames(t2.sp.df) <- columnNamesAOIs
+
+t2.sp.df[1,1] <- 'count'
+t2.sp.df[1,2] <- 'Axial'
+t2.sp.df[1,3] <- mean (t2.sp.data$Axial.pfcount)
+
+t2.sp.df[2,1] <- 'count'
+t2.sp.df[2,2] <- 'Misc'
+t2.sp.df[2,3] <- mean(t2.sp.data$Misc.pfcount)
+
+t2.sp.df[3,1] <- 'count'
+t2.sp.df[3,2] <- 'Navigation'
+t2.sp.df[3,3] <- mean(t2.sp.data$Navigation.pfcount)
+
+t2.sp.df[4,1] <- 'count'
+t2.sp.df[4,2] <- 'Question'
+t2.sp.df[4,3] <- mean (t2.sp.data$Question.pfcount)
+
+t2.sp.df[5,1] <- 'count'
+t2.sp.df[5,2] <- 'Response'
+t2.sp.df[5,3] <- mean(t2.sp.data$Response.pfcount)
+
+t2.sp.df[6,1] <- 'count'
+t2.sp.df[6,2] <- 'Solution'
+t2.sp.df[6,3] <- mean(t2.sp.data$Solution.pfcount)
+
+t2.sp.df[7,1] <- 'count'
+t2.sp.df[7,2] <- 'Target'
+t2.sp.df[7,3] <- mean (t2.sp.data$Target.pfcount)
+
+t2.sp.df[8,1] <- 'time'
+t2.sp.df[8,2] <- 'Axial'
+t2.sp.df[8,3] <- mean (t2.sp.data$Axial.pftime)
+
+t2.sp.df[9,1] <- 'time'
+t2.sp.df[9,2] <- 'Misc'
+t2.sp.df[9,3] <- mean(t2.sp.data$Misc.pftime)
+
+t2.sp.df[10,1] <- 'time'
+t2.sp.df[10,2] <- 'Navigation'
+t2.sp.df[10,3] <- mean(t2.sp.data$Navigation.pftime)
+
+t2.sp.df[11,1] <- 'time'
+t2.sp.df[11,2] <- 'Question'
+t2.sp.df[11,3] <- mean (t2.sp.data$Question.pftime)
+
+t2.sp.df[12,1] <- 'time'
+t2.sp.df[12,2] <- 'Response'
+t2.sp.df[12,3] <- mean(t2.sp.data$Response.pftime)
+
+t2.sp.df[13,1] <- 'time'
+t2.sp.df[13,2] <- 'Solution'
+t2.sp.df[13,3] <- mean(t2.sp.data$Solution.pftime)
+
+t2.sp.df[14,1] <- 'time'
+t2.sp.df[14,2] <- 'Target'
+t2.sp.df[14,3] <- mean (t2.sp.data$Target.pftime)
+
+# makes Measure factor values instead of characters
+t2.sp.df$Measure <- factor(t2.sp.df$Measure, levels = c('time', 'count'))
+t2.sp.df$AOI <- as.factor(t2.sp.df$AOI)
+
+# Mutates the names of the AOIs, solution and misc
+t2.sp.df.renamed <- t2.sp.df %>%
+  mutate(AOI = case_when(AOI == "Misc" ~ "Stimulus", AOI == "Response" ~ "Answer", TRUE ~ AOI)) %>%
+  mutate(AOI=fct_relevel(AOI,c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus")))
+
+#orders the names of the AOI in terms of description order in the paper
+ordered(t2.sp.df.renamed$AOI, levels=c("Question","Answer","Axial","Target","Solution","Navigation","Stimulus"))
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+proportion.time.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="time") %>%
+  #  ggplot(aes(x=AOI, y=Percentage, fill=AOI)) +
+  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
+  geom_bar(stat="identity") +
+  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
+        axis.title.x = element_blank(), axis.text.x=element_blank(),
+        legend.position = "bottom") +
+  labs(y="Proportion of Fixation Time") +
+  ggtitle("Scatter Plots for Pairs (2D-SP)") +
+  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
+  scale_fill_manual(values=cbPalette)  
+proportion.time.t2.sp
+
+
+
+################################################################################
 # Bar plots for the AOIs proportion of fixation time and fixation count across the ranges
 
 # TODO
