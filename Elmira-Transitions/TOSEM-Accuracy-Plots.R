@@ -658,10 +658,6 @@ prop.plot.time.noc.3.nof.3 <- computeAOIProportionsPlot (data.noc.3.nof.3.df, "t
 prop.plot.time.noc.3.nof.4 <- computeAOIProportionsPlot (data.noc.3.nof.4.df, "time", "Range (4)", "Range (3)")
 
 ## Creating the aggregate plots
-
-
-
-# Test of merging the plots into a single figure
 # https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
 library(cowplot)
 
