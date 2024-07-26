@@ -657,10 +657,59 @@ prop.plot.time.noc.3.nof.2 <- computeAOIProportionsPlot (data.noc.3.nof.2.df, "t
 prop.plot.time.noc.3.nof.3 <- computeAOIProportionsPlot (data.noc.3.nof.3.df, "time", "Range (3)", "Range (3)")
 prop.plot.time.noc.3.nof.4 <- computeAOIProportionsPlot (data.noc.3.nof.4.df, "time", "Range (4)", "Range (3)")
 
+## Creating the aggregate plots
+
+# Overloaded captions
+grid.proportions.count <- 
+  grid.arrange(prop.plot.count.noc.3.nof.1, prop.plot.count.noc.3.nof.2, prop.plot.count.noc.3.nof.3, prop.plot.count.noc.3.nof.4,
+               prop.plot.count.noc.2.nof.1, prop.plot.count.noc.2.nof.2, prop.plot.count.noc.2.nof.3, prop.plot.count.noc.2.nof.4,
+               prop.plot.count.noc.1.nof.1, prop.plot.count.noc.1.nof.2, prop.plot.count.noc.1.nof.3, prop.plot.count.noc.1.nof.4,
+               ncol=4, nrow=3,
+               bottom = textGrob("NoF Ranges",gp=gpar(fontsize=15,font=3)),
+#               title = "Proportions of fixation count", # does not work
+               left = textGrob("NoC Ranges", rot=90, gp=gpar(fontsize=15,font=3)))
+
+
+# Test of merging the plots into a single figure
+# https://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+library(cowplot)
+
+# Plot with the four combinations, pairs/triples & SP and PD plots
+cowplot.proportions.count.grid <- 
+  plot_grid(prop.plot.count.noc.3.nof.1 + theme(legend.position="none"), 
+      prop.plot.count.noc.3.nof.2 + theme(legend.position="none"),
+      prop.plot.count.noc.3.nof.3 + theme(legend.position="none"), 
+      prop.plot.count.noc.3.nof.4 + theme(legend.position="none"),
+      prop.plot.count.noc.2.nof.1 + theme(legend.position="none"),
+      prop.plot.count.noc.2.nof.2 + theme(legend.position="none"), 
+      prop.plot.count.noc.2.nof.3 + theme(legend.position="none"), 
+      prop.plot.count.noc.2.nof.4 + theme(legend.position="none"),
+      prop.plot.count.noc.1.nof.1 + theme(legend.position="none"), 
+      prop.plot.count.noc.1.nof.2 + theme(legend.position="none"),
+      prop.plot.count.noc.1.nof.3 + theme(legend.position="none"), 
+      prop.plot.count.noc.1.nof.4 + theme(legend.position="none"),
+      align = 'vh',
+      hjust = -1,
+      nrow = 3)
+
+# computes the common legend
+legend_b <- get_legend(prop.plot.count.noc.1.nof.4 + theme(legend.position="bottom"))
+
+
+cowplot.proportions.count <- plot_grid( cowplot.proportions.count.grid, 
+                                        legend_b, 
+                                        ncol = 1, rel_heights = c(1, .1)) # rel_heights = c(1, .2)
+cowplot.proportions.count 
 
 
 
 
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+
+# scratch 
 
 ################################################################################
 # Test for the bar chart ordered by proportion of AOI
@@ -681,8 +730,6 @@ proportion.time.noc.1.nof.1 <-  data.noc.3.nof.4.df %>% filter(Measure=="time") 
 proportion.time.noc.1.nof.1
 
 
-#####################################################################################
-# scratch 
 # Data for t=2, Visualization Technique scatter plots
 t2.sp.data <- experiment.data %>% filter(T==2 & Visualization.Technique=="2D-SP") 
 
@@ -791,22 +838,6 @@ computeProportionFixationTime(aoi.data) <- function() {
   
 }
 
-# For loop that iterates over NoC and NoF
-
-
-
-for (noc in unique(experiment.complete.data$ParticipantID)) {
-  
-  for (qn in seq(1,24,1)) {
-      print(paste("<",noc,",",nof,",",qn,">",sep=""))
-
-  } # for all NoF
-
-} # for all NoC
-
-# Verification of the proposotions computations of the questions
-
-
 sanity.checks.data <- experiment.complete.data %>% filter(ParticipantID==2) %>%
   mutate(sumFixationCounts=fixations.Question + fixations.Answer + fixations.Legend + fixations.CTC + 
            fixations.FM + fixations.Navigating + fixations.CTC) %>%
@@ -839,67 +870,6 @@ test.accumulation$perc.time.Answer + test.accumulation$perc.time.Buttons +
 
 test.accumulation$perc.time.Containing # must not should be included, study how it relates to navigating
 # and window in the generation of the data for each participant with the r-code-PN.R scripts
-
-
-
-
-
-
-# test.accumulation$perc.fixations.Containing --> goes over the limit
-
-
-t2.sp.df <- data.frame(matrix(nrow = 2 * 7, ncol = 3))
-columnNamesAOIs <- c("Measure", "AOI", "Percentage")
-colnames(t2.sp.df) <- columnNamesAOIs
-
-t2.sp.df[1,1] <- 'count'
-t2.sp.df[1,2] <- 'Axial'
-t2.sp.df[1,3] <- mean (t2.sp.data$Axial.pfcount)
-
-t2.sp.df[2,1] <- 'count'
-t2.sp.df[2,2] <- 'Misc'
-t2.sp.df[2,3] <- mean(t2.sp.data$Misc.pfcount)
-
-t2.sp.df[3,1] <- 'count'
-t2.sp.df[3,2] <- 'Navigation'
-t2.sp.df[3,3] <- mean(t2.sp.data$Navigation.pfcount)
-
-t2.sp.df[4,1] <- 'count'
-t2.sp.df[4,2] <- 'Question'
-t2.sp.df[4,3] <- mean (t2.sp.data$Question.pfcount)
-
-t2.sp.df[5,1] <- 'count'
-t2.sp.df[5,2] <- 'Response'
-t2.sp.df[5,3] <- mean(t2.sp.data$Response.pfcount)
-
-t2.sp.df[6,1] <- 'count'
-t2.sp.df[6,2] <- 'Solution'
-t2.sp.df[6,3] <- mean(t2.sp.data$Solution.pfcount)
-
-t2.sp.df[7,1] <- 'count'
-t2.sp.df[7,2] <- 'Target'
-t2.sp.df[7,3] <- mean (t2.sp.data$Target.pfcount)
-
-
-# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
-cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
-
-proportion.time.t2.sp <-  t2.sp.df.renamed %>% filter(Measure=="time") %>%
-  ggplot(aes(x=reorder(AOI, -Percentage), y=Percentage, fill=AOI)) +
-  geom_bar(stat="identity") +
-  theme(panel.background = element_blank(), panel.grid.major.y = element_line(colour = "grey50"), 
-        axis.title.x = element_blank(), axis.text.x=element_blank(),
-        legend.position = "bottom") +
-  labs(y="Proportion of Fixation Time") +
-  ggtitle("Scatter Plots for Pairs (2D-SP)") +
-  scale_y_continuous(limits=c(0, 0.40), breaks=seq(0, 0.40, 0.05)) +
-  scale_fill_manual(values=cbPalette)  
-proportion.time.t2.sp
-
-
-
-
-
 
 ################################################################################
 ################################################################################
