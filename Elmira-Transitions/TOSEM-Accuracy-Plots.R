@@ -728,6 +728,25 @@ cowplot.proportions.time <- plot_grid(cowplot.proportions.time.grid,
 cowplot.proportions.time
 
 
+## Proportions of fixations count and fixations time
+data.noc.all.nof.all.df <- computeAOIAverageProportions(experiment.complete.data)
+
+prop.plot.count.noc.all.nof.all <- 
+  computeAOIProportionsPlot (data.noc.all.nof.all.df, "count", "", "")
+
+prop.plot.count.noc.all.nof.all +
+  ggtitle("Global Average of Proportions of Fixations Count") +
+  theme(plot.title = element_text(hjust = 0.5, size=20))
+
+prop.plot.time.noc.all.nof.all <- 
+  computeAOIProportionsPlot (data.noc.all.nof.all.df, "time", "", "")
+
+prop.plot.time.noc.all.nof.all +
+  ggtitle("Global Average of Proportions of Fixations Time") +
+  theme(plot.title = element_text(hjust = 0.5, size=20))
+
+
+
 ################################################################################
 ################################################################################
 ################################################################################
