@@ -689,8 +689,9 @@ cowplot.proportions.count <- plot_grid( cowplot.proportions.count.grid,
                                         legend_b, 
                                         ncol = 1, rel_heights = c(1, .1),
                                         scale = 0.95) + # rel_heights = c(1, .2)
-                              draw_label("NoF Ranges", x=0.5, y=  0, vjust=-5.0, angle= 0) + 
-                              draw_label("Noc Ranges", x=  0, y= 0.5, vjust= 1.5, angle=90)
+                              draw_label("NoF Ranges", x=0.5, y=  0, vjust=-4.5, angle= 0) + 
+                              draw_label("Noc Ranges", x=  0, y= 0.5, vjust= 1.5, angle=90) +
+                              draw_label("Proportions of Fixations Count", x=0.5, y=0, vjust=-46, angle= 0)
 cowplot.proportions.count
 
 
