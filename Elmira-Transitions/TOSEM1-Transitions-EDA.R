@@ -124,46 +124,6 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
   
 } # end of computeRectangleCoordinates
 
-# # Creates a copy of the raw.df for an individual, adds the columns for the rectangle coordinates
-# raw.rectangle.df <- raw.df
-# raw.rectangle.df$Xmin <- rep(0,nrow(raw.rectangle.df))
-# raw.rectangle.df$Xmax <- rep(0,nrow(raw.rectangle.df))
-# raw.rectangle.df$Ymin <- rep(0,nrow(raw.rectangle.df))
-# raw.rectangle.df$Ymax <- rep(0,nrow(raw.rectangle.df))
-
-# # Assumption that all the fixations of a question and participant are sequentially put together
-# # Set current row to be the first question in the data frame
-# current.qn <- raw.rectangle.df$QN[1]
-
-# # Initializes the counters for the rectangle coordinates
-# x.accum <- 0
-# y.accum <- 1
-# 
-# # Loop for all the data of the participant
-# for (i in 1:nrow(raw.rectangle.df)) {
-#   row.data <- raw.rectangle.df [i,]
-#   
-#   # Checks if it has reached a new question
-#   # If a new question number is found, set current question and reset fixation counter to 1
-#   if (row.data$QN != current.qn) {
-#     current.qn <- row.data$QN           # sets the new current row for comparison
-#     x.accum <- 0                        # resets x coordinate to zero
-#     y.accum <- y.accum + 1              # increments to the next question
-#   } #
-#   
-#   # Assigns coordinates to the new rectangle 
-#   raw.rectangle.df[i,]$Xmin <- x.accum                  # starting x accumulated
-#   x.accum <- x.accum + raw.rectangle.df[i,]$Duration    # increments x coordinate by width of duration
-#   raw.rectangle.df[i,]$Xmax <- x.accum                  # maximum is the new accumulated
-#   raw.rectangle.df[i,]$Ymin <- y.accum                  # starts from the current question
-#   raw.rectangle.df[i,]$Ymax <- y.accum + 1              # sets the maximum, one point higher
-#   
-#   print (c(i, 
-#            raw.rectangle.df[i,]$Xmin, raw.rectangle.df[i,]$Xmax, 
-#            raw.rectangle.df[i,]$Ymin, raw.rectangle.df[i,]$Ymax))
-#   
-# } # end of for all the data
-
 
 
 
@@ -259,8 +219,11 @@ scarfPlotParticipant <- function (scarfplot.data, participantNumber) {
   
   scarfplot.title <- paste("Participant ",participantNumber,sep="")
   
+  # # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  # cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+
   # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
-  cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
   
   scarfplot.participant <- scarfplot.data %>% 
     ggplot() + 
@@ -283,7 +246,7 @@ scarfPlotParticipant <- function (scarfplot.data, participantNumber) {
 }  # end of function 
 
 #################
-## Testing function that generates participants scarfplots
+## Generates participants scarfplots
 scarfplots.data.participants <-
   read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
            header=TRUE)
@@ -295,7 +258,7 @@ scarfplots.data.participants$IDAOI <- as.factor(scarfplots.data.participants$IDA
 # Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
 scarfplots.data.participants <-
   scarfplots.data.participants %>%
-  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
 
 # Accumulates the scarf plot objects into a list
 list.scarfplots.participants <- list()
@@ -349,12 +312,142 @@ savePlotsList(list.scarfplots.participants,
               unique(scarfplots.data.participants$Participant), 
               "./ParticipantScarfplots/", "png", "Participant-")
 
+################################################################################
+################################################################################
+################################################################################
+# Function that creates the scarfplots for the transitions of a single question with 17 participant
+# Input: 
+# * scarfplot.question.data, data frame with the rect plot information for a given question for 17 participants
+#        it must have the required order of AOIs factor
+# * questionNumber, is the number of question to be used for creating the title of the plot
+
+scarfPlotQuestion <- function (scarfplot.question.data, questionNumber) {
+  msec2secs <- 1000     # constant for transformation to secs
+  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+  xmax.value <- max(scarfplot.question.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+  
+  scarfplot.title <- paste("Question ",questionNumber,sep="")
+  
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  # cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
+  
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+  
+  
+  scarfplot.question <- scarfplot.question.data %>% 
+    ggplot() + 
+    geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+    theme(panel.background = element_blank(),
+          plot.title = element_text(hjust = 0.5,size = 20),
+          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+          axis.title.x = element_blank(),   # clears the label of the axis 
+          legend.position = "bottom") +
+    scale_fill_manual(values=cbPalette, drop=FALSE) +
+    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
+    labs(y = "Participant", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
+    ggtitle(scarfplot.title) + # Title
+    scale_y_discrete(limits=as.factor(seq(1, 17, 1))) 
+  
+  # Returns the constructed plot
+  return(scarfplot.question)
+  
+}  # end of function scarfPlotQuestion
+
+
+################################################################################
+# Creates the array of scarfplots for questions
+
+scarfplots.data.questions <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
+           header=TRUE)
+attach(scarfplots.data.questions)
+
+# Changes the names of AOIs to factors
+scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.questions <-
+  scarfplots.data.questions %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+
+
+# Iterates over all question numbers
+# Accumulates the scarf plot objects into a list
+list.scarfplots.questions <- list()
+questions.ids <-unique(scarfplots.data.questions$QN)
+
+plots.index <-1 
+for (question.id in questions.ids) {
+  print(paste("Plotting question ",question.id,sep=""))
+  
+  scarfplot.part <- scarfPlotQuestion(scarfplots.data.questions %>% filter(QN==question.id),
+                                         question.id) 
+  scarfplot.part
+  list.scarfplots.questions[[plots.index]] <- scarfplot.part  
+  plots.index <- plots.index + 1
+}
+
+################################################################################
+## Saves the list of scarfsplots per participant into files
+savePlotsList(list.scarfplots.questions, 
+              unique(scarfplots.data.questions$QN),
+              "./QuestionScarfplots/", "png","Question-")
 
 
 ################################################################################
 ################################################################################
 ################################################################################
 
+###################### Scratch test code #######################################
+
+################################################################################
+################################################################################
+################################################################################
+
+# # Creates a copy of the raw.df for an individual, adds the columns for the rectangle coordinates
+# raw.rectangle.df <- raw.df
+# raw.rectangle.df$Xmin <- rep(0,nrow(raw.rectangle.df))
+# raw.rectangle.df$Xmax <- rep(0,nrow(raw.rectangle.df))
+# raw.rectangle.df$Ymin <- rep(0,nrow(raw.rectangle.df))
+# raw.rectangle.df$Ymax <- rep(0,nrow(raw.rectangle.df))
+
+# # Assumption that all the fixations of a question and participant are sequentially put together
+# # Set current row to be the first question in the data frame
+# current.qn <- raw.rectangle.df$QN[1]
+
+# # Initializes the counters for the rectangle coordinates
+# x.accum <- 0
+# y.accum <- 1
+# 
+# # Loop for all the data of the participant
+# for (i in 1:nrow(raw.rectangle.df)) {
+#   row.data <- raw.rectangle.df [i,]
+#   
+#   # Checks if it has reached a new question
+#   # If a new question number is found, set current question and reset fixation counter to 1
+#   if (row.data$QN != current.qn) {
+#     current.qn <- row.data$QN           # sets the new current row for comparison
+#     x.accum <- 0                        # resets x coordinate to zero
+#     y.accum <- y.accum + 1              # increments to the next question
+#   } #
+#   
+#   # Assigns coordinates to the new rectangle 
+#   raw.rectangle.df[i,]$Xmin <- x.accum                  # starting x accumulated
+#   x.accum <- x.accum + raw.rectangle.df[i,]$Duration    # increments x coordinate by width of duration
+#   raw.rectangle.df[i,]$Xmax <- x.accum                  # maximum is the new accumulated
+#   raw.rectangle.df[i,]$Ymin <- y.accum                  # starts from the current question
+#   raw.rectangle.df[i,]$Ymax <- y.accum + 1              # sets the maximum, one point higher
+#   
+#   print (c(i, 
+#            raw.rectangle.df[i,]$Xmin, raw.rectangle.df[i,]$Xmax, 
+#            raw.rectangle.df[i,]$Ymin, raw.rectangle.df[i,]$Ymax))
+#   
+# } # end of for all the data
 
 ###################
 # Testing participants plots - scratch code
@@ -369,11 +462,11 @@ xmax.value <- max(scarfplots.data.participants$Xmax)  # computes the maximum val
 upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
 sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
 tensecs.labels.x <- as.character(sequence.numbers.labels.x)
-  
+
 # Load the file for participant
 scarfplots.data.participants <-
   read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
-  header=TRUE)
+           header=TRUE)
 attach(scarfplots.data.participants)
 
 # Changes the names of AOIs to factors
@@ -383,7 +476,7 @@ scarfplots.data.participants$IDAOI <- as.factor(scarfplots.data.participants$IDA
 scarfplots.data.participants <-
   scarfplots.data.participants %>%
   mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
-       
+
 # Load the file for question
 
 # Test of plots for participant
@@ -449,95 +542,6 @@ layer_scales(scarfplot.participant)$x$range$range
 # Wrong: %>% mutate(Xmin=Xmin/1000) %>% mutate(Xmax=Xmax/100)
 
 
-
-
-
-################################################################################
-################################################################################
-################################################################################
-# Function that creates the scarfplots for the transitions of a single question with 17 participant
-# Input: 
-# * scarfplot.question.data, data frame with the rect plot information for a given question for 17 participants
-#        it must have the required order of AOIs factor
-# * questionNumber, is the number of question to be used for creating the title of the plot
-
-scarfPlotQuestion <- function (scarfplot.question.data, questionNumber) {
-  msec2secs <- 1000     # constant for transformation to secs
-  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
-  xmax.value <- max(scarfplot.question.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
-  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
-  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
-  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
-  
-  scarfplot.title <- paste("Question ",questionNumber,sep="")
-  
-  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
-  cbPalette <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999","#E69F00")
-  
-  scarfplot.question <- scarfplot.question.data %>% 
-    ggplot() + 
-    geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
-    theme(panel.background = element_blank(),
-          plot.title = element_text(hjust = 0.5,size = 20),
-          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
-          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
-          axis.title.x = element_blank(),   # clears the label of the axis 
-          legend.position = "bottom") +
-    scale_fill_manual(values=cbPalette, drop=FALSE) +
-    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
-    labs(y = "Participant", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
-    ggtitle(scarfplot.title) + # Title
-    scale_y_discrete(limits=as.factor(seq(1, 17, 1))) 
-  
-  # Returns the constructed plot
-  return(scarfplot.question)
-  
-}  # end of function scarfPlotQuestion
-
-##############################################################################################
-# Creates the array of scarfplots for questions
-
-scarfplots.data.questions <-
-  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
-           header=TRUE)
-attach(scarfplots.data.questions)
-
-# Changes the names of AOIs to factors
-scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
-
-# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
-scarfplots.data.questions <-
-  scarfplots.data.questions %>%
-  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Buttons","Legend","Answer","Window")))
-
-
-# Iterates over all question numbers
-# Accumulates the scarf plot objects into a list
-list.scarfplots.questions <- list()
-questions.ids <-unique(scarfplots.data.questions$QN)
-
-plots.index <-1 
-for (question.id in questions.ids) {
-  print(paste("Plotting question ",question.id,sep=""))
-  
-  scarfplot.part <- scarfPlotQuestion(scarfplots.data.questions %>% filter(QN==question.id),
-                                         question.id) 
-  scarfplot.part
-  list.scarfplots.questions[[plots.index]] <- scarfplot.part  
-  plots.index <- plots.index + 1
-}
-
-
-################################################################################
-## Saves the list of scarfsplots per participant into files
-savePlotsList(list.scarfplots.questions, 
-              unique(scarfplots.data.questions$QN),
-              "./QuestionScarfplots/", "png","Question-")
-
-
-################################################################################
-################################################################################
-################################################################################
 # Test of scarfplot for question
 # Load the file for questions
 scarfplots.data.questions <-
