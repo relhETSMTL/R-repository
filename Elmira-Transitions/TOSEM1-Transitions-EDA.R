@@ -242,15 +242,12 @@ write.csv(rect.transitions.data,
           row.names = FALSE)
 
 ################################################################################
-
-library(plyr) # rounding functions
-
 # Function that creates the scarfplots for the transitions of a single participant with 24 questions
 # Input: 
 # * scarfplot.data, data frame with the rect plot information for a given participant 24 questions
 #        it must have the required order of AOIs factor
 # * participantNumber, is the number of participant to be used for creating the title of the plot
-
+library(plyr) # rounding functions
 scarfPlotParticipant <- function (scarfplot.data, participantNumber) {
 
   msec2secs <- 1000     # constant for transformation to secs
@@ -313,6 +310,51 @@ for (participant.id in participants.ids) {
   list.scarfplots.participants[[plots.index]] <- scarfplot.part  
   plots.index <- plots.index + 1
 }
+
+
+
+###############################################################################
+# Function that saves all the plots in a list in files using the id names and 
+# the path name. The file is in a given format. 
+# Input: 
+# * listOfPlots: list of ggplot objets that can be displayed and saved
+# * listOfIDs: list of names to use as file names to be saved
+# * pathname: name of the path to prepend to the IDs to save the plots into files
+# * format: the String with the format type to use to save the image, e.g "png" 
+savePlotsList <- function (listOfPlots, listOfIDs, pathName, format, suffixName) {
+  
+  index <-1
+  for(id in listOfIDs){
+    # computes the final path name
+    fName <- paste(suffixName,id,".",format,sep="")
+    print(fName)
+    
+    # plots the plots on the window
+    print(listOfPlots[index])
+    
+    # Saves the file in the given 
+    ggsave(filename=fName, path=pathName)
+    
+    # Increments the index
+    index <- index + 1
+    
+  } # of all the IDs in the list
+  
+} # of savePlotsList
+
+################################################################################
+
+## Saves the list of scarfsplots per participant into files
+savePlotsList(list.scarfplots.participants, 
+              unique(scarfplots.data.participants$Participant), 
+              "./ParticipantScarfplots/", "png", "Participant-")
+
+
+
+################################################################################
+################################################################################
+################################################################################
+
 
 ###################
 # Testing participants plots - scratch code
@@ -406,7 +448,13 @@ layer_scales(scarfplot.participant)$x$range$range
 # Just adding a division wont work because of the pixels
 # Wrong: %>% mutate(Xmin=Xmin/1000) %>% mutate(Xmax=Xmax/100)
 
-##############################################################################################
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
 # Function that creates the scarfplots for the transitions of a single question with 17 participant
 # Input: 
 # * scarfplot.question.data, data frame with the rect plot information for a given question for 17 participants
@@ -479,7 +527,17 @@ for (question.id in questions.ids) {
   plots.index <- plots.index + 1
 }
 
-##############################################################################################
+
+################################################################################
+## Saves the list of scarfsplots per participant into files
+savePlotsList(list.scarfplots.questions, 
+              unique(scarfplots.data.questions$QN),
+              "./QuestionScarfplots/", "png","Question-")
+
+
+################################################################################
+################################################################################
+################################################################################
 # Test of scarfplot for question
 # Load the file for questions
 scarfplots.data.questions <-
