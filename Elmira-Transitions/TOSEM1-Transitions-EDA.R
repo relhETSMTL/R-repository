@@ -671,6 +671,49 @@ stepCorePlotsParticipantQuestion(core.stepplots.data.participants %>% filter(Par
 
 
 
+################################################################################
+# Test of multiple step plots for all participants in a question
+
+multiple.step.plots.data <- core.stepplots.data.participants %>% 
+  filter(QN==3 & (Participant==2 | Participant==3))
+
+levels.AOIS <- levels(multiple.step.plots.data$IDAOI)
+
+multiple.step.plots.data <- multiple.step.plots.data %>% 
+  mutate(X=Xmin) %>%
+  mutate(Y=case_when(IDAOI=="FM" ~ 1,
+                     IDAOI=="Question" ~ 2,
+                     IDAOI=="CTC" ~ 3))
+
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+
+msec2secs <- 1000     # constant for transformation to secs
+tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+xmax.value <- max(multiple.step.plots.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+aois.labels.y <- c("FM","Question","CTC")
+
+step.plot <- multiple.step.plots.data %>% ggplot() + 
+  # geom_step(aes(x = X, y = Y, colour = IDAOI, group=Participant), size=2) + # colour = IDAOI, colors by AOI the segments
+  geom_line(aes(x = X, y = Y,  group=Participant), size=1) +
+  theme(panel.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,size = 20),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+        panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
+        axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
+        legend.position = "none") +
+  scale_colour_manual(values = cbPalette, drop=FALSE) +
+  ggtitle("Multiple") + # Title
+  #labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
+  scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
+  scale_y_continuous(limits=c(1,3), breaks=seq(1,3,1), labels = aois.labels.y)  # add the values of AOIs
+# scale_y_discrete(limits=as.factor(seq(1, 3, 1))) # sets the dimensions of the y axis to contain 3 values
+step.plot
 
 ################################################################################
 ################################################################################
