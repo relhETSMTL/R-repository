@@ -399,6 +399,93 @@ savePlotsList(list.scarfplots.questions,
               "./QuestionScarfplots/", "png","Question-")
 
 
+
+################################################################################
+## Tests of line plots for the transitions of a participant and question
+
+# mutate(Y=which(p2.trans.q1.data$IDAOI==IDAOI))
+
+levels.AOIS <- levels(scarfplots.data.participants$IDAOI)
+
+p2.trans.q1.data <- scarfplots.data.participants %>% # from all participants scarfplots
+  filter(Participant==2 & QN==1) %>% # keep only first question for participant 2
+  mutate(X=Xmin) %>%
+  mutate(Y=case_when(IDAOI=="FM" ~ 1,
+                     IDAOI=="Question" ~ 2,
+                     IDAOI=="CTC" ~ 3,
+                     IDAOI=="Answer" ~ 4,
+                     IDAOI=="Window" ~ 5,
+                     IDAOI=="Buttons" ~ 6,
+                     IDAOI=="Legend" ~ 7))
+
+  # mutate(Y=transformAOIToCoordinate(IDAOI))
+  
+
+p2.trans.q1.data %>% ggplot(aes(X, Y)) + geom_step(aes(colour=as.numeric(IDAOI)))
+
+
+# Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+
+# https://stackoverflow.com/questions/42633374/how-to-get-a-step-plot-using-geom-step-with-different-colors-for-the-segments
+# https://stackoverflow.com/questions/14794599/how-to-change-line-width-in-ggplot
+# https://stackoverflow.com/questions/8737454/r-ggplot2-colouring-step-plot-depending-on-value 
+# https://stackoverflow.com/questions/18839731/vary-colors-of-axis-labels-in-r-based-on-another-variable
+
+library(plyr) # rounding functions
+msec2secs <- 1000     # constant for transformation to secs
+tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+xmax.value <- max(p2.trans.q1.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+aois.labels.y <- c("FM","Question","CTC","Answer","Window","Buttons","Legend")
+
+p2.trans.q1.data %>% ggplot() + 
+  geom_step(aes(x = X, y = Y, colour = IDAOI, group=1), size=2) +
+  theme(panel.background = element_blank(),
+        panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+        panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
+        axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
+        legend.position = "none" # legend.position = "bottom", # bottom if we have to have a legend
+        ) +
+  scale_colour_manual(values = cbPalette, drop=FALSE) +
+  labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
+  scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
+  scale_y_continuous(breaks=seq(1,7,1), labels = aois.labels.y) # add the values of AOIs
+
+
+
+
+
+
+
+# Example of code scarfplot to start tweaking the step plot
+scarfplot.question <- scarfplot.question.data %>% 
+  ggplot() + 
+  geom_rect(mapping=aes(xmin=Xmin, xmax=Xmax, ymin=Ymin, ymax=Ymax, fill=IDAOI), alpha=0.9) + 
+  theme(panel.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,size = 20),
+        panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+        panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in
+        axis.title.x = element_blank(),   # clears the label of the axis 
+        legend.position = "bottom") +
+  scale_fill_manual(values=cbPalette, drop=FALSE) +
+  scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) +
+  labs(y = "Participant", x = "Fixations sequence and duration 10 secs intervals)", fill ="AOI") +
+  ggtitle(scarfplot.title) + # Title
+  scale_y_discrete(limits=as.factor(seq(1, 17, 1))) 
+
+
+transformAOIToCoordinate <- function(AOI) {
+  AOI.number <- which(levels.AOIS==AOI)
+  print(paste("AOI received ",AOI," value=",AOI.number,sep=""))
+  # Returns the index of the value
+  #return (which(levels.AOIS==AOI))
+  return (AOI.number)
+} # of transformAOIToCoordinate
+
+
 ################################################################################
 ################################################################################
 ################################################################################
