@@ -513,6 +513,170 @@ savePlotsList(list.stepplots.participants,
               "./Stepplots/", "png","Stepplot-")
 
 
+################################################################################
+# Computes the step plots of the core transitions, those containing only
+# AOIs: FM, CTC, Question
+
+# Loads the entire set of curated transitions
+all.participants.trans <- read.csv(file = "../../../Experiment-Data/All-Participants-Transitions-Curated-Data.csv", 
+                                   header=TRUE)
+attach (all.participants.trans)
+
+# Computes a vector of participants and question numbers to iterate on
+participants.ids <-unique(all.participants.trans$Participant) 
+
+
+# initializes the data frame to empty
+rect.transitions.data <- data.frame()
+
+
+# input directory
+input.dir <- "../../../Experiment-Data/Eye-tracking-data-samples/"
+
+# Loops for all the participants and all the questions, loading the matrix of transition frequencies
+for (participant.id in participants.ids) {
+  
+  print(participant.id)
+  
+  # Filters the transition data for the given participant
+  participant.filtered.transitions <- all.participants.trans %>% 
+    filter(Participant==participant.id & (IDAOI %in% c("FM","CTC","Question")))
+
+    
+  # Computes the rect plot data frame for a given participant
+  transitions.rect.plot <- computeRectangleCoordinates(participant.filtered.transitions,TRUE)
+  
+  # Appends the rows of the data frame to the accumulating data frame
+  rect.transitions.data <- rbind(rect.transitions.data, transitions.rect.plot)
+  
+} # for all the participants
+
+# Writes out the transitions data for the rectangle plots of all the participants
+write.csv(rect.transitions.data, 
+          file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Core-Transitions-Rect-Plots-Per-Participant-Data.csv",
+          row.names = FALSE)
+
+
+################################################################################
+# Function that creates a color step plot for the core transitions of a single participant and a question
+# Input: 
+# * stepplot.participant.question.data, data frame with the rect plot information 
+#                                       for a given participant and one question
+# * participantNumber, is the number of participant to be used for creating the title of the plot
+#  * questionNumber, is the number of question to be used for creating the title of the plot
+library(plyr) # rounding functions
+
+stepCorePlotsParticipantQuestion <- function(stepplot.participant.question.data, participantNumber,
+                                         questionNumber) {
+  
+  levels.AOIS <- levels(stepplot.participant.question.data$IDAOI)
+  
+  step.plot.data <- stepplot.participant.question.data %>% 
+    mutate(X=Xmin) %>%
+    mutate(Y=case_when(IDAOI=="FM" ~ 1,
+                       IDAOI=="Question" ~ 2,
+                       IDAOI=="CTC" ~ 3))
+
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+  
+
+  msec2secs <- 1000     # constant for transformation to secs
+  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+  xmax.value <- max(step.plot.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+  aois.labels.y <- c("FM","Question","CTC")
+  
+  if (participantNumber!=0) { 
+    plot.title <- paste("Participant ", participantNumber, " Question ", questionNumber,sep="")
+  }
+  else
+    plot.title <-""
+  
+  step.plot <- step.plot.data %>% ggplot() + 
+    geom_step(aes(x = X, y = Y, colour = IDAOI, group=1), size=2) +
+    theme(panel.background = element_blank(),
+          plot.title = element_text(hjust = 0.5,size = 20),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
+          axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
+          legend.position = "none") +
+    scale_colour_manual(values = cbPalette, drop=FALSE) +
+    ggtitle(plot.title) + # Title
+    #labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
+    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
+    scale_y_continuous(limits=c(1,3), breaks=seq(1,3,1), labels = aois.labels.y)  # add the values of AOIs
+    # scale_y_discrete(limits=as.factor(seq(1, 3, 1))) # sets the dimensions of the y axis to contain 3 values
+  
+  # returns the created step plot
+  return (step.plot)
+  
+} # of stepCorePlotsParticipantQuestion
+
+
+################################################################################
+# Creates the array of core step plots for all participants and questions
+
+core.stepplots.data.participants <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Core-Transitions-Rect-Plots-Per-Participant-Data.csv",
+           header=TRUE)
+attach(core.stepplots.data.participants)
+
+# Changes the names of AOIs to factors
+core.stepplots.data.participants$IDAOI <- as.factor(core.stepplots.data.participants$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+core.stepplots.data.participants <-
+  core.stepplots.data.participants %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC")))
+
+# Accumulates the core step plot objects into a list
+list.core.stepplots.participants <- list()
+participants.ids <-unique(core.stepplots.data.participants$Participant)
+plots.index <-1 
+for (participant.id in participants.ids) {
+  
+  for (question.id in seq(1,24,1)) {
+    print(paste("Plotting Core Participant ",participant.id," Question ",question.id, sep=""))
+    
+    stepplot <- stepCorePlotsParticipantQuestion( 
+      core.stepplots.data.participants %>% filter(Participant==participant.id & QN==question.id),
+      participant.id, question.id) 
+    
+    list.core.stepplots.participants[[plots.index]] <- stepplot  
+    plots.index <- plots.index + 1  
+    
+  } # for all the questions
+  
+} # for all participant
+
+################################################################################
+## Saves the step plots into files
+
+frame.ids <- expand.grid(unique(core.stepplots.data.participants$Participant),seq(1,24,1)) %>%
+  arrange(Var1,Var2) %>%
+  mutate(file.id=paste("P",Var1,"Q",Var2,sep="-"))
+
+savePlotsList(list.core.stepplots.participants, 
+              frame.ids$file.id,
+              "./Stepplots/", "png","CoreStepplot-")
+
+
+# Example of a test for plot without CTC
+stepCorePlotsParticipantQuestion(core.stepplots.data.participants %>% filter(Participant==2 & QN==1), 2,1)
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
+
+###################### Scratch test code #######################################
 
 ################################################################################
 ## Tests of line plots for the transitions of a participant and question
@@ -532,8 +696,8 @@ p2.trans.q1.data <- scarfplots.data.participants %>% # from all participants sca
                      IDAOI=="Buttons" ~ 6,
                      IDAOI=="Legend" ~ 7))
 
-  # mutate(Y=transformAOIToCoordinate(IDAOI))
-  
+# mutate(Y=transformAOIToCoordinate(IDAOI))
+
 
 # First test
 # p2.trans.q1.data %>% ggplot(aes(X, Y)) + geom_step(aes(colour=as.numeric(IDAOI)))
@@ -565,16 +729,11 @@ p2.trans.q1.data %>% ggplot() +
         panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
         axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
         legend.position = "none" # legend.position = "bottom", # bottom if we have to have a legend
-        ) +
+  ) +
   scale_colour_manual(values = cbPalette, drop=FALSE) +
   #labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
   scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
   scale_y_continuous(breaks=seq(1,7,1), labels = aois.labels.y) # add the values of AOIs
-
-
-
-
-
 
 
 # Example of code scarfplot to start tweaking the step plot
@@ -602,12 +761,6 @@ transformAOIToCoordinate <- function(AOI) {
   return (AOI.number)
 } # of transformAOIToCoordinate
 
-
-################################################################################
-################################################################################
-################################################################################
-
-###################### Scratch test code #######################################
 
 ################################################################################
 ################################################################################
