@@ -399,6 +399,120 @@ savePlotsList(list.scarfplots.questions,
               "./QuestionScarfplots/", "png","Question-")
 
 
+################################################################################
+# Function that creates a color step plot for the transitions of a single participant and a question
+# Input: 
+# * stepplot.participant.question.data, data frame with the rect plot information 
+#                                       for a given participant and one question
+# * participantNumber, is the number of participant to be used for creating the title of the plot
+#  * questionNumber, is the number of question to be used for creating the title of the plot
+library(plyr) # rounding functions
+
+stepPlotsParticipantQuestion <- function(stepplot.participant.question.data, participantNumber,
+                                         questionNumber) {
+  
+  levels.AOIS <- levels(scarfplots.data.participants$IDAOI)
+  
+  step.plot.data <- stepplot.participant.question.data %>% 
+    mutate(X=Xmin) %>%
+    mutate(Y=case_when(IDAOI=="FM" ~ 1,
+                       IDAOI=="Question" ~ 2,
+                       IDAOI=="CTC" ~ 3,
+                       IDAOI=="Answer" ~ 4,
+                       IDAOI=="Window" ~ 5,
+                       IDAOI=="Buttons" ~ 6,
+                       IDAOI=="Legend" ~ 7))
+
+  # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
+  
+
+  msec2secs <- 1000     # constant for transformation to secs
+  tenseconds <- 10 * msec2secs # constant for generating the ticks every 10000 msecs = 10 secs
+  xmax.value <- max(step.plot.data$Xmax)  # computes the maximum value of the Xmax coordinates for this participant
+  upper.limit.x <- round_any(as.numeric(xmax.value), tenseconds, f = ceiling) # rounds up the value for next 10 secs
+  sequence.numbers.labels.x <- seq(0, upper.limit.x/msec2secs, tenseconds/msec2secs) # computes the sequence of label values
+  tensecs.labels.x <- as.character(sequence.numbers.labels.x) # converts the sequences to strings for relabeling
+  aois.labels.y <- c("FM","Question","CTC","Answer","Window","Buttons","Legend")
+  
+  if (participantNumber!=0) { 
+    plot.title <- paste("Participant ", participantNumber, " Question ", questionNumber,sep="")
+  }
+  else
+    plot.title <-""
+  
+  step.plot <- step.plot.data %>% ggplot() + 
+    geom_step(aes(x = X, y = Y, colour = IDAOI, group=1), size=2) +
+    theme(panel.background = element_blank(),
+          plot.title = element_text(hjust = 0.5,size = 20),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
+          panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
+          axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
+          legend.position = "none") +
+    scale_colour_manual(values = cbPalette, drop=FALSE) +
+    ggtitle(plot.title) + # Title
+    #labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
+    scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
+    scale_y_continuous(breaks=seq(1,7,1), labels = aois.labels.y) # add the values of AOIs
+  
+  
+  # returns the created step plot
+  return (step.plot)
+  
+} # of stepPlotsParticipantQuestion
+
+
+################################################################################
+# Creates the array of step plots for all participants and questions
+
+stepplots.data.participants <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
+           header=TRUE)
+attach(stepplots.data.participants)
+
+# Changes the names of AOIs to factors
+stepplots.data.participants$IDAOI <- as.factor(stepplots.data.participants$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+stepplots.data.participants <-
+  stepplots.data.participants %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+
+# Accumulates the scarf plot objects into a list
+list.stepplots.participants <- list()
+participants.ids <-unique(stepplots.data.participants$Participant)
+plots.index <-1 
+for (participant.id in participants.ids) {
+  
+  for (question.id in seq(1,24,1)) {
+    print(paste("Plotting Participant ",participant.id," Question ",question.id, sep=""))
+    
+    stepplot <- stepPlotsParticipantQuestion( 
+      stepplots.data.participants %>% filter(Participant==participant.id & QN==question.id),
+      participant.id, question.id) 
+    
+    list.stepplots.participants[[plots.index]] <- stepplot  
+    plots.index <- plots.index + 1  
+          
+  } # for all the questions
+  
+} # for all participant
+
+
+################################################################################
+## Saves the step plots into files
+
+frame.ids <- expand.grid(unique(stepplots.data.participants$Participant),seq(1,24,1)) %>%
+  arrange(Var1,Var2) %>%
+  mutate(file.id=paste("P",Var1,"Q",Var2,sep="-"))
+
+savePlotsList(list.stepplots.participants, 
+              frame.ids$file.id,
+              "./Stepplots/", "png","Stepplot-")
+
+
 
 ################################################################################
 ## Tests of line plots for the transitions of a participant and question
@@ -408,7 +522,7 @@ savePlotsList(list.scarfplots.questions,
 levels.AOIS <- levels(scarfplots.data.participants$IDAOI)
 
 p2.trans.q1.data <- scarfplots.data.participants %>% # from all participants scarfplots
-  filter(Participant==2 & QN==1) %>% # keep only first question for participant 2
+  filter(Participant==12 & QN==23) %>% # keep only first question for participant 2
   mutate(X=Xmin) %>%
   mutate(Y=case_when(IDAOI=="FM" ~ 1,
                      IDAOI=="Question" ~ 2,
@@ -421,7 +535,8 @@ p2.trans.q1.data <- scarfplots.data.participants %>% # from all participants sca
   # mutate(Y=transformAOIToCoordinate(IDAOI))
   
 
-p2.trans.q1.data %>% ggplot(aes(X, Y)) + geom_step(aes(colour=as.numeric(IDAOI)))
+# First test
+# p2.trans.q1.data %>% ggplot(aes(X, Y)) + geom_step(aes(colour=as.numeric(IDAOI)))
 
 
 # Color blind palette from http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
@@ -444,13 +559,15 @@ aois.labels.y <- c("FM","Question","CTC","Answer","Window","Buttons","Legend")
 p2.trans.q1.data %>% ggplot() + 
   geom_step(aes(x = X, y = Y, colour = IDAOI, group=1), size=2) +
   theme(panel.background = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
         panel.grid.major.y = element_line(colour = "grey50"), # parallel lines to x axis
         panel.grid.major.x = element_line(colour = "grey50"), # perpendicular lines in y axis
         axis.text.y = element_text(color=cbPalette, size = 12, face="bold",vjust=0.3), # colors of the labels in axis y
         legend.position = "none" # legend.position = "bottom", # bottom if we have to have a legend
         ) +
   scale_colour_manual(values = cbPalette, drop=FALSE) +
-  labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
+  #labs(y = "AOIs", x = "Fixations sequence and duration 10 secs intervals)", colour ="AOI") + # Adds the labels
   scale_x_continuous(breaks=seq(0,upper.limit.x,tenseconds), labels=tensecs.labels.x) + # adds tick values
   scale_y_continuous(breaks=seq(1,7,1), labels = aois.labels.y) # add the values of AOIs
 
