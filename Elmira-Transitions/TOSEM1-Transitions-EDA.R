@@ -127,8 +127,9 @@ computeRectangleCoordinates <- function (raw.df, perParticipant) {
 
 
 
-#####################
-# Loads the entire set of curated transitions
+#################################################################################
+# Loads the entire set of curated transitions and writes out the rect transitions
+# Per participant
 all.participants.trans <- read.csv(file = "../../../Experiment-Data/All-Participants-Transitions-Curated-Data.csv", 
                                    header=TRUE)
 attach (all.participants.trans)
@@ -673,6 +674,9 @@ stepCorePlotsParticipantQuestion(core.stepplots.data.participants %>% filter(Par
 
 ################################################################################
 # Test of multiple step plots for all participants in a question
+# OUTCOME: Even using other lines and a single color it is simply not possible
+# to draw multiple results (participant-question) on the same plot because
+# it gets too crowded and it is not possible to distinguish between them
 
 multiple.step.plots.data <- core.stepplots.data.participants %>% 
   filter(QN==3 & (Participant==2 | Participant==3))
@@ -714,6 +718,204 @@ step.plot <- multiple.step.plots.data %>% ggplot() +
   scale_y_continuous(limits=c(1,3), breaks=seq(1,3,1), labels = aois.labels.y)  # add the values of AOIs
 # scale_y_discrete(limits=as.factor(seq(1, 3, 1))) # sets the dimensions of the y axis to contain 3 values
 step.plot
+
+
+###############################################################################
+# Function that creates the participants scarfplots with the inaccurate responses highlighted
+
+scarfPlotParticipantAccuracy <- function () {
+  
+  # Loads all the participants questions rect plots information
+  scarfplots.data.participants <-
+    read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
+             header=TRUE)
+  attach(scarfplots.data.participants)
+  
+  # Changes the names of AOIs to factors
+  scarfplots.data.participants$IDAOI <- as.factor(scarfplots.data.participants$IDAOI)
+  
+  # Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+  scarfplots.data.participants <-
+    scarfplots.data.participants %>%
+    mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+  
+  
+  # Loads all the participant responses for all the questions
+  experiment.complete.data <-
+    read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv",
+             header=TRUE)
+  attach(experiment.complete.data)
+  
+  # delta increases for the red crosses in the overlayed graph
+  delta.y <- 0.5
+  delta.x <- 2/10*10000
+
+  # Accumulates the plot objects into a list
+  list.accuracy.scarfplots.participants <- list()
+  participants.ids <-unique(scarfplots.data.participants$Participant)
+  plots.index <-1 
+  
+  # for all the participants
+  for (participant.id in participants.ids) {
+    
+    print(paste("Plotting Accuracy Participant ",participant.id,sep=""))
+      
+    # data of the scarfplot for the participant
+    participant.scarfplot.data <- scarfplots.data.participants %>% 
+        filter(Participant==participant.id)
+      
+    # gets the base plot of the participant
+    base.plot <- scarfPlotParticipant(participant.scarfplot.data,participant.id) 
+
+    # selects the questions of the given participant
+    participant.accuracy.data <- experiment.complete.data %>% 
+      filter(ParticipantID==participant.id) %>% select(ParticipantID,QNumber,Correct)
+    
+    # selects the maximum x positions of each questio
+    xmax.positions <- participant.scarfplot.data %>% group_by(QN) %>%
+      filter(Xmax==max(Xmax)) %>% select(Participant,QN,Xmax,Ymin)
+      
+    # joins the rect plots and the responses accuracy
+    join.data <- left_join(xmax.positions,participant.accuracy.data, 
+                           by=c('QN'='QNumber'))
+
+    # keeps only those responses that are inaccurate, Correct==1
+    inaccurate.responses <- join.data %>% filter(Correct==1)
+    
+    # creates the plot by adding the wrong responses to the scarfplots
+    result.plot <- base.plot +
+      geom_point(data=inaccurate.responses, aes(x=Xmax + delta.x , y=Ymin + delta.y), 
+                 shape=4, fill="red", color="red", size=3, stroke = 3)
+    
+    
+    # adds the result plo to the list
+    list.accuracy.scarfplots.participants[[plots.index]] <- result.plot  
+    plots.index <- plots.index + 1   
+
+  } # for all participants
+  
+  # Returns the list of plots with the inaccurate answers highlighted
+  return(list.accuracy.scarfplots.participants)
+  
+} # end of scarfPlotParticipantAccuracy
+
+
+################################################################################
+# Computes the participant plots with the inaccurate responses indicated
+# and saves them on the files
+
+participants.list.accuracy.scarflots <- scarfPlotParticipantAccuracy()
+
+
+savePlotsList(participants.list.accuracy.scarflots, 
+              unique(scarfplots.data.participants$Participant), 
+              "./ParticipantScarfplots/", "png", "Accuracy-Participant-")
+
+
+###############################################################################
+# Testing overlaying wrong marks on top of graphs
+
+scarfplots.data.questions <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Participant-Data.csv",
+           header=TRUE)
+attach(scarfplots.data.questions)
+
+# Changes the names of AOIs to factors
+scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
+
+# Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+scarfplots.data.questions <-
+  scarfplots.data.questions %>%
+  mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+
+# Gets the base scarfplot of a participant
+test.scarfplot <- scarfPlotParticipant(scarfplots.data.questions %>% filter(Participant==14), 14) 
+
+
+# # Adds a line on top of the scarfplot
+# line.test <- data.frame(x = seq(0, 90000, by = 3600),
+#                   y = seq(0, 25, by = 1))
+# test.scarfplot + geom_line(data=line.test, aes(x=x, y=y), color="red")
+# 
+# 
+# # Adds points with cross shape to an scarfplot
+# line.test <- data.frame(x = seq(3600, 90000, by = 3600),
+#                         y = seq(1, 24, by = 1))
+# 
+# # cross shape
+# test.scarfplot + 
+#   geom_point(data=line.test, aes(x=x, y=y), shape=4, fill="red", color="red", size=3, stroke = 3)
+# 
+# # asterisk shape
+# test.scarfplot + geom_point(data=line.test, aes(x=x, y=y), shape=8, fill="red", color="red", size=5)
+
+
+# Testing obtaining the maximum of each question of a given participant
+test.xmax <- scarfplots.data.questions %>% filter(Participant==14) %>% group_by(QN) %>%
+  filter(Xmax==max(Xmax)) %>% select(Participant,QN,Xmax,Ymin)
+
+# Testing the plots with X at the end of scarfs 
+delta.y <- 0.5
+delta.x <- 2/10*10000
+test.scarfplot + 
+  geom_point(data=test.xmax, aes(x=Xmax + delta.x , y=Ymin + delta.y), shape=4, fill="red", color="red", size=3, stroke = 3)
+
+# Joining with the information to mark only those questions that are 
+
+experiment.complete.data <-
+  read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv",
+           header=TRUE)
+attach(experiment.complete.data)
+
+# Selects the questions of the given participant
+test.participant.data <- experiment.complete.data %>% filter(ParticipantID==14) %>% select(ParticipantID,QNumber,Correct)
+
+# Joins the data from rect plots and correct responses
+test.join <- left_join(test.xmax,test.participant.data, by=c('QN'='QNumber'))
+
+# Keeps only those responses that are inaccurate, Correct==1
+inaccurate.responses <- test.join %>% filter(Correct==1)
+
+# Testing with only those question with inaccurate response
+delta.y <- 0.5
+delta.x <- 2/10*10000
+test.scarfplot + 
+  geom_point(data=inaccurate.responses, aes(x=Xmax + delta.x , y=Ymin + delta.y), shape=4, fill="red", color="red", size=3, stroke = 3)
+
+
+# joining the data
+
+
+# defining the delta.x to increase the x position at the end of the scarfplot
+test.all.limits <- scarfplots.data.questions %>% group_by(Participant,QN) %>%
+  filter(Xmax==max(Xmax)) %>% select(Participant,QN,Xmax,Ymin)
+summary(test.all.limits)
+
+  
+ggplot(df1, aes(x, log(y))) + 
+  geom_line() +
+  geom_line(data = df2, color = "red")
+
+
+# Iterates over all question numbers
+# Accumulates the scarf plot objects into a list
+list.scarfplots.questions <- list()
+questions.ids <-unique(scarfplots.data.questions$QN)
+
+plots.index <-1 
+for (question.id in questions.ids) {
+  print(paste("Plotting question ",question.id,sep=""))
+  
+  scarfplot.part <- scarfPlotQuestion(scarfplots.data.questions %>% filter(QN==question.id),
+                                      question.id) 
+  scarfplot.part
+  list.scarfplots.questions[[plots.index]] <- scarfplot.part  
+  plots.index <- plots.index + 1
+}
+
+
+
+
 
 ################################################################################
 ################################################################################
