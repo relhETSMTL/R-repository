@@ -812,6 +812,102 @@ savePlotsList(participants.list.accuracy.scarflots,
               "./ParticipantScarfplots/", "png", "Accuracy-Participant-")
 
 
+
+###############################################################################
+# Function that creates the questions scarfplots with the inaccurate responses highlighted
+library(plyr) # rounding functions
+scarfPlotQuestionAccuracy <- function () {
+  
+  # Loads all the participants questions rect plots information
+  scarfplots.data.questions <-
+    read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/Transitions-Data/Transitions-Plots-Data/All-Participants-Transitions-Rect-Plots-Per-Question-Data.csv",
+             header=TRUE)
+  attach(scarfplots.data.questions)
+  
+  # Changes the names of AOIs to factors
+  scarfplots.data.questions$IDAOI <- as.factor(scarfplots.data.questions$IDAOI)
+  
+  # Reorders the AOIs in a more meaningful way (the first 3 are the most important ones)
+  scarfplots.data.questions <-
+    scarfplots.data.questions %>%
+    mutate(IDAOI=fct_relevel(IDAOI,c("FM","Question","CTC","Answer","Window","Buttons","Legend")))
+  
+  
+  # Loads all the participant responses for all the questions
+  experiment.complete.data <-
+    read.csv(file = "../../../Experiment-Data/Eye-tracking-data-samples/ExperimentCompleteDataSet.csv",
+             header=TRUE)
+  attach(experiment.complete.data)
+  
+  # delta increases for the red crosses in the overlayed graph
+  delta.y <- 0.5
+  delta.x <- 2/10*10000
+  
+  # Accumulates the plot objects into a list
+  list.accuracy.scarfplots.questions <- list()
+  questions.ids <-seq(1,24,1)
+  plots.index <-1 
+  
+  # for all the participants
+  for (question.id in questions.ids) {
+    
+    print(paste("Plotting Accuracy Question ",question.id,sep=""))
+    
+    # data of the scarfplot for the participant
+    question.scarfplot.data <- scarfplots.data.questions %>% 
+      filter(QN==question.id)
+    
+    # gets the base plot of the participant
+    base.plot <- scarfPlotQuestion(question.scarfplot.data,question.id) 
+    
+    # selects the questions of the given participant
+    question.accuracy.data <- experiment.complete.data %>% 
+      filter(QNumber==question.id) %>% select(ParticipantID,QNumber,Correct)
+    
+    # selects the maximum x positions of each questio
+    xmax.positions <- question.scarfplot.data %>% group_by(Participant) %>%
+      filter(Xmax==max(Xmax)) %>% select(Participant,QN,Xmax,Ymin)
+    
+    # joins the rect plots and the responses accuracy
+    join.data <- left_join(xmax.positions,question.accuracy.data, 
+                           by=c('Participant'='ParticipantID'))
+    
+    # keeps only those responses that are inaccurate, Correct==1
+    inaccurate.responses <- join.data %>% filter(Correct==1)
+    
+    # creates the plot by adding the wrong responses to the scarfplots
+    result.plot <- base.plot +
+      geom_point(data=inaccurate.responses, aes(x=Xmax + delta.x , y=Ymin + delta.y), 
+                 shape=4, fill="red", color="red", size=3, stroke = 3)
+    
+    
+    # adds the result plo to the list
+    list.accuracy.scarfplots.questions[[plots.index]] <- result.plot  
+    plots.index <- plots.index + 1   
+    
+  } # for all participants
+  
+  # Returns the list of plots with the inaccurate answers highlighted
+  return(list.accuracy.scarfplots.questions)
+  
+} # end of scarfPlotQuestionAccuracy
+
+
+################################################################################
+# Computes the question plots with the inaccurate responses indicated
+# and saves them on the files
+
+questions.list.accuracy.scarflots <- scarfPlotQuestionAccuracy()
+
+
+savePlotsList(questions.list.accuracy.scarflots, 
+              seq(1,24,1), 
+              "./QuestionScarfplots/", "png", "Accuracy-Question-")
+
+
+
+
+
 ###############################################################################
 # Testing overlaying wrong marks on top of graphs
 
